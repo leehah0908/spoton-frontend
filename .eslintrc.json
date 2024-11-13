@@ -1,0 +1,39 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": ["standard", "plugin:react/recommended", "plugin:prettier/recommended"],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": ["react", "prettier"],
+    "settings": {
+        "react": {
+            "version": "detect" // React 버전 자동 감지
+        }
+    },
+    "rules": {
+        "prettier/prettier": ["error", { "singleQuote": true, "semi": true, "endOfLine": "auto" }],
+        "space-before-function-paren": "off",
+        "require-jsdoc": "off",
+        "padded-blocks": "off",
+        "linebreak-style": "off",
+        "comma-dangle": "off",
+        "no-unused-vars": "warn",
+        "react/react-in-jsx-scope": "off",
+        "spaced-comment": "off",
+        "react/prop-types": "off",
+        "object-curly-spacing": "off",
+        "prefer-const": "off",
+        "react/jsx-key": "off",
+        "indent": "off",
+        "max-len": "off",
+        "no-case-declarations": "off"
+    }
+}

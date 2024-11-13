@@ -1,25 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './components/Home';
+import SignUp from './components/SignUp';
+import { ThemeProvider } from '@mui/material/styles';
+import { AuthContextProvider } from './contexts/UserContext';
+import theme from './assets/theme';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <AuthContextProvider>
+                <div className='App'>
+                    <Header />
+                    <div className='App'>
+                        <Routes>
+                            <Route path='/' element={<Home />} />
+                            <Route path='/signup' element={<SignUp />} />
+
+                            {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
+                            <Route
+                                path='/product/manage'
+                                element={<PrivateRouter element={<ProductCreate />} requiredRole='ADMIN' />}
+                            /> */}
+                        </Routes>
+                    </div>
+                    <Footer />
+                </div>
+            </AuthContextProvider>
+        </ThemeProvider>
+    );
 }
 
 export default App;
