@@ -2,12 +2,23 @@ import { AppBar, Button, Container, Grid, Toolbar, Typography } from '@mui/mater
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/UserContext';
+import LoginModal from './LoginModal';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { NotificationAdd } from '@mui/icons-material';
 
 const Header = () => {
     const { isLoggedIn, userRole, onLogout } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const [loginOpen, setLoginOpen] = useState(false);
+
+    const handleLoginClick = () => {
+        setLoginOpen(true);
+    };
+
+    const handleLoginClose = () => {
+        setLoginOpen(false);
+    };
 
     const handelLogout = () => {
         onLogout();
@@ -22,13 +33,13 @@ const Header = () => {
                     <Grid container alignItems='center'>
                         <Grid
                             item
-                            xs={6}
+                            xs={9}
                             style={{
                                 display: 'flex',
                                 justifyContent: 'flex-start',
                             }}
                         >
-                            <Button component={Link} to='/' disableRipple>
+                            <Button component={Link} to='/'>
                                 <Typography
                                     sx={{
                                         color: '#0d41e1',
@@ -60,7 +71,6 @@ const Header = () => {
                                 }}
                                 component={Link}
                                 to='/member/list'
-                                disableRipple
                             >
                                 경기 일정
                             </Button>
@@ -77,7 +87,6 @@ const Header = () => {
                                 }}
                                 component={Link}
                                 to='/member/list'
-                                disableRipple
                             >
                                 커뮤니티
                             </Button>
@@ -94,7 +103,6 @@ const Header = () => {
                                 }}
                                 component={Link}
                                 to='/member/list'
-                                disableRipple
                             >
                                 나눔
                             </Button>
@@ -110,7 +118,6 @@ const Header = () => {
                                 }}
                                 component={Link}
                                 to='/product/manage'
-                                disableRipple
                             >
                                 상품관리
                             </Button>
@@ -118,7 +125,7 @@ const Header = () => {
 
                         <Grid
                             item
-                            xs={6}
+                            xs={3}
                             style={{
                                 display: 'flex',
                                 justifyContent: 'flex-end',
@@ -130,14 +137,12 @@ const Header = () => {
                                         sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '3px' }}
                                         component={Link}
                                         to='/mypage'
-                                        disableRipple
                                     >
                                         마이페이지
                                     </Button>
                                     <Button
                                         sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '3px' }}
                                         onClick={handelLogout}
-                                        disableRipple
                                     >
                                         로그아웃
                                     </Button>
@@ -148,15 +153,12 @@ const Header = () => {
                                         sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '2.5px' }}
                                         component={Link}
                                         to='/signup'
-                                        disableRipple
                                     >
                                         회원가입
                                     </Button>
                                     <Button
                                         sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '2.5px', ml: 2 }}
-                                        component={Link}
-                                        to='/login'
-                                        disableRipple
+                                        onClick={handleLoginClick}
                                     >
                                         로그인
                                     </Button>
@@ -166,6 +168,7 @@ const Header = () => {
                     </Grid>
                 </Container>
             </Toolbar>
+            <LoginModal open={loginOpen} onClose={handleLoginClose} />
         </AppBar>
     );
 };

@@ -42,6 +42,7 @@ const SignUp = () => {
         LCK: 'lckTeam',
     };
 
+    // 백엔드 양식에 맞게 매핑
     const transformedMyTeam = Object.keys(myTeam).reduce((acc, key) => {
         const newKey = fieldMapping[key];
         if (newKey) {
@@ -149,12 +150,16 @@ const SignUp = () => {
     // 이메일 인증번호 보내기
     const handleNumberSend = async () => {
         try {
-            console.log(email);
             await axios.post(`${process.env.REACT_APP_BASE_URL}/user/email_send`, null, {
-                params: { email: email }, // Send email as a query parameter
+                params: { email: email },
             });
         } catch (e) {
-            console.log(e);
+            await Swal.fire({
+                width: '20rem',
+                text: '다시 시도해주세요.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+            });
         }
     };
 
@@ -171,7 +176,6 @@ const SignUp = () => {
         }
 
         try {
-            console.log(email);
             const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/email_certi`, {
                 params: { email: email, reqNumber: number },
             });
@@ -365,11 +369,12 @@ const SignUp = () => {
                 <Typography variant='h4' gutterBottom sx={{ color: '#0d41e1', mb: 5 }}>
                     회원가입
                 </Typography>
+
                 <Box display='flex' alignItems='center' gap={1} sx={{ mt: 3 }}>
                     <FaUser size={24} />
                     <Typography sx={{ textTransform: 'none', fontSize: '1.3rem', textAlign: 'left' }}>회원 정보 입력</Typography>
                 </Box>
-                {/* borderColor: true ? '#0d41e1' : '#C4C4C4' */}
+
                 <form onSubmit={handleSubmit}>
                     {/* 이메일 */}
                     <TextField
