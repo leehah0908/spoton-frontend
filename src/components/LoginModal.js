@@ -66,7 +66,7 @@ const LoginModal = ({ open, onClose }) => {
                 />
 
                 {/* 에러 메시지 */}
-                {errorMessage && <Box sx={{ color: 'red', mt: 1 }}>{errorMessage}</Box>}
+                <Box sx={{ color: 'red', mt: 1, minHeight: '1.5em' }}>{errorMessage || ' '}</Box>
 
                 {/* 로그인 버튼 */}
                 <Button

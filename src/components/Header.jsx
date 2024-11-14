@@ -22,8 +22,8 @@ const Header = () => {
 
     const handelLogout = () => {
         onLogout();
-        alert('로그아웃되었습니다.');
-        navigate('/');
+        // alert('로그아웃되었습니다.');
+        // navigate('/');
     };
 
     return (

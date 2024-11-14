@@ -131,9 +131,15 @@ const SignUp = () => {
                 setEmailCheck(true);
                 await Swal.fire({
                     width: '20rem',
-                    html: '사용 가능한 이메일입니다.<br/>이메일 인증을 진행해주세요.',
+                    html: '<div style="text-align: center; line-height: 2;">사용 가능한 이메일입니다.<br/>이메일 인증을 진행해주세요.<div/>',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             } catch (e) {
                 tempError = e.response.data?.statusMessage;
@@ -159,6 +165,12 @@ const SignUp = () => {
                 text: '다시 시도해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
         }
     };
@@ -171,6 +183,12 @@ const SignUp = () => {
                 text: '인증번호를 입력해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
             return;
         }
@@ -187,6 +205,12 @@ const SignUp = () => {
                     text: '인증이 완료되었습니다.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             }
         } catch (e) {
@@ -197,6 +221,12 @@ const SignUp = () => {
                     text: '인증번호가 일치하지 않습니다.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             } else if (e.response.status === 408) {
                 setNumberCheck(false);
@@ -205,6 +235,12 @@ const SignUp = () => {
                     text: '3분이 지났습니다. 인증번호를 다시 보내주세요.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             } else {
                 setNumberCheck(false);
@@ -213,6 +249,12 @@ const SignUp = () => {
                     text: '다시 시도해주세요.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             }
         }
@@ -243,6 +285,12 @@ const SignUp = () => {
                     text: '사용 가능한 닉네임입니다.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             } catch (e) {
                 tempError = e.response.data?.statusMessage;
@@ -267,6 +315,12 @@ const SignUp = () => {
                 text: '이메일 중복확인을 해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
             return;
         }
@@ -278,6 +332,12 @@ const SignUp = () => {
                 text: '이메일 인증을 해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
             return;
         }
@@ -289,6 +349,12 @@ const SignUp = () => {
                 text: '닉네임 중복확인을 해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
             return;
         }
@@ -300,6 +366,12 @@ const SignUp = () => {
                 text: '비밀번호를 입력해주세요.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
             return;
         }
@@ -313,6 +385,12 @@ const SignUp = () => {
                 cancelButtonText: '아니요',
                 confirmButtonColor: '#AAAAAA',
                 cancelButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
 
             if (!result.isConfirmed) {
@@ -330,6 +408,12 @@ const SignUp = () => {
                 cancelButtonText: '아니요',
                 confirmButtonColor: '#0d41e1',
                 cancelButtonColor: '#AAAAAA',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                },
             });
 
             if (!result.isConfirmed) {
@@ -349,6 +433,12 @@ const SignUp = () => {
                     text: '회원가입이 완료되었습니다.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
 
                 navigate('/');
@@ -358,6 +448,12 @@ const SignUp = () => {
                     text: e.response.data.statusMessage,
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
                 });
             }
         }
