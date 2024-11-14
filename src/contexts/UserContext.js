@@ -27,7 +27,7 @@ export const AuthContextProvider = (props) => {
                 setIsLoggedIn(true);
                 setIsInit(true);
             } catch (e) {
-                console.log('로그인 안되어있음.', e);
+                console.log('로그인 안되어있음');
             }
         };
 
@@ -42,8 +42,7 @@ export const AuthContextProvider = (props) => {
     // 로그아웃 핸들러
     const logoutHandler = async () => {
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/logout`, {}, { withCredentials: true });
-            console.log(res);
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/logout`, {}, { withCredentials: true });
 
             setUserAuth('');
             setUserProfile('');

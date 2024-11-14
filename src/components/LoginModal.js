@@ -12,18 +12,28 @@ const LoginModal = ({ open, onClose }) => {
 
     const handleLogin = async () => {
         try {
-            const res = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/user/login`,
-                { email, password },
-                { withCredentials: true },
-            );
-            console.log(res);
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/login`, { email, password }, { withCredentials: true });
             onLogin();
+            setEmail('');
+            setPassword('');
+            setErrorMessage('');
 
             onClose();
         } catch (e) {
             setErrorMessage(e.response.data.statusMessage);
         }
+    };
+
+    const handleKakaoLogin = async () => {
+        window.location.href = `${process.env.REACT_APP_BASE_URL}/social_login/kakao`;
+        onLogin();
+        onClose();
+    };
+
+    const handleNaverLogin = async () => {
+        window.location.href = `${process.env.REACT_APP_BASE_URL}/social_login/naver`;
+        onLogin();
+        onClose();
     };
 
     return (
@@ -56,14 +66,14 @@ const LoginModal = ({ open, onClose }) => {
 
                 {/* 세로로 정렬된 소셜 로그인 버튼 */}
                 <Box display='flex' flexDirection='column' gap={2} mt={2}>
-                    <Button variant='outlined' color='primary'>
-                        구글 로그인
-                    </Button>
-                    <Button variant='outlined' color='primary'>
+                    <Button variant='outlined' color='primary' onClick={handleKakaoLogin}>
                         카카오 로그인
                     </Button>
-                    <Button variant='outlined' color='primary'>
+                    <Button variant='outlined' color='primary' onClick={handleNaverLogin}>
                         네이버 로그인
+                    </Button>
+                    <Button variant='outlined' color='primary'>
+                        구글 로그인
                     </Button>
                 </Box>
             </DialogContent>
