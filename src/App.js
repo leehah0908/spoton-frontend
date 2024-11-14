@@ -14,18 +14,16 @@ function App() {
             <AuthContextProvider>
                 <div className='App'>
                     <Header />
-                    <div className='App'>
-                        <Routes>
-                            <Route path='/' element={<Home />} />
-                            <Route path='/signup' element={<SignUp />} />
+                    <Routes>
+                        <Route path='/' element={<Home />} />
+                        <Route path='/signup' element={<SignUp />} />
 
-                            {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
+                        {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
                             <Route
                                 path='/product/manage'
                                 element={<PrivateRouter element={<ProductCreate />} requiredRole='ADMIN' />}
                             /> */}
-                        </Routes>
-                    </div>
+                    </Routes>
                     <Footer />
                 </div>
             </AuthContextProvider>

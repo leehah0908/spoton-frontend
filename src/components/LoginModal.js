@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
 import axios from 'axios';
+import AuthContext from '../contexts/UserContext';
 
 const LoginModal = ({ open, onClose }) => {
+    const { onLogin } = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -11,10 +14,11 @@ const LoginModal = ({ open, onClose }) => {
         try {
             const res = await axios.post(
                 `${process.env.REACT_APP_BASE_URL}/user/login`,
-                { email: email, password: password },
+                { email, password },
                 { withCredentials: true },
             );
-            console.log('로그인 성공:', res.data);
+            console.log(res);
+            onLogin();
 
             onClose();
         } catch (e) {

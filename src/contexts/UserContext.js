@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-// UserContext 생성
 const AuthContext = React.createContext({
     isLoggedIn: false,
     onLogin: () => {},
@@ -9,43 +9,56 @@ const AuthContext = React.createContext({
     isInit: false,
 });
 
-// provider 선언
+// provider
 export const AuthContextProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userRole, setUserRole] = useState('');
+    const [userAuth, setUserAuth] = useState('');
+    const [userProfile, setUserProfile] = useState('');
     const [isInit, setIsInit] = useState(false);
 
+    // 첫 렌더링시 쿠키를 백으로 보내서 로그인이 유효한지 확인
     useEffect(() => {
-        const token = localStorage.getItem('ACCESS_TOKEN');
-        if (token) {
-            setIsLoggedIn(true);
-            setUserRole(localStorage.getItem('USER_ROLE'));
-        }
-        setIsInit(true);
+        const checkLoginStatus = async () => {
+            try {
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/login/check`, { withCredentials: true });
+
+                setUserAuth(res.data.result.auth);
+                setUserProfile(res.data.result.profile);
+                setIsLoggedIn(true);
+                setIsInit(true);
+            } catch (e) {
+                console.log('로그인 안되어있음.', e);
+            }
+        };
+
+        checkLoginStatus();
     }, []);
 
     // 로그인 핸들러
-    const loginHandler = (token, userId, role) => {
-        localStorage.setItem('ACCESS_TOKEN', token);
-        localStorage.setItem('USER_ID', userId);
-        localStorage.setItem('USER_ROLE', role);
-
+    const loginHandler = () => {
         setIsLoggedIn(true);
-        setUserRole(role);
     };
 
     // 로그아웃 핸들러
-    const logoutHandler = () => {
-        localStorage.clear();
-        setIsLoggedIn(false);
-        setUserRole('');
+    const logoutHandler = async () => {
+        try {
+            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/user/logout`, {}, { withCredentials: true });
+            console.log(res);
+
+            setUserAuth('');
+            setUserProfile('');
+            setIsLoggedIn(false);
+        } catch (e) {
+            console.log('로그아웃 실패', e);
+        }
     };
 
     return (
         <AuthContext.Provider
             value={{
                 isLoggedIn,
-                userRole,
+                userAuth,
+                userProfile,
                 onLogin: loginHandler,
                 onLogout: logoutHandler,
                 isInit,

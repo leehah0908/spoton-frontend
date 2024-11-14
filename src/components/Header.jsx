@@ -7,7 +7,7 @@ import { EventSourcePolyfill } from 'event-source-polyfill';
 import { NotificationAdd } from '@mui/icons-material';
 
 const Header = () => {
-    const { isLoggedIn, userRole, onLogout } = useContext(AuthContext);
+    const { isLoggedIn, userAuth, onLogout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [loginOpen, setLoginOpen] = useState(false);

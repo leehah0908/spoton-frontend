@@ -126,7 +126,7 @@ const SignUp = () => {
         if (isValid) {
             try {
                 await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_email`, {
-                    params: { email: email },
+                    params: { email },
                 });
                 setEmailCheck(true);
                 await Swal.fire({
@@ -151,7 +151,7 @@ const SignUp = () => {
     const handleNumberSend = async () => {
         try {
             await axios.post(`${process.env.REACT_APP_BASE_URL}/user/email_send`, null, {
-                params: { email: email },
+                params: { email },
             });
         } catch (e) {
             await Swal.fire({
@@ -177,7 +177,7 @@ const SignUp = () => {
 
         try {
             const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/email_certi`, {
-                params: { email: email, reqNumber: number },
+                params: { email, reqNumber: number },
             });
 
             if (res.status === 200) {
@@ -235,7 +235,7 @@ const SignUp = () => {
         if (isValid) {
             try {
                 await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_nickname`, {
-                    params: { nickname: nickname },
+                    params: { nickname },
                 });
                 setNicknameCheck(true);
                 await Swal.fire({
@@ -338,9 +338,9 @@ const SignUp = () => {
 
             try {
                 await axios.post(`${process.env.REACT_APP_BASE_URL}/user/signup`, {
-                    email: email,
-                    password: password,
-                    nickname: nickname,
+                    email,
+                    password,
+                    nickname,
                     myTeam: transformedMyTeam,
                 });
 
