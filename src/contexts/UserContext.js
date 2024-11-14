@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const AuthContext = React.createContext({
@@ -13,8 +12,6 @@ const AuthContext = React.createContext({
 
 // provider
 export const AuthContextProvider = (props) => {
-    const navigate = useNavigate();
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userAuth, setUserAuth] = useState('');
     const [userProfile, setUserProfile] = useState('');
@@ -65,6 +62,19 @@ export const AuthContextProvider = (props) => {
                 await Swal.fire({
                     width: '40rem',
                     html: '<div style="color: #333; text-align: center; line-height: 2;">현재 이 서비스에서는 로그아웃되었습니다.<br />그러나, 다음에 구글 로그인을 할 때 로그인 정보가 유지될 수 있습니다.<br />완전한 로그아웃을 원하시면 <a href="https://www.google.com/" target="_blank" style="color: #4285F4;">구글 홈페이지</a>에서 로그아웃해 주세요.</div>',
+                    confirmButtonText: '확인',
+                    confirmButtonColor: '#0d41e1',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                    },
+                    didOpen: () => {
+                        document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
+                    },
+                });
+            } else if (res.data === 'http://localhost:3000') {
+                await Swal.fire({
+                    width: '25rem',
+                    html: '로그아웃되었습니다.',
                     confirmButtonText: '확인',
                     confirmButtonColor: '#0d41e1',
                     customClass: {
