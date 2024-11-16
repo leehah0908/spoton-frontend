@@ -2,7 +2,7 @@ import { AppBar, Button, Container, Grid, Toolbar, Typography } from '@mui/mater
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/UserContext';
-import LoginModal from './LoginModal';
+import LoginModal from './modals/LoginModal';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { NotificationAdd } from '@mui/icons-material';
 
@@ -25,8 +25,8 @@ const Header = () => {
     };
 
     return (
-        <AppBar position='static ' sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-            <Toolbar sx={{ height: '80px', paddingTop: '15px', paddingBottom: '15px' }}>
+        <AppBar position='static ' sx={{ backgroundColor: 'transparent' }}>
+            <Toolbar sx={{ height: '80px' }}>
                 <Container>
                     <Grid container alignItems='center'>
                         <Grid

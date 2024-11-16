@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, Button, Box, Chip, Divider } from '@mui/material';
-import { sportsData } from '../assets/sportsData';
+import { sportsData } from '../../assets/sportsData';
 
-const TeamSelectorModal = ({ open, onClose, onSelectTeam }) => {
+const TeamSelectorModal = ({ open, onClose, onSelectTeam, selectedTeam }) => {
     const [selectedSport, setSelectedSport] = useState('');
     const [selectedLeague, setSelectedLeague] = useState('');
-    const [selectedTeams, setSelectedTeams] = useState({});
+    const [selectedTeams, setSelectedTeams] = useState(selectedTeam);
+
+    // Props(selectedTeam)가 변경될 때 상태 업데이트
+    useEffect(() => {
+        if (selectedTeam) {
+            setSelectedTeams(selectedTeam);
+        }
+    }, [selectedTeam]);
 
     // 팀 선택 -> 리그, 팀 초기화
     const handleSportSelect = (sport) => {

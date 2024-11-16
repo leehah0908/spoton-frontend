@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
 import axios from 'axios';
-import AuthContext from '../contexts/UserContext';
-import kakaoLogo from '../assets/logos/kakao_logo.png';
-import naverLogo from '../assets/logos/naver_logo.png';
-import googleLogo from '../assets/logos/google_logo.png';
+import AuthContext from '../../contexts/UserContext';
+import kakaoLogo from '../../assets/logos/kakao_logo.png';
+import naverLogo from '../../assets/logos/naver_logo.png';
+import googleLogo from '../../assets/logos/google_logo.png';
 
 const LoginModal = ({ open, onClose }) => {
     const { onLogin } = useContext(AuthContext);
@@ -66,7 +66,9 @@ const LoginModal = ({ open, onClose }) => {
                 />
 
                 {/* 에러 메시지 */}
-                <Box sx={{ color: 'red', mt: 1, minHeight: '1.5em' }}>{errorMessage || ' '}</Box>
+                <Box sx={{ color: 'red', mt: 1, minHeight: '1.5em', textAlign: 'center', fontWeight: '600' }}>
+                    {errorMessage || ' '}
+                </Box>
 
                 {/* 로그인 버튼 */}
                 <Button

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { IoHeartCircle } from 'react-icons/io5';
 import { Container, TextField, Button, Typography, Box, InputAdornment } from '@mui/material';
-import TeamSelectorModal from './TeamSelectorModal';
+import TeamSelectorModal from '../modals/TeamSelectorModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
@@ -462,7 +462,7 @@ const SignUp = () => {
     return (
         <Container maxWidth='xs'>
             <Box sx={{ mt: 3 }}>
-                <Typography variant='h4' gutterBottom sx={{ color: '#0d41e1', mb: 5 }}>
+                <Typography variant='h4' sx={{ color: '#0d41e1', mb: 5, mt: 5 }}>
                     회원가입
                 </Typography>
 
@@ -668,7 +668,12 @@ const SignUp = () => {
                             '팀 선택'
                         )}
                     </Button>
-                    <TeamSelectorModal open={openTeamModal} onClose={handleCloseTeamModal} onSelectTeam={handleTeamSelect} />
+                    <TeamSelectorModal
+                        open={openTeamModal}
+                        onClose={handleCloseTeamModal}
+                        onSelectTeam={handleTeamSelect}
+                        selectedTeam={myTeam}
+                    />
 
                     <Button
                         type='submit'
