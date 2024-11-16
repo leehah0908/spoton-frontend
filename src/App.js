@@ -1,8 +1,9 @@
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './components/Home';
-import SignUp from './components/SignUp';
+import Home from './components/pages/Home';
+import SignUp from './components/pages/SignUp';
+import MyPage from './components/pages/MyPage';
 import { ThemeProvider } from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
@@ -17,6 +18,7 @@ function App() {
                     <Routes>
                         <Route path='/' element={<Home />} />
                         <Route path='/signup' element={<SignUp />} />
+                        <Route path='/mypage' element={<MyPage />} />
 
                         {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
                             <Route
