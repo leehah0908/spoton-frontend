@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
 import { Route, Routes } from 'react-router-dom';
+import PrivateRouter from './routers/PrivateRouter';
 
 function App() {
     return (
@@ -18,7 +19,7 @@ function App() {
                     <Routes>
                         <Route path='/' element={<Home />} />
                         <Route path='/signup' element={<SignUp />} />
-                        <Route path='/mypage' element={<MyPage />} />
+                        <Route path='/mypage' element={<PrivateRouter element={<MyPage />} />} />
 
                         {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
                             <Route
