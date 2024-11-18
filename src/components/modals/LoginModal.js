@@ -16,7 +16,14 @@ const LoginModal = ({ open, onClose }) => {
 
     const handleLogin = async () => {
         try {
-            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/login`, { email, password }, { withCredentials: true });
+            await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/user/login`,
+                { email, password },
+                {
+                    withCredentials: true, // 쿠키를 전달받기 위한 설정
+                },
+            );
+
             onLogin();
             setEmail('');
             setPassword('');

@@ -505,7 +505,7 @@ const MyPage = () => {
                 </Typography>
 
                 <CardContent>
-                    <Button variant='contained' color='primary' onClick={() => setOpenPasswordModal(true)}>
+                    <Button variant='contained' sx={{ bgcolor: '#0d41e1' }} onClick={() => setOpenPasswordModal(true)}>
                         비밀번호 변경
                     </Button>
                 </CardContent>
