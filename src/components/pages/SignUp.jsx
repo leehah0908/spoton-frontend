@@ -3,7 +3,7 @@ import { FaUser } from 'react-icons/fa';
 import { IoHeartCircle } from 'react-icons/io5';
 import { Container, TextField, Button, Typography, Box, InputAdornment } from '@mui/material';
 import TeamSelectorModal from '../modals/TeamSelectorModal';
-import axios from 'axios';
+import axiosInstance from '../../configs/axios-config';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -110,10 +110,12 @@ const SignUp = () => {
         // 형식이 맞지 않으면 중복확인 불가
         if (isValid) {
             try {
-                await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_email`, {
+                await axiosInstance.get('/user/check_email', {
                     params: { email },
                 });
+
                 setEmailCheck(true);
+
                 await Swal.fire({
                     width: '20rem',
                     html: '<div style="text-align: center; line-height: 2;">사용 가능한 이메일입니다.<br/>이메일 인증을 진행해주세요.<div/>',
@@ -142,7 +144,7 @@ const SignUp = () => {
     // 이메일 인증번호 보내기
     const handleNumberSend = async () => {
         try {
-            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/email_send`, null, {
+            await axiosInstance.post('/user/email_send', null, {
                 params: { email },
             });
         } catch (e) {
@@ -180,12 +182,13 @@ const SignUp = () => {
         }
 
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/email_certi`, {
+            const res = await axiosInstance.get('/user/email_certi', {
                 params: { email, reqNumber: number },
             });
 
             if (res.status === 200) {
                 setNumberCheck(true);
+
                 await Swal.fire({
                     width: '20rem',
                     text: '인증이 완료되었습니다.',
@@ -202,6 +205,7 @@ const SignUp = () => {
         } catch (e) {
             if (e.response.status === 401) {
                 setNumberCheck(false);
+
                 await Swal.fire({
                     width: '20rem',
                     text: '인증번호가 일치하지 않습니다.',
@@ -216,6 +220,7 @@ const SignUp = () => {
                 });
             } else if (e.response.status === 408) {
                 setNumberCheck(false);
+
                 await Swal.fire({
                     width: '20rem',
                     text: '3분이 지났습니다. 인증번호를 다시 보내주세요.',
@@ -230,6 +235,7 @@ const SignUp = () => {
                 });
             } else {
                 setNumberCheck(false);
+
                 await Swal.fire({
                     width: '20rem',
                     text: '다시 시도해주세요.',
@@ -259,10 +265,12 @@ const SignUp = () => {
         // 형식이 맞지 않으면 중복확인 불가
         if (isValid) {
             try {
-                await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_nickname`, {
+                await axiosInstance.get('/user/check_nickname', {
                     params: { nickname },
                 });
+
                 setNicknameCheck(true);
+
                 await Swal.fire({
                     width: '20rem',
                     text: '사용 가능한 닉네임입니다.',
@@ -405,7 +413,7 @@ const SignUp = () => {
             }
 
             try {
-                await axios.post(`${process.env.REACT_APP_BASE_URL}/user/signup`, {
+                await axiosInstance.post('/user/signup', {
                     email,
                     password,
                     nickname,

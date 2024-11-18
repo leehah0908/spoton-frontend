@@ -3,7 +3,7 @@ import { Box, Typography, Avatar, Button, TextField, Card, CardContent, Containe
 import TeamSelectorModal from '../modals/TeamSelectorModal';
 import PasswordModifyModal from '../modals/PasswordModifyModal';
 import AuthContext from '../../contexts/UserContext';
-import axios from 'axios';
+import axiosInstance from '../../configs/axios-config';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const MyPage = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/my_info`, { withCredentials: true });
+                const res = await axiosInstance.get('/user/my_info');
                 console.log(res.data);
 
                 // mtId 빼고, 팀이 지정되어있지 않은 리그는 제외
@@ -87,16 +87,10 @@ const MyPage = () => {
         }
 
         try {
-            await axios.patch(
-                `${process.env.REACT_APP_BASE_URL}/user/modify`,
-                {
-                    type: 'nickname',
-                    nickname,
-                },
-                {
-                    withCredentials: true,
-                },
-            );
+            await axiosInstance.patch('/user/modify', {
+                type: 'nickname',
+                nickname,
+            });
 
             await Swal.fire({
                 width: '20rem',
@@ -137,16 +131,10 @@ const MyPage = () => {
         }, {});
 
         try {
-            await axios.patch(
-                `${process.env.REACT_APP_BASE_URL}/user/modify`,
-                {
-                    type: 'myTeam',
-                    myTeam: transformedMyTeam,
-                },
-                {
-                    withCredentials: true,
-                },
-            );
+            await axiosInstance.patch('/user/modify', {
+                type: 'myTeam',
+                myTeam: transformedMyTeam,
+            });
 
             await Swal.fire({
                 width: '20rem',
@@ -200,9 +188,7 @@ const MyPage = () => {
             const formData = new FormData();
             formData.append('imgFile', profile);
 
-            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/set_profile`, formData, {
-                withCredentials: true,
-            });
+            await axiosInstance.post('/user/set_profile', formData);
 
             await Swal.fire({
                 width: '20rem',
@@ -243,7 +229,7 @@ const MyPage = () => {
         }
 
         try {
-            axios.post(`${process.env.REACT_APP_BASE_URL}/user/pw_send`, {}, { params: { email }, withCredentials: true });
+            axiosInstance.post('/user/pw_send', {}, { params: { email } });
         } catch (e) {
             await Swal.fire({
                 width: '20rem',
@@ -332,7 +318,7 @@ const MyPage = () => {
                     }
 
                     try {
-                        await axios.post(`${process.env.REACT_APP_BASE_URL}/user/withdraw`, {}, { withCredentials: true });
+                        await axiosInstance.post('/user/withdraw', {});
                     } catch (e) {
                         await Swal.fire({
                             width: '20rem',

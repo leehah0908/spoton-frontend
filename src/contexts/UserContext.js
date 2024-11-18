@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import axiosInstance from '../configs/axios-config';
 
@@ -22,7 +21,7 @@ export const AuthContextProvider = (props) => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const res = await axiosInstance.get(`/user/login/check`);
+                const res = await axiosInstance.get('/user/login/check');
 
                 setUserAuth(res.data.result.auth);
                 setUserProfile(res.data.result.profile);
@@ -46,7 +45,7 @@ export const AuthContextProvider = (props) => {
     // 로그아웃 핸들러
     const logoutHandler = async () => {
         try {
-            const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/logout`, {}, { withCredentials: true });
+            const res = await axiosInstance.post('/logout', {});
 
             if (res.data === 'NAVER API does not provide a logout API.') {
                 await Swal.fire({

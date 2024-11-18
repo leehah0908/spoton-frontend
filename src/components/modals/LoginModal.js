@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
-import axios from 'axios';
+import axiosInstance from '../../configs/axios-config';
 import Swal from 'sweetalert2';
 import AuthContext from '../../contexts/UserContext';
 import kakaoLogo from '../../assets/logos/kakao_logo.png';
@@ -14,15 +14,10 @@ const LoginModal = ({ open, onClose }) => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
+    // 로그인
     const handleLogin = async () => {
         try {
-            await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/user/login`,
-                { email, password },
-                {
-                    withCredentials: true, // 쿠키를 전달받기 위한 설정
-                },
-            );
+            await axiosInstance.post('/user/login', { email, password });
 
             onLogin();
             setEmail('');
@@ -35,6 +30,7 @@ const LoginModal = ({ open, onClose }) => {
         }
     };
 
+    // 카카오 로그인
     const handleKakaoLogin = async () => {
         const result = await Swal.fire({
             width: '40rem',
@@ -62,6 +58,7 @@ const LoginModal = ({ open, onClose }) => {
         onClose();
     };
 
+    // 네이버 로그인
     const handleNaverLogin = async () => {
         const result = await Swal.fire({
             width: '40rem',
@@ -89,6 +86,7 @@ const LoginModal = ({ open, onClose }) => {
         onClose();
     };
 
+    // 구글 로그인
     const handleGoogleLogin = async () => {
         const result = await Swal.fire({
             width: '40rem',

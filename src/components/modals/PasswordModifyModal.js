@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import axios from 'axios';
+import axiosInstance from '../../configs/axios-config';
 import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
 import AuthContext from '../../contexts/UserContext';
@@ -13,6 +13,7 @@ const PasswordModifyModal = ({ open, onClose }) => {
     const [newPassword, setNewPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
 
+    // 비밀번호 변경
     const savePassword = async () => {
         if (newPassword.length < 8) {
             await Swal.fire({
@@ -51,14 +52,10 @@ const PasswordModifyModal = ({ open, onClose }) => {
         }
 
         try {
-            await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/user/change_pw`,
-                {
-                    oldPassword: currentPassword,
-                    newPassword,
-                },
-                { withCredentials: true },
-            );
+            await axiosInstance.post('/user/change_pw', {
+                oldPassword: currentPassword,
+                newPassword,
+            });
 
             await Swal.fire({
                 width: '30rem',
