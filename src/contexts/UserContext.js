@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import axiosInstance from '../configs/axios-config';
 
 const AuthContext = React.createContext({
     isLoggedIn: false,
@@ -21,13 +22,14 @@ export const AuthContextProvider = (props) => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/login/check`, { withCredentials: true });
+                const res = await axiosInstance.get(`/user/login/check`);
 
                 setUserAuth(res.data.result.auth);
                 setUserProfile(res.data.result.profile);
                 setIsLoggedIn(true);
                 setIsInit(true);
             } catch (e) {
+                console.log(e);
                 console.log('로그인 안되어있음');
                 setIsInit(true);
             }
