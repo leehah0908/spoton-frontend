@@ -87,13 +87,13 @@ export const AuthContextProvider = (props) => {
             } else {
                 window.location.href = res.data;
             }
-
-            setUserAuth('');
-            setUserProfile('');
-            setIsLoggedIn(false);
         } catch (e) {
             console.log('로그아웃 실패', e);
         }
+
+        setUserAuth('');
+        setUserProfile('');
+        setIsLoggedIn(false);
     };
 
     return (

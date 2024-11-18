@@ -44,6 +44,7 @@ const PasswordModifyModal = ({ open, onClose }) => {
 
             <DialogActions>
                 <Button onClick={onClose}>취소</Button>
+
                 <Button variant='contained' color='primary' onClick={savePassword}>
                     변경하기
                 </Button>

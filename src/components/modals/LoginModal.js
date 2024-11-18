@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import AuthContext from '../../contexts/UserContext';
 import kakaoLogo from '../../assets/logos/kakao_logo.png';
 import naverLogo from '../../assets/logos/naver_logo.png';
@@ -28,18 +29,81 @@ const LoginModal = ({ open, onClose }) => {
     };
 
     const handleKakaoLogin = async () => {
+        const result = await Swal.fire({
+            width: '40rem',
+            html: '<div style="color: #333; text-align: center; line-height: 2;">동일한 이메일로 저장된 회원정보가 있다면 자동으로 계정 연동이 진행됩니다.<br />그래도 진행하시겠습니까?</div>',
+            showCancelButton: true,
+            confirmButtonText: '네',
+            cancelButtonText: '아니요',
+            confirmButtonColor: '#0d41e1',
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-container');
+                if (popup) {
+                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                    document.body.appendChild(popup);
+                    popup.style.zIndex = '2001';
+                }
+            },
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
         window.location.href = `${process.env.REACT_APP_BASE_URL}/social_login/kakao`;
         onLogin();
         onClose();
     };
 
     const handleNaverLogin = async () => {
+        const result = await Swal.fire({
+            width: '40rem',
+            html: '<div style="color: #333; text-align: center; line-height: 2;">동일한 이메일로 저장된 회원정보가 있다면 자동으로 계정 연동이 진행됩니다.<br />그래도 진행하시겠습니까?</div>',
+            showCancelButton: true,
+            confirmButtonText: '네',
+            cancelButtonText: '아니요',
+            confirmButtonColor: '#0d41e1',
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-container');
+                if (popup) {
+                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                    document.body.appendChild(popup);
+                    popup.style.zIndex = '2001';
+                }
+            },
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
         window.location.href = `${process.env.REACT_APP_BASE_URL}/social_login/naver`;
         onLogin();
         onClose();
     };
 
     const handleGoogleLogin = async () => {
+        const result = await Swal.fire({
+            width: '40rem',
+            html: '<div style="color: #333; text-align: center; line-height: 2;">동일한 이메일로 저장된 회원정보가 있다면 자동으로 계정 연동이 진행됩니다.<br />그래도 진행하시겠습니까?</div>',
+            showCancelButton: true,
+            confirmButtonText: '네',
+            cancelButtonText: '아니요',
+            confirmButtonColor: '#0d41e1',
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-container');
+                if (popup) {
+                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                    document.body.appendChild(popup);
+                    popup.style.zIndex = '2001';
+                }
+            },
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
         window.location.href = `${process.env.REACT_APP_BASE_URL}/social_login/google`;
         onLogin();
         onClose();

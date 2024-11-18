@@ -73,34 +73,22 @@ const SignUp = () => {
         let tempErrors = { nickname: '', email: '', password: '', checkPassword: '' };
         let isValid = true;
 
-        if (email.trim() === '') {
-            tempErrors.email = '이메일은 필수값입니다.';
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
+        if (!/\S+@\S+\.\S+/.test(email)) {
             tempErrors.email = '이메일 형식이 올바르지 않습니다.';
             isValid = false;
         }
 
-        if (password.trim() === '') {
-            tempErrors.password = '비밀번호는 필수값입니다.';
-            isValid = false;
-        } else if (password.length < 8) {
+        if (password.length < 8) {
             tempErrors.password = '비밀번호는 최소 8자 이상으로 설정해주세요.';
             isValid = false;
         }
 
-        if (checkPassword.trim() === '') {
-            tempErrors.checkPassword = '비밀번호를 한번 더 입력해주세요.';
-            isValid = false;
-        } else if (password !== checkPassword) {
+        if (password !== checkPassword) {
             tempErrors.checkPassword = '비밀번호가 일치하지 않습니다.';
             isValid = false;
         }
 
-        if (nickname.trim() === '') {
-            tempErrors.nickname = '닉네임은 필수값입니다.';
-            isValid = false;
-        } else if (nickname.length < 2) {
+        if (nickname.length < 2) {
             tempErrors.nickname = '닉네임은 2자 이상으로 설정해주세요.';
             isValid = false;
         }
@@ -114,10 +102,7 @@ const SignUp = () => {
         let tempError = '';
         let isValid = true;
 
-        if (email.trim() === '') {
-            tempError = '이메일은 필수값입니다.';
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
+        if (!/\S+@\S+\.\S+/.test(email)) {
             tempError = '이메일 형식이 올바르지 않습니다.';
             isValid = false;
         }
@@ -141,6 +126,7 @@ const SignUp = () => {
                         document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
                     },
                 });
+                return;
             } catch (e) {
                 tempError = e.response.data?.statusMessage;
                 setEmailCheck(false);
@@ -265,10 +251,7 @@ const SignUp = () => {
         let tempError = '';
         let isValid = true;
 
-        if (nickname.trim() === '') {
-            tempError = '닉네임은 필수값입니다.';
-            isValid = false;
-        } else if (nickname.length < 2) {
+        if (nickname.length < 2) {
             tempError = '닉네임은 2자 이상으로 설정해주세요.';
             isValid = false;
         }
@@ -292,6 +275,7 @@ const SignUp = () => {
                         document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
                     },
                 });
+                return;
             } catch (e) {
                 tempError = e.response.data?.statusMessage;
                 setNicknameCheck(false);
