@@ -3,7 +3,7 @@ import { FaUser } from 'react-icons/fa';
 import { IoHeartCircle } from 'react-icons/io5';
 import { Container, TextField, Button, Typography, Box, InputAdornment } from '@mui/material';
 import TeamSelectorModal from '../modals/TeamSelectorModal';
-import axiosInstance from '../../configs/axios-config';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
@@ -110,7 +110,7 @@ const SignUp = () => {
         // 형식이 맞지 않으면 중복확인 불가
         if (isValid) {
             try {
-                await axiosInstance.get('/user/check_email', {
+                await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_email`, {
                     params: { email },
                 });
 
@@ -144,7 +144,7 @@ const SignUp = () => {
     // 이메일 인증번호 보내기
     const handleNumberSend = async () => {
         try {
-            await axiosInstance.post('/user/email_send', null, {
+            await axios.post(`${process.env.REACT_APP_BASE_URL}/user/email_send`, null, {
                 params: { email },
             });
         } catch (e) {
@@ -182,7 +182,7 @@ const SignUp = () => {
         }
 
         try {
-            const res = await axiosInstance.get('/user/email_certi', {
+            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user/email_certi`, {
                 params: { email, reqNumber: number },
             });
 
@@ -265,7 +265,7 @@ const SignUp = () => {
         // 형식이 맞지 않으면 중복확인 불가
         if (isValid) {
             try {
-                await axiosInstance.get('/user/check_nickname', {
+                await axios.get(`${process.env.REACT_APP_BASE_URL}/user/check_nickname`, {
                     params: { nickname },
                 });
 
@@ -413,7 +413,7 @@ const SignUp = () => {
             }
 
             try {
-                await axiosInstance.post('/user/signup', {
+                await axios.post(`${process.env.REACT_APP_BASE_URL}/user/signup`, {
                     email,
                     password,
                     nickname,

@@ -21,8 +21,7 @@ function App() {
                         <Route path='/signup' element={<SignUp />} />
                         <Route path='/mypage' element={<PrivateRouter element={<MyPage />} />} />
 
-                        {/* <Route path='/mypage' element={<PrivateRouter element={<Mypage />} />} />
-                            <Route
+                        {/* <Route
                                 path='/product/manage'
                                 element={<PrivateRouter element={<ProductCreate />} requiredRole='ADMIN' />}
                             /> */}

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
-import axiosInstance from '../../configs/axios-config';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import AuthContext from '../../contexts/UserContext';
 import kakaoLogo from '../../assets/logos/kakao_logo.png';
@@ -17,7 +17,13 @@ const LoginModal = ({ open, onClose }) => {
     // 로그인
     const handleLogin = async () => {
         try {
-            await axiosInstance.post('/user/login', { email, password });
+            await axios.post(
+                `${process.env.REACT_APP_BASE_URL}/user/login`,
+                { email, password },
+                {
+                    withCredentials: true, // 쿠키를 전달받기 위한 설정
+                },
+            );
 
             onLogin();
             setEmail('');
