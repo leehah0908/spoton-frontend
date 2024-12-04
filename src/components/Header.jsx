@@ -68,7 +68,7 @@ const Header = () => {
                                     },
                                 }}
                                 component={Link}
-                                to='/member/list'
+                                to='/game'
                             >
                                 경기 일정
                             </Button>
@@ -84,7 +84,7 @@ const Header = () => {
                                     },
                                 }}
                                 component={Link}
-                                to='/member/list'
+                                to='/community'
                             >
                                 커뮤니티
                             </Button>
@@ -100,7 +100,7 @@ const Header = () => {
                                     },
                                 }}
                                 component={Link}
-                                to='/member/list'
+                                to='/share'
                             >
                                 나눔
                             </Button>

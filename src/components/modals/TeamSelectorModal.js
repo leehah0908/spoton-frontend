@@ -81,7 +81,7 @@ const TeamSelectorModal = ({ open, onClose, onSelectTeam, selectedTeam }) => {
 
                 {/* 리그 선택 */}
                 {selectedSport && (
-                    <Box display='flex' gap={1} mb={2} sx={{ mb: 5 }}>
+                    <Box display='flex' gap={1} sx={{ mb: 5 }}>
                         {sportsData[selectedSport].leagues
                             .filter((league) => league !== 'ALL')
                             .map((league) => (

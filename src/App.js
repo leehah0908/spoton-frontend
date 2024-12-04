@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import Home from './components/pages/Home';
 import SignUp from './components/pages/SignUp';
 import MyPage from './components/pages/MyPage';
+import Game from './components/pages/Game';
+import Community from './components/pages/Community';
 import { ThemeProvider } from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
@@ -20,6 +22,8 @@ function App() {
                         <Route path='/' element={<Home />} />
                         <Route path='/signup' element={<SignUp />} />
                         <Route path='/mypage' element={<PrivateRouter element={<MyPage />} />} />
+                        <Route path='/game' element={<Game />} />
+                        <Route path='/community' element={<Community />} />
 
                         {/* <Route
                                 path='/product/manage'
