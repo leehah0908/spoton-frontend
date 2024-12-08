@@ -2,6 +2,7 @@ export const sportsData = {
     baseball: {
         leagues: ['ALL', 'KBO', 'MLB'],
         teams: {
+            ALL: [],
             KBO: ['ALL', 'LG', 'KT', 'SSG', 'NC', '두산', 'KIA', '롯데', '삼성', '한화', '키움'],
             MLB: [
                 'ALL',
@@ -42,8 +43,8 @@ export const sportsData = {
     soccer: {
         leagues: ['ALL', 'K-League', 'Premier League'],
         teams: {
+            ALL: [],
             'K-League': ['ALL', '울산', '포항', '광주', '전북', '인천', '대구', '서울', '대전', '제주', '강원', '수원FC', '김천'],
-
             'Premier League': [
                 'ALL',
                 '맨시티',
@@ -73,6 +74,7 @@ export const sportsData = {
     basketball: {
         leagues: ['ALL', 'KBL', 'NBA'],
         teams: {
+            ALL: [],
             KBL: [
                 'ALL',
                 '원주 DB',
@@ -87,7 +89,6 @@ export const sportsData = {
                 '서울 삼성',
                 '상무',
             ],
-
             NBA: [
                 'ALL',
                 '보스턴',
@@ -127,6 +128,7 @@ export const sportsData = {
     volleyball: {
         leagues: ['ALL', 'V - League 남자부', 'V - League 여자부'],
         teams: {
+            ALL: [],
             'V - League 남자부': [
                 'ALL',
                 '대한항공',
@@ -154,7 +156,9 @@ export const sportsData = {
     esports: {
         leagues: ['ALL', 'LCK'],
         teams: {
+            ALL: [],
             LCK: [
+                'ALL',
                 '젠지',
                 'T1',
                 '한화생명e스포츠',
