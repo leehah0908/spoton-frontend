@@ -68,6 +68,10 @@ const SignUp = () => {
         setMyTeam(team);
     };
 
+    useEffect(() => {
+        sessionStorage.removeItem('gameState');
+    }, []);
+
     // 회원가입 요청보내기 전에 모든값에 대해서 유효성 검사 진행
     useEffect(() => {
         let tempErrors = { nickname: '', email: '', password: '', checkPassword: '' };

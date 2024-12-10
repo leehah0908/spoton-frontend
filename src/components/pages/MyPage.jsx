@@ -36,6 +36,8 @@ const MyPage = () => {
     const [openTeamModal, setOpenTeamModal] = useState(false);
 
     useEffect(() => {
+        sessionStorage.removeItem('gameState');
+
         const loadData = async () => {
             try {
                 const res = await axiosInstance.get('/user/my_info');

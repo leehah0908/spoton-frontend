@@ -5,6 +5,7 @@ import Home from './components/pages/Home';
 import SignUp from './components/pages/SignUp';
 import MyPage from './components/pages/MyPage';
 import Game from './components/pages/Game';
+import GameDetail from './components/pages/GameDetail';
 import Community from './components/pages/Community';
 import { ThemeProvider } from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/UserContext';
@@ -23,6 +24,7 @@ function App() {
                         <Route path='/signup' element={<SignUp />} />
                         <Route path='/mypage' element={<PrivateRouter element={<MyPage />} />} />
                         <Route path='/game' element={<Game />} />
+                        <Route path='/gameDetail/:id' element={<GameDetail />} />
                         <Route path='/community' element={<Community />} />
 
                         {/* <Route

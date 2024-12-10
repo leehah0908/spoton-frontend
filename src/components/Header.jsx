@@ -104,21 +104,6 @@ const Header = () => {
                             >
                                 나눔
                             </Button>
-                            <Button
-                                sx={{
-                                    color: '#0c0f0a',
-                                    fontSize: '1.2rem',
-                                    fontWeight: '500',
-                                    top: '3px',
-                                    '&:hover': {
-                                        color: '#0d41e1',
-                                    },
-                                }}
-                                component={Link}
-                                to='/product/manage'
-                            >
-                                상품관리
-                            </Button>
                         </Grid>
 
                         <Grid

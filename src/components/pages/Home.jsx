@@ -1,7 +1,11 @@
 import { Container, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Home = () => {
+    useEffect(() => {
+        sessionStorage.removeItem('gameState');
+    }, []);
+
     return (
         <Container>
             <Typography variant='h1' align='center' gutterBottom>

@@ -2,11 +2,22 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Box, IconButton, Typography, Button, Container } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { CalendarMonth as CalendarIcon } from '@mui/icons-material';
+import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import koLocale from 'date-fns/locale/ko';
 
-const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMonth, selectedDay, setSelectedDay }) => {
+const DateList = ({ gameList, selectedYear, selectedMonth, setSelectedYear, setSelectedMonth, selectedDay, setSelectedDay }) => {
     const scrollRef = useRef(null);
 
     const [allDays, setAllDays] = useState([]);
+    const [openPicker, setOpenPicker] = useState(false);
+
+    const handleDateChange = (date) => {
+        setSelectedYear(date.getFullYear());
+        setSelectedMonth(date.getMonth());
+        setOpenPicker(false);
+    };
 
     // selectedDay가 바뀔 때 버튼 스크롤 중앙으로 이동
     useEffect(() => {
@@ -56,10 +67,15 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
         });
     };
 
+    // 해당 날짜에 경기가 있는지 확인하는 함수
+    const hasGamesOnDate = (day) => {
+        return Object.values(gameList).some((game) => new Date(game.gameStartTime).getDate() === day);
+    };
+
     return (
         <Container maxWidth='md'>
             {/* 연도, 월 선택 */}
-            <Box display='flex' alignItems='center' justifyContent='center' gap={3} sx={{ borderBottom: '1px solid #e0e0e0' }}>
+            <Box display='flex' alignItems='center' justifyContent='center' gap={2} sx={{ position: 'relative' }}>
                 <IconButton onClick={handlePreviousMonth}>
                     <ArrowBackIosIcon />
                 </IconButton>
@@ -71,12 +87,57 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
                 <IconButton onClick={handleNextMonth}>
                     <ArrowForwardIosIcon />
                 </IconButton>
+
+                <IconButton onClick={() => setOpenPicker(!openPicker)} sx={{ pl: 0, color: 'black' }}>
+                    <CalendarIcon />
+                </IconButton>
+
+                {/* 달력 팝업 */}
+                {openPicker && (
+                    <LocalizationProvider dateAdapter={AdapterDateFns} locale={koLocale}>
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                zIndex: 1000,
+                                top: '100%',
+                                rleft: '50%',
+                                mt: 1,
+                            }}
+                        >
+                            <StaticDatePicker
+                                displayStaticWrapperAs='desktop'
+                                openTo='month'
+                                views={['year', 'month']}
+                                value={new Date(selectedYear, selectedMonth)}
+                                onChange={handleDateChange}
+                                minDate={new Date(2008, 0, 1)}
+                                maxDate={new Date(2025, 11, 31)}
+                                sx={{
+                                    border: '1px solid',
+                                    height: '280px',
+                                    borderColor: '#E2E3EB',
+                                    borderRadius: 2,
+                                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+                                    '.MuiPickersMonth-monthButton': {
+                                        color: 'black',
+                                        borderRadius: '10px',
+                                    },
+                                    '.MuiPickersMonth-monthButton.Mui-selected': {
+                                        backgroundColor: '#0d41e1',
+                                        color: 'white',
+                                    },
+                                }}
+                            />
+                        </Box>
+                    </LocalizationProvider>
+                )}
             </Box>
 
             {/* 일 선택 */}
             <Box
                 ref={scrollRef}
                 sx={{
+                    borderTop: '1px solid #e0e0e0',
                     display: 'flex',
                     overflowX: 'auto',
                     scrollSnapType: 'x mandatory',
@@ -85,7 +146,18 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
                     mb: 1,
                 }}
             >
-                <IconButton onClick={() => setSelectedDay((prev) => Math.max(prev - 1, 1))} disabled={selectedDay <= 1}>
+                <IconButton
+                    onClick={() => {
+                        const preDay = allDays
+                            .slice()
+                            .reverse()
+                            .find((day) => day < selectedDay && hasGamesOnDate(day));
+                        if (preDay) {
+                            setSelectedDay(preDay);
+                        }
+                    }}
+                    disabled={!allDays.some((day) => day < selectedDay && hasGamesOnDate(day))}
+                >
                     <ArrowBackIosIcon />
                 </IconButton>
 
@@ -95,6 +167,7 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
                             key={day}
                             data-day={day}
                             variant={selectedDay === day ? 'contained' : 'outlined'}
+                            disabled={!hasGamesOnDate(day)}
                             onClick={() => setSelectedDay(day)}
                             sx={{
                                 border: 'none',
@@ -106,6 +179,9 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
                                 color: selectedDay === day ? 'white' : 'black',
                                 fontSize: '15px',
                                 scrollSnapAlign: 'center',
+                                '&.Mui-disabled': {
+                                    border: 'none',
+                                },
                             }}
                         >
                             {day}
@@ -114,8 +190,13 @@ const DateList = ({ selectedYear, selectedMonth, setSelectedYear, setSelectedMon
                 </Box>
 
                 <IconButton
-                    onClick={() => setSelectedDay((prev) => Math.min(prev + 1, allDays.length))}
-                    disabled={selectedDay >= allDays[allDays.length - 1]}
+                    onClick={() => {
+                        const nextDay = allDays.find((day) => day > selectedDay && hasGamesOnDate(day));
+                        if (nextDay) {
+                            setSelectedDay(nextDay);
+                        }
+                    }}
+                    disabled={!allDays.some((day) => day > selectedDay && hasGamesOnDate(day))}
                 >
                     <ArrowForwardIosIcon />
                 </IconButton>
