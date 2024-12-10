@@ -136,7 +136,7 @@ const Game = () => {
         } else {
             await Swal.fire({
                 width: '20rem',
-                text: '로그인 후 이용할 수 있습니다.',
+                html: '마이팀 기능은<br>로그인 후 이용할 수 있습니다.',
                 confirmButtonText: '확인',
                 confirmButtonColor: '#0d41e1',
                 customClass: {
