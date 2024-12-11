@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import AuthContext from '../../contexts/UserContext';
 import Swal from 'sweetalert2';
+import axiosInstance from '../../configs/axios-config';
 
 const Game = () => {
     const navigate = useNavigate();
@@ -107,9 +108,7 @@ const Game = () => {
         // 마이팀 불러오기
         if (isLoggedIn) {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/game/myteam`, {
-                    withCredentials: true,
-                });
+                const res = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/game/myteam`);
 
                 const filteredData = Object.entries(res.data.result)
                     .filter(([key, value]) => key !== 'mtId' && value !== null)
