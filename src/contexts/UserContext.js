@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
     onLogout: () => {},
     userRole: '',
     isInit: false,
+    userEmail: '',
 });
 
 // provider
@@ -15,6 +16,7 @@ export const AuthContextProvider = (props) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userAuth, setUserAuth] = useState('');
     const [userProfile, setUserProfile] = useState('');
+    const [userEmail, setUserEmail] = useState('');
     const [isInit, setIsInit] = useState(false);
 
     // 첫 렌더링시 쿠키를 백으로 보내서 로그인이 유효한지 확인
@@ -25,6 +27,7 @@ export const AuthContextProvider = (props) => {
 
                 setUserAuth(res.data.result.auth);
                 setUserProfile(res.data.result.profile);
+                setUserEmail(res.data.result.email);
                 setIsLoggedIn(true);
                 setIsInit(true);
             } catch (e) {
@@ -95,6 +98,7 @@ export const AuthContextProvider = (props) => {
 
         setUserAuth('');
         setUserProfile('');
+        setUserEmail('');
         setIsLoggedIn(false);
     };
 
@@ -107,6 +111,7 @@ export const AuthContextProvider = (props) => {
                 onLogin: loginHandler,
                 onLogout: logoutHandler,
                 isInit,
+                userEmail,
             }}
         >
             {props.children}

@@ -23,7 +23,7 @@ const Game = () => {
     const [selectedTeam, setSelectedTeam] = useState('');
 
     const [myTeamData, setMyTeamData] = useState({});
-    const [gameList, setGameList] = useState({});
+    const [gameList, setGameList] = useState([]);
     const selectedFullDate = new Date(selectedYear, selectedMonth, selectedDay);
 
     // 상태 복원: 페이지가 로드될 때 실행
@@ -53,8 +53,9 @@ const Game = () => {
 
     // 년, 월이 바뀔 때마다 데이터 요청
     useEffect(() => {
-        // 마이팀일 때
-        if (selectedSport === 'MYTEAM') {
+        if (!selectedLeague || !selectedSport) {
+            setGameList([]);
+        } else if (selectedSport === 'MYTEAM') {
             const params = {
                 sports: selectedSport,
                 league: selectedLeague,
@@ -62,7 +63,6 @@ const Game = () => {
                 month: selectedMonth + 1,
                 team: selectedTeam,
             };
-
             const loadData = async () => {
                 try {
                     const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/game/list`, { params });
@@ -150,6 +150,7 @@ const Game = () => {
 
     return (
         <Container maxWidth='lg'>
+            {selectedSport} : {selectedLeague} : {selectedTeam}
             <Box sx={{ mt: 3 }}>
                 <Typography variant='h4' sx={{ color: '#0d41e1', mb: 5, mt: 5 }}>
                     경기 일정
