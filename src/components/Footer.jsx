@@ -1,13 +1,25 @@
-import { Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 
 const Footer = () => {
     return (
-        <Container style={{ padding: '20px 0', textAlign: 'center' }}>
-            <Typography variant='body2' color='textSecondary'>
-                © 2024 MyApp, All Rights Reserved.
-            </Typography>
-        </Container>
+        <Box
+            component='footer'
+            sx={{
+                backgroundColor: 'white',
+                color: '#fff',
+                py: 4,
+            }}
+        >
+            <Container maxWidth='lg'>
+                {/* 푸터 하단 섹션 */}
+                <Box textAlign='center'>
+                    <Typography variant='body2' color='gray'>
+                        © 2024 SpotOn. All Rights Reserved.
+                    </Typography>
+                </Box>
+            </Container>
+        </Box>
     );
 };
 

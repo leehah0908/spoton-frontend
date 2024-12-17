@@ -150,7 +150,6 @@ const Game = () => {
 
     return (
         <Container maxWidth='lg'>
-            {selectedSport} : {selectedLeague} : {selectedTeam}
             <Box sx={{ mt: 3 }}>
                 <Typography variant='h4' sx={{ color: '#0d41e1', mb: 5, mt: 5 }}>
                     경기 일정
@@ -303,15 +302,7 @@ const Game = () => {
                                                 {value.awayTeamName}
                                             </Typography>
                                             <Avatar
-                                                src={(() => {
-                                                    try {
-                                                        return require(
-                                                            `../../assets/leagueLogo/${selectedSport}/${value.awayTeamName}.png`,
-                                                        );
-                                                    } catch {
-                                                        return value.awayTeamName;
-                                                    }
-                                                })()}
+                                                src={`leagueLogo/${selectedSport}/${value.awayTeamName}.png`}
                                                 alt={value.awayTeamName}
                                                 sx={{ width: 30, height: 30 }}
                                             />
@@ -346,15 +337,7 @@ const Game = () => {
                                         {/* Home Team */}
                                         <Box display='flex' alignItems='center' sx={{ ml: 2 }}>
                                             <Avatar
-                                                src={(() => {
-                                                    try {
-                                                        return require(
-                                                            `../../assets/leagueLogo/${selectedSport}/${value.homeTeamName}.png`,
-                                                        );
-                                                    } catch {
-                                                        return value.homeTeamName;
-                                                    }
-                                                })()}
+                                                src={`leagueLogo/${selectedSport}/${value.homeTeamName}.png`}
                                                 alt={value.homeTeamName}
                                                 sx={{ width: 30, height: 30, mr: 1 }}
                                             />
@@ -380,15 +363,7 @@ const Game = () => {
                                     {/* 리그 */}
                                     <Box display='flex' flexDirection='row' alignItems='center' sx={{ ml: 'auto' }}>
                                         <Avatar
-                                            src={(() => {
-                                                try {
-                                                    return require(
-                                                        `../../assets/leagueLogo/${selectedSport}/${value.leagueName}.png`,
-                                                    );
-                                                } catch {
-                                                    return value.awayTeamName;
-                                                }
-                                            })()}
+                                            src={`leagueLogo/${selectedSport}/${value.leagueName}.png`}
                                             alt={value.awayTeamName}
                                             sx={{ width: 30, height: 30 }}
                                         />
@@ -411,7 +386,7 @@ const Game = () => {
                             variant='h5'
                             sx={{ fontSize: 20, fontWeight: '500', color: 'white', letterSpacing: '0.05em' }}
                         >
-                            경기가 없습니다.
+                            해당 날짜에 경기가 없습니다.
                         </Typography>
                     </Box>
                 )}

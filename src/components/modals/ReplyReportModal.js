@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, B
 import Swal from 'sweetalert2';
 import axiosInstance from '../../configs/axios-config';
 
-const ReportModal = ({ open, onClose, boardId }) => {
+const ReplyReportModal = ({ open, onClose, replyId }) => {
     const [reportContent, setReportContent] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -32,8 +32,8 @@ const ReportModal = ({ open, onClose, boardId }) => {
         setLoading(true);
 
         try {
-            await axiosInstance.post('/board/report', {
-                boardId,
+            await axiosInstance.post('/reply/report', {
+                replyId,
                 reportContent,
             });
 
@@ -88,6 +88,7 @@ const ReportModal = ({ open, onClose, boardId }) => {
 
             <DialogContent>
                 <Box component='form' sx={{ mt: 2 }}>
+                    {replyId}
                     <TextField
                         autoFocus
                         fullWidth
@@ -115,4 +116,4 @@ const ReportModal = ({ open, onClose, boardId }) => {
     );
 };
 
-export default ReportModal;
+export default ReplyReportModal;

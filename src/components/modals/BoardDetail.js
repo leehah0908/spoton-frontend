@@ -20,18 +20,24 @@ import axios from 'axios';
 import AuthContext from '../../contexts/UserContext';
 import { MdDeleteForever } from 'react-icons/md';
 import Swal from 'sweetalert2';
-import ReportModal from './ReportModal';
+import BoardReportModal from './BoardReportModal';
+import ReplyReportModal from './ReplyReportModal';
 
 const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, selecedBoardData, setBoardList }) => {
     const { isLoggedIn, userEmail } = useContext(AuthContext);
     const commentInputRef = useRef(null);
+
+    const [replyList, setReplyList] = useState([]);
+    const [reply, setReply] = useState('');
+    const [clickReplyId, setClickReplyId] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedSubject, setEditedSubject] = useState('');
     const [editedContent, setEditedContent] = useState('');
     const [editedSports, setEditedSports] = useState('');
 
-    const [reportOpen, setReportOpen] = useState(false);
+    const [boardReportOpen, setBoardReportOpen] = useState(false);
+    const [replyReportOpen, setReplyReportOpen] = useState(false);
 
     useEffect(() => {
         if (open === true) {
@@ -39,6 +45,21 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
             setEditedSubject('');
             setEditedContent('');
             setEditedSports('');
+
+            const loadReply = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                        params: {
+                            boardId: selecedBoardData.boardId,
+                        },
+                    });
+
+                    setReplyList(res.data.result.content);
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            loadReply();
         }
     }, [open]);
 
@@ -51,7 +72,28 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
     };
 
     // 게시물 좋아요
-    const handelLike = async () => {
+    const handleLike = async () => {
+        if (!isLoggedIn) {
+            await Swal.fire({
+                width: '20rem',
+                text: '좋아요는 로그인 후 이용가능힙니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
         try {
             // 좋아요 누르기 및 취소
             await axiosInstance.post(
@@ -240,6 +282,280 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
         setDetatilModalOpen(false);
     };
 
+    // 댓글 생성
+    const saveReply = async () => {
+        if (!isLoggedIn) {
+            await Swal.fire({
+                width: '20rem',
+                text: '댓글 작성은 로그인 후 이용가능힙니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
+        if (!reply.trim()) {
+            await Swal.fire({
+                width: '20rem',
+                text: '내용을 작성해주세요.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
+        // 생성 요청
+        try {
+            await axiosInstance.post('/reply/create', {
+                boardId: selecedBoardData.boardId,
+                content: reply,
+            });
+
+            setReply('');
+
+            // 최신 댓글 반영
+            const loadReply = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                        params: {
+                            boardId: selecedBoardData.boardId,
+                        },
+                    });
+
+                    setReplyList(res.data.result.content);
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+
+            // 댓글수 반영
+            const loadData = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
+                        params: {
+                            searchType: '',
+                            searchKeyword: '',
+                        },
+                    });
+
+                    const resData = res.data.result.content;
+                    setBoardList(resData);
+
+                    setSelecedBoardData(resData.find((board) => board.boardId === selecedBoardData.boardId));
+                } catch (e) {
+                    console.log('게시물 데이터 로드 실패');
+                }
+            };
+
+            loadReply();
+            loadData();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 댓글 삭제
+    const handleReplyDelete = async (id) => {
+        const result = await Swal.fire({
+            width: '20rem',
+            html: '정말로 삭제하시겠습니까?',
+            showCancelButton: true,
+            confirmButtonText: '네',
+            cancelButtonText: '아니요',
+            confirmButtonColor: '#AAAAAA',
+            cancelButtonColor: '#0d41e1',
+            customClass: {
+                popup: 'custom-swal-popup',
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-container');
+                if (popup) {
+                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                    document.body.appendChild(popup);
+                    popup.style.zIndex = '2001';
+                }
+            },
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
+        try {
+            const res = await axiosInstance.post(
+                '/reply/delete',
+                {},
+                {
+                    params: {
+                        replyId: id,
+                        boardId: selecedBoardData.boardId,
+                    },
+                },
+            );
+
+            await Swal.fire({
+                width: '20rem',
+                text: res.data.statusMessage,
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+
+            // 최신 댓글 반영
+            const loadReply = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                        params: {
+                            boardId: selecedBoardData.boardId,
+                        },
+                    });
+
+                    setReplyList(res.data.result.content);
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+
+            // 댓글수 반영
+            const loadData = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
+                        params: {
+                            searchType: '',
+                            searchKeyword: '',
+                        },
+                    });
+
+                    const resData = res.data.result.content;
+                    setBoardList(resData);
+
+                    setSelecedBoardData(resData.find((board) => board.boardId === selecedBoardData.boardId));
+                } catch (e) {
+                    console.log('게시물 데이터 로드 실패');
+                }
+            };
+
+            loadReply();
+            loadData();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 댓글 좋아요
+    const handleReplyLike = async (id) => {
+        if (!isLoggedIn) {
+            await Swal.fire({
+                width: '20rem',
+                text: '좋아요는 로그인 후 이용가능힙니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
+        try {
+            // 좋아요 누르기 및 취소
+            await axiosInstance.post(
+                '/reply/like',
+                {},
+                {
+                    params: {
+                        replyId: id,
+                    },
+                },
+            );
+
+            // 좋아요 반영
+            const loadReply = async () => {
+                try {
+                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                        params: {
+                            boardId: selecedBoardData.boardId,
+                        },
+                    });
+
+                    setReplyList(res.data.result.content);
+                } catch (e) {
+                    console.log(e);
+                }
+            };
+            loadReply();
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 댓글 신고
+    const clickReplyReport = async () => {
+        if (!isLoggedIn) {
+            await Swal.fire({
+                width: '20rem',
+                text: '신고는 로그인 후 이용가능힙니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
+        setClickReplyId(reply.replyId);
+        setReplyReportOpen(true);
+    };
+
     return (
         <Box maxWidth='xs'>
             {selecedBoardData && (
@@ -275,7 +591,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                 }}
                             >
                                 <img
-                                    src={selecedBoardData.profile || 'https://via.placeholder.com/40'}
+                                    src={selecedBoardData.profile || 'default_profile.png'}
                                     alt='프로필 사진'
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
@@ -335,7 +651,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                     {userEmail !== selecedBoardData.email && (
                                         <>
                                             <IconButton
-                                                onClick={() => setReportOpen(true)}
+                                                onClick={() => setBoardReportOpen(true)}
                                                 style={{ height: 30, padding: '0', marginRight: 10, marginTop: 3 }}
                                                 sx={{
                                                     '&:hover': { backgroundColor: 'transparent' },
@@ -346,9 +662,9 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                                 <Typography sx={{ color: 'red' }}>신고하기</Typography>
                                             </IconButton>
 
-                                            <ReportModal
-                                                open={reportOpen}
-                                                onClose={() => setReportOpen(false)}
+                                            <BoardReportModal
+                                                open={boardReportOpen}
+                                                onClose={() => setBoardReportOpen(false)}
                                                 boardId={selecedBoardData.boardId}
                                             />
                                         </>
@@ -442,11 +758,11 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                         <Divider sx={{ my: 1 }} />
 
                         {/* 좋아요, 댓글*/}
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Button
                                 startIcon={<FaThumbsUp color='red' />}
                                 variant='text'
-                                onClick={handelLike}
+                                onClick={handleLike}
                                 sx={{ textTransform: 'none', color: 'red' }}
                             >
                                 {selecedBoardData.likeCount} 좋아요
@@ -462,32 +778,125 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                             </Button>
                         </Box>
 
-                        <Divider sx={{ my: 1 }} />
-
                         {/* 댓글 입력 */}
                         <Box
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                backgroundColor: '#f9f9f9',
                                 borderRadius: 2,
-                                p: 1,
                             }}
                         >
                             <TextField
                                 fullWidth
                                 placeholder='댓글을 입력하세요.'
+                                value={reply}
                                 variant='outlined'
                                 inputRef={commentInputRef}
                                 size='small'
+                                onChange={(e) => setReply(e.target.value)}
                                 sx={{
+                                    mb: 1,
                                     '& .MuiOutlinedInput-root': {
                                         borderRadius: 2,
                                     },
                                 }}
                             />
-                            <IconButton sx={{ color: 'red', ml: 1 }}>✈️</IconButton>
+                            <IconButton sx={{ color: 'red', ml: 1 }} onClick={saveReply}>
+                                ✈️
+                            </IconButton>
                         </Box>
+
+                        {/* 댓글 리스트 */}
+                        {replyList.map((reply) => (
+                            <Box
+                                key={reply.replyId}
+                                display='flex'
+                                flexDirection='column'
+                                sx={{
+                                    mb: 1,
+                                    pl: 1,
+                                    backgroundColor: '#f9f9f9',
+                                    borderRadius: 1,
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                }}
+                            >
+                                <Box display='flex' flexDirection='row' alignItems='center' sx={{ pt: 1 }}>
+                                    {/* 프로필 사진 */}
+                                    <img
+                                        src={reply.profile || 'default_profile.png'}
+                                        alt='프로필 사진'
+                                        style={{ width: 30, height: 30, objectFit: 'cover', borderRadius: 5 }}
+                                    />
+
+                                    {/* 닉네임 */}
+                                    <Typography sx={{ color: 'black', ml: 1, fontSize: 15 }}>{reply.nickname}</Typography>
+
+                                    <Box
+                                        gap={2}
+                                        sx={{
+                                            alignItems: 'center',
+                                            display: 'flex',
+                                            marginLeft: 'auto',
+                                            bgcolor: '#d4d5d6',
+                                            borderRadius: 1,
+                                            p: 1,
+                                        }}
+                                    >
+                                        {/* 좋아요 */}
+                                        <FaThumbsUp
+                                            size={15}
+                                            color='gray'
+                                            onClick={() => handleReplyLike(reply.replyId)}
+                                            style={{ cursor: 'pointer' }}
+                                        />
+                                        {userEmail !== reply.email ? (
+                                            <>
+                                                {/* 신고하기 */}
+                                                <PiSirenFill
+                                                    color='gray'
+                                                    onClick={clickReplyReport}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+
+                                                <ReplyReportModal
+                                                    open={replyReportOpen}
+                                                    onClose={() => setReplyReportOpen(false)}
+                                                    replyId={clickReplyId}
+                                                />
+                                            </>
+                                        ) : (
+                                            // 삭제
+                                            <MdDeleteForever
+                                                size={18}
+                                                color='gray'
+                                                onClick={() => handleReplyDelete(reply.replyId)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                        )}
+                                    </Box>
+                                </Box>
+
+                                <Box>
+                                    {/* 내용 */}
+                                    <Typography sx={{ my: 0.5, color: '#737272' }}>{reply.content}</Typography>
+
+                                    <Box display='flex' flexDirection='row' sx={{ alignItems: 'center', gap: 1, mb: 0.5 }}>
+                                        {/* 작성 날짜 */}
+                                        <Typography sx={{ color: '#666', fontSize: 12 }}>
+                                            {reply.createTime.substr(0, 10).replace(/-/g, '/')} {reply.createTime.substr(11, 5)}
+                                        </Typography>
+
+                                        {reply.likeCount !== 0 && (
+                                            <>
+                                                <FaThumbsUp size={12} color='red' />
+
+                                                <Typography sx={{ color: '#666', fontSize: 12 }}>{reply.likeCount}</Typography>
+                                            </>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Box>
+                        ))}
                     </DialogContent>
                 </Dialog>
             )}

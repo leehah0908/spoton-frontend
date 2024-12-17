@@ -3,9 +3,6 @@ import { TextField, Button, Dialog, DialogTitle, DialogContent, Box } from '@mui
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import AuthContext from '../../contexts/UserContext';
-import kakaoLogo from '../../assets/logos/kakao_logo.png';
-import naverLogo from '../../assets/logos/naver_logo.png';
-import googleLogo from '../../assets/logos/google_logo.png';
 
 const LoginModal = ({ open, onClose }) => {
     const { onLogin } = useContext(AuthContext);
@@ -168,7 +165,9 @@ const LoginModal = ({ open, onClose }) => {
                         variant='outlined'
                         color='primary'
                         onClick={handleKakaoLogin}
-                        startIcon={<img src={kakaoLogo} alt='Kakao Logo' style={{ width: 25, height: 25, marginRight: 3 }} />}
+                        startIcon={
+                            <img src='logos/kakao_logo.png' alt='Kakao Logo' style={{ width: 25, height: 25, marginRight: 3 }} />
+                        }
                         sx={{
                             backgroundColor: '#FEE500',
                             color: '#000000',
@@ -185,7 +184,9 @@ const LoginModal = ({ open, onClose }) => {
                         variant='outlined'
                         color='primary'
                         onClick={handleNaverLogin}
-                        startIcon={<img src={naverLogo} alt='Naver Logo' style={{ width: 25, height: 25, marginRight: 3 }} />}
+                        startIcon={
+                            <img src='logos/naver_logo.png' alt='Naver Logo' style={{ width: 25, height: 25, marginRight: 3 }} />
+                        }
                         sx={{
                             backgroundColor: '#03C75A',
                             color: '#FFFFFF',
@@ -201,7 +202,13 @@ const LoginModal = ({ open, onClose }) => {
                         variant='outlined'
                         color='primary'
                         onClick={handleGoogleLogin}
-                        startIcon={<img src={googleLogo} alt='Naver Logo' style={{ width: 25, height: 25, marginRight: 15 }} />}
+                        startIcon={
+                            <img
+                                src='logos/google_logo.png'
+                                alt='Google Logo'
+                                style={{ width: 25, height: 25, marginRight: 15 }}
+                            />
+                        }
                         sx={{
                             backgroundColor: '#FFFFFF',
                             color: '#000000',
