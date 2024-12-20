@@ -36,6 +36,21 @@ const Community = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [selectedSports, setSelectedSports] = useState('ALL');
 
+    const [hotBoard, setHotBoard] = useState([]);
+
+    useEffect(() => {
+        // 추천 수 많은 게시물 요청
+        const hotBoardDataLoad = async () => {
+            try {
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/hot_board`);
+                setHotBoard(res.data.result);
+            } catch (e) {
+                console.log('추천 많은 게시물 데이터 로드 실패');
+            }
+        };
+        hotBoardDataLoad();
+    }, []);
+
     useEffect(() => {
         sessionStorage.removeItem('gameState');
 
@@ -157,15 +172,81 @@ const Community = () => {
     };
 
     return (
-        <Container maxWidth='md'>
-            <Typography variant='h4' sx={{ color: '#0d41e1', mb: 5, mt: 5 }}>
-                커뮤니티
+        <Container maxWidth='lg'>
+            <Box>
+                <Typography variant='h6' sx={{ fontWeight: '500', display: 'flex', mt: 3, pl: 2, mb: 0.5 }}>
+                    🔥 실시간 인기글
+                </Typography>
+            </Box>
+
+            <Box
+                gap={2}
+                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#EFF1F8', p: 2, borderRadius: 2 }}
+            >
+                {hotBoard.length > 0 &&
+                    hotBoard.map((value) => (
+                        <Box
+                            key={value.boardId}
+                            onClick={() => handleOpenDetailModal(value.boardId)}
+                            textAlign='center'
+                            sx={{
+                                cursor: 'pointer',
+                                minWidth: '21%',
+                                borderRadius: 2,
+                                pt: 1,
+                                bgcolor: 'white',
+                                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                            }}
+                        >
+                            <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
+                                {value.sports}
+                            </Typography>
+
+                            <Box sx={{ p: 1, height: '90px' }}>
+                                <Box sx={{}}>
+                                    <Typography sx={{ fontSize: 15 }}>
+                                        {value.subject.length < 16 ? value.subject : value.subject.substr(0, 15) + '...'}
+                                    </Typography>
+                                </Box>
+
+                                <Box sx={{ mt: 1 }}>
+                                    <Typography sx={{ fontSize: 12, color: '#666' }}>
+                                        {value.content.length < 21 ? value.content : value.content.substr(0, 20) + '...'}
+                                    </Typography>
+                                </Box>
+
+                                <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 2, pt: 2 }}>
+                                    {/* 작성자 */}
+                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
+                                        <IoPersonSharp size={13} style={{ marginRight: '4px' }} color='black' />
+                                        {value.nickname}
+                                    </Typography>
+
+                                    {/* 작성 날짜 */}
+                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
+                                        <MdDateRange size={13} style={{ marginRight: '3px' }} color='black' />
+                                        {value.createTime.substr(5, 5).replace('-', '/')}
+                                    </Typography>
+
+                                    {/* 좋아요 수 */}
+                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex' }}>
+                                        <FaThumbsUp size={13} style={{ marginRight: '4px' }} color='red' />
+                                        {value.likeCount}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    ))}
+            </Box>
+
+            <Typography sx={{ fontSize: 23, mt: 5 }}>
+                스포츠 팬들을 위한 <span style={{ color: '#0d41e1' }}>자유로운 이야기</span> 공간!
             </Typography>
 
             {/* 검색창 */}
             <Box
                 sx={{
-                    width: '80%',
+                    width: '60%',
                     m: 'auto',
                     display: 'flex',
                     alignItems: 'center',
@@ -174,6 +255,7 @@ const Community = () => {
                     p: 0.5,
                     mb: 2,
                     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    mt: 2,
                 }}
             >
                 <Select
@@ -237,67 +319,67 @@ const Community = () => {
                 }}
             >
                 <Button
-                    variant={selectedSports === 'ALL' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('ALL')}
                     sx={{
-                        backgroundColor: selectedSports === 'ALL' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'ALL' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'ALL' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'ALL' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'ALL' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     전체
                 </Button>
                 <Button
-                    variant={selectedSports === 'baseball' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('baseball')}
                     sx={{
-                        backgroundColor: selectedSports === 'baseball' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'baseball' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'baseball' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'baseball' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'baseball' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     야구
                 </Button>
                 <Button
-                    variant={selectedSports === 'soccer' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('soccer')}
                     sx={{
-                        backgroundColor: selectedSports === 'soccer' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'soccer' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'soccer' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'soccer' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'soccer' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     축구
                 </Button>
                 <Button
-                    variant={selectedSports === 'basketball' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('basketball')}
                     sx={{
-                        backgroundColor: selectedSports === 'basketball' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'basketball' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'basketball' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'basketball' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'basketball' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     농구
                 </Button>
                 <Button
-                    variant={selectedSports === 'volleyball' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('volleyball')}
                     sx={{
-                        backgroundColor: selectedSports === 'volleyball' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'volleyball' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'volleyball' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'volleyball' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'volleyball' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     배구
                 </Button>
                 <Button
-                    variant={selectedSports === 'esports' ? 'contained' : 'outlined'}
+                    variant='outlined'
                     onClick={() => setSelectedSports('esports')}
                     sx={{
-                        backgroundColor: selectedSports === 'esports' ? '#0d41e1' : 'white',
-                        color: selectedSports === 'esports' ? '#fff' : '#0d41e1',
-                        borderColor: '#0d41e1',
+                        backgroundColor: selectedSports === 'esports' ? 'rgba(13, 66, 225, 0.1)' : 'white',
+                        color: selectedSports === 'esports' ? '#0d41e1' : '#7D7D7D',
+                        borderColor: selectedSports === 'esports' ? '#0d41e1' : '#D4D4D8',
                     }}
                 >
                     E-스포츠
@@ -305,7 +387,7 @@ const Community = () => {
             </Box>
 
             {/* 글쓰기 버튼 */}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 1 }}>
+            <Box sx={{ width: '89%', display: 'flex', justifyContent: 'flex-end', my: 1 }}>
                 <Button
                     variant='contained'
                     color='primary'
@@ -322,7 +404,7 @@ const Community = () => {
             </Box>
 
             {/* 게시물 리스트 */}
-            <List>
+            <Box gap={1} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '80%', m: 'auto' }}>
                 {filteredBoards &&
                     filteredBoards.map((board) => (
                         <Box
@@ -331,41 +413,31 @@ const Community = () => {
                             display='flex'
                             flexDirection='row'
                             sx={{
-                                mb: 1,
+                                width: '49.3%',
+                                height: '115px',
                                 cursor: 'pointer',
-                                backgroundColor: '#f9f9f9',
                                 borderRadius: 2,
-                                justifyContent: 'space-between',
+                                border: 'solid 1px #E5E7EB',
                                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                                 '&:hover': {
                                     backgroundColor: '#f0f0f0',
                                 },
                             }}
                         >
-                            <Box>
+                            <Box sx={{ py: 1, px: 3, width: '100%' }}>
                                 {/* 제목 및 내용 */}
-                                <ListItem sx={{ py: 0 }}>
-                                    <ListItemText
-                                        primary={<Typography sx={{ color: 'black' }}>{board.subject}</Typography>}
-                                        secondary={
-                                            <Typography variant='body2' sx={{ color: '#666' }}>
-                                                {board.content}
-                                            </Typography>
-                                        }
-                                    />
-                                </ListItem>
+                                <Box sx={{ textAlign: 'left' }}>
+                                    <Typography sx={{ color: 'black' }}>
+                                        {board.subject.length < 16 ? board.subject : board.subject.substr(0, 15) + '...'}
+                                    </Typography>
+
+                                    <Typography variant='body2' sx={{ height: '40px', color: '#666', mb: 1.5, mt: 0.3 }}>
+                                        {board.content.length < 51 ? board.content : board.content.substr(0, 50) + '...'}
+                                    </Typography>
+                                </Box>
 
                                 {/* 게시물 정보 */}
-                                <Box
-                                    gap={2}
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        ml: 2,
-                                        mb: 1,
-                                        color: '#999',
-                                    }}
-                                >
+                                <Box gap={2} sx={{ display: 'flex', color: '#999' }}>
                                     {/* 좋아요 수 */}
                                     {board.likeCount !== 0 && (
                                         <Typography variant='caption' sx={{ fontSize: 12, display: 'flex' }}>
@@ -403,14 +475,12 @@ const Community = () => {
                                         {board.viewCount}
                                     </Typography>
                                 </Box>
-
-                                <Divider />
                             </Box>
                         </Box>
                     ))}
 
-                {filteredBoards.length === 0 && <Typography>게시물이 없습니다.</Typography>}
-            </List>
+                <Box sx={{ m: 'auto' }}>{filteredBoards.length === 0 && <Typography>게시물이 없습니다.</Typography>}</Box>
+            </Box>
             <BoardDetail
                 open={detatilModalOpen}
                 onClose={handleCloseDetailModal}

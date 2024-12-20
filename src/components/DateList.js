@@ -94,7 +94,7 @@ const DateList = ({ gameList, selectedYear, selectedMonth, setSelectedYear, setS
                         pl: 0,
                         color: 'black',
                         '&:hover': {
-                            backgroundColor: 'transparent', // 배경색 변경 제거
+                            backgroundColor: 'transparent',
                         },
                     }}
                 >

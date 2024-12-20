@@ -31,8 +31,6 @@ export const AuthContextProvider = (props) => {
                 setIsLoggedIn(true);
                 setIsInit(true);
             } catch (e) {
-                console.log(e);
-                console.log('로그인 안되어있음');
                 setIsInit(true);
             }
         };

@@ -1,14 +1,12 @@
 import { AppBar, Button, Container, Grid, Toolbar, Typography } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import AuthContext from '../contexts/UserContext';
 import LoginModal from './modals/LoginModal';
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { NotificationAdd } from '@mui/icons-material';
 
 const Header = () => {
-    const { isLoggedIn, userAuth, onLogout } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const { isLoggedIn, onLogout } = useContext(AuthContext);
+    const location = useLocation();
 
     const [loginOpen, setLoginOpen] = useState(false);
 
@@ -25,8 +23,8 @@ const Header = () => {
     };
 
     return (
-        <AppBar position='static ' sx={{ backgroundColor: 'transparent' }}>
-            <Toolbar sx={{ height: '80px' }}>
+        <AppBar position='static ' sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
+            <Toolbar sx={{ height: '100%' }}>
                 <Container>
                     <Grid container alignItems='center'>
                         <Grid
@@ -37,18 +35,22 @@ const Header = () => {
                                 justifyContent: 'flex-start',
                             }}
                         >
-                            <Button component={Link} to='/'>
+                            <Button
+                                component={Link}
+                                to='/'
+                                disableRipple
+                                sx={{
+                                    '&:hover': {
+                                        backgroundColor: 'transparent',
+                                    },
+                                }}
+                            >
                                 <Typography
                                     sx={{
                                         color: '#0d41e1',
                                         fontSize: '2.5rem',
                                         fontWeight: 'bold',
                                         textTransform: 'none',
-                                        '&:hover': {
-                                            color: '#002f60',
-                                            backgroundColor: 'transparent',
-                                            boxShadow: 'none',
-                                        },
                                     }}
                                 >
                                     SpotOn
@@ -56,8 +58,9 @@ const Header = () => {
                             </Button>
 
                             <Button
+                                disableRipple
                                 sx={{
-                                    color: '#0c0f0a',
+                                    color: location.pathname === '/game' ? '#0d41e1' : 'black',
                                     fontSize: '1.2rem',
                                     fontWeight: '500',
                                     ml: 3,
@@ -65,6 +68,7 @@ const Header = () => {
                                     top: '3px',
                                     '&:hover': {
                                         color: '#0d41e1',
+                                        backgroundColor: 'transparent',
                                     },
                                 }}
                                 component={Link}
@@ -74,13 +78,15 @@ const Header = () => {
                             </Button>
 
                             <Button
+                                disableRipple
                                 sx={{
-                                    color: '#0c0f0a',
+                                    color: location.pathname === '/community' ? '#0d41e1' : 'black',
                                     fontSize: '1.2rem',
                                     fontWeight: '500',
                                     top: '3px',
                                     '&:hover': {
                                         color: '#0d41e1',
+                                        backgroundColor: 'transparent',
                                     },
                                 }}
                                 component={Link}
@@ -90,13 +96,15 @@ const Header = () => {
                             </Button>
 
                             <Button
+                                disableRipple
                                 sx={{
-                                    color: '#0c0f0a',
+                                    color: location.pathname === '/share' ? '#0d41e1' : 'black',
                                     fontSize: '1.2rem',
                                     fontWeight: '500',
                                     top: '3px',
                                     '&:hover': {
                                         color: '#0d41e1',
+                                        backgroundColor: 'transparent',
                                     },
                                 }}
                                 component={Link}
@@ -117,14 +125,32 @@ const Header = () => {
                             {isLoggedIn ? (
                                 <>
                                     <Button
-                                        sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '3px' }}
+                                        disableRipple
+                                        sx={{
+                                            color: '#0d41e1',
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            top: '3px',
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
                                         component={Link}
                                         to='/mypage'
                                     >
                                         마이페이지
                                     </Button>
                                     <Button
-                                        sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '3px' }}
+                                        disableRipple
+                                        sx={{
+                                            color: '#0d41e1',
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            top: '3px',
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
                                         onClick={handelLogout}
                                     >
                                         로그아웃
@@ -133,14 +159,33 @@ const Header = () => {
                             ) : (
                                 <>
                                     <Button
-                                        sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '2.5px' }}
+                                        disableRipple
+                                        sx={{
+                                            color: '#0d41e1',
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            top: '2.5px',
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
                                         component={Link}
                                         to='/signup'
                                     >
                                         회원가입
                                     </Button>
                                     <Button
-                                        sx={{ color: '#0d41e1', fontSize: '1.2rem', fontWeight: '500', top: '2.5px', ml: 2 }}
+                                        disableRipple
+                                        sx={{
+                                            color: '#0d41e1',
+                                            fontSize: '1.2rem',
+                                            fontWeight: '500',
+                                            top: '2.5px',
+                                            ml: 2,
+                                            '&:hover': {
+                                                backgroundColor: 'transparent',
+                                            },
+                                        }}
                                         onClick={handleLoginClick}
                                     >
                                         로그인
