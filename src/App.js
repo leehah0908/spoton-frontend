@@ -24,7 +24,7 @@ function App() {
                         <Route path='/signup' element={<SignUp />} />
                         <Route path='/mypage' element={<PrivateRouter element={<MyPage />} />} />
                         <Route path='/game' element={<Game />} />
-                        <Route path='/gameDetail/:id/:league' element={<GameDetail />} />
+                        <Route path='/gameDetail/:league/:id' element={<GameDetail />} />
                         <Route path='/community' element={<Community />} />
 
                         {/* <Route

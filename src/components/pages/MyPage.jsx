@@ -18,15 +18,15 @@ const MyPage = () => {
     const [profilePicture, setProfilePicture] = useState('');
 
     const fieldMapping = {
-        NBA: 'nbaTeam',
-        KBO: 'kboTeam',
-        MLB: 'mlbTeam',
-        'K-League': 'kleagueTeam',
-        'Premier League': 'eplTeam',
-        KBL: 'kblTeam',
-        'V - League 남자부': 'kovoTeam',
-        'V - League 여자부': 'wkovwTeam',
-        LCK: 'lckTeam',
+        NBA: 'nba',
+        KBO: 'kbo',
+        MLB: 'mlb',
+        'K-League': 'kleague',
+        'Premier League': 'epl',
+        KBL: 'kbl',
+        'V - League 남자부': 'kovo',
+        'V - League 여자부': 'wkovo',
+        LCK: 'lck',
     };
 
     const $fileTag = useRef();

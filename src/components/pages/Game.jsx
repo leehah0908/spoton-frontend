@@ -1,4 +1,4 @@
-import { Button, Box, Typography, Container, Avatar, Divider } from '@mui/material';
+import { Button, Box, Typography, Container, Avatar } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import { sportsData } from '../../assets/sportsData';
 import DateList from '../DateList';
@@ -116,7 +116,10 @@ const Game = () => {
     };
 
     // 선택된 날짜의 경기 데이터 필터링
-    const selectGameData = Object.values(gameList).filter((game) => new Date(game.gameStartTime).getDate() === selectedDay);
+    const selectGameData = Object.values(gameList).filter((game) => new Date(game.gameDate).getDate() === selectedDay);
+
+    // 리그 분리
+    // const leagueMap = Array.from(new Set(selectGameData.map((game) => game.league)));
 
     const myTeamClick = async () => {
         // 마이팀 불러오기
@@ -124,21 +127,14 @@ const Game = () => {
             try {
                 const res = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/game/myteam`);
 
-                const filteredData = Object.entries(res.data.result)
-                    .filter(([key, value]) => key !== 'mtId' && value !== null)
-                    .reduce((acc, [key, value]) => {
-                        acc[key] = value;
-                        return acc;
-                    }, {});
+                setMyTeamData(res.data.result);
 
-                setMyTeamData(filteredData);
-
-                const league = Object.keys(filteredData)[0];
-                const team = Object.values(filteredData)[0];
+                const initialLeague = Object.keys(res.data.result)[0];
+                const initialTeam = Object.values(res.data.result)[0];
 
                 setSelectedSport('MYTEAM');
-                setSelectedLeague(league);
-                setSelectedTeam(team);
+                setSelectedLeague(initialLeague);
+                setSelectedTeam(initialTeam);
 
                 setSelectedYear(today.getFullYear());
                 setSelectedMonth(today.getMonth());
@@ -164,11 +160,13 @@ const Game = () => {
 
     return (
         <Container maxWidth='lg'>
+            {/* 오늘의 경기 */}
             <Box>
                 <Typography variant='h6' sx={{ fontWeight: '500', display: 'flex', mt: 3, pl: 2, mb: 0.5 }}>
                     📢 오늘의 경기
                 </Typography>
             </Box>
+
             <Box
                 gap={2}
                 sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#EFF1F8', p: 2, borderRadius: 2 }}
@@ -176,7 +174,7 @@ const Game = () => {
                 {todayGames.length > 0 ? (
                     todayGames.map((value) => (
                         <Box
-                            onClick={() => navigate(`/gameDetail/${value.gameId}/${value.leagueName}`)}
+                            onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
                             textAlign='center'
                             sx={{
                                 cursor: 'pointer',
@@ -188,35 +186,35 @@ const Game = () => {
                             }}
                         >
                             <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
-                                {value.leagueName.toUpperCase()}
+                                {value.league.toUpperCase()}
                             </Typography>
 
                             <Box display='flex' flexDirection='row' sx={{ p: 1, height: '100px' }}>
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`leagueLogo/${value.leagueName}/${value.awayTeamName}.png`}
-                                        alt={value.awayTeamName}
+                                        src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                        alt={value.awayTeam}
                                         width='50'
                                         height='50'
                                     />
-                                    <Typography sx={{ fontSize: 15 }}>{value.awayTeamName}</Typography>
+                                    <Typography sx={{ fontSize: 15 }}>{value.awayTeam}</Typography>
                                 </Box>
 
                                 <Box display='flex' flexDirection='column' sx={{ minWidth: '20%', alignSelf: 'center' }}>
                                     <Typography sx={{ fontSize: 20 }}>vs</Typography>
                                     <Typography sx={{ fontSize: 12, color: '#0d41e1' }}>
-                                        {format(new Date(value.gameStartTime), 'HH:mm')}
+                                        {format(new Date(value.gameDate), 'HH:mm')}
                                     </Typography>
                                 </Box>
 
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`leagueLogo/${value.leagueName}/${value.homeTeamName}.png`}
-                                        alt={value.homeTeamName}
+                                        src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                        alt={value.homeTeam}
                                         width='50'
                                         height='50'
                                     />
-                                    <Typography sx={{ fontSize: 15 }}>{value.homeTeamName}</Typography>
+                                    <Typography sx={{ fontSize: 15 }}>{value.homeTeam}</Typography>
                                 </Box>
                             </Box>
                         </Box>
@@ -340,7 +338,7 @@ const Game = () => {
                         {selectGameData.map((value) => (
                             <Box
                                 key={value.gameId}
-                                onClick={() => navigate(`/gameDetail/${value.gameId}/${value.leagueName}`)}
+                                onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
                                 display='flex'
                                 alignItems='center'
                                 sx={{ border: '1px solid #ddd', borderRadius: 1, p: 2, cursor: 'pointer' }}
@@ -348,10 +346,10 @@ const Game = () => {
                                 {/* 경기 시간 및 경기장 */}
                                 <Box display='flex' flexDirection='row' alignItems='center'>
                                     <Typography variant='h6' sx={{ fontWeight: '500', fontSize: 15 }}>
-                                        {format(new Date(value.gameStartTime), 'HH:mm')}
+                                        {format(new Date(value.gameDate), 'HH:mm')}
                                     </Typography>
                                     <Typography variant='body2' sx={{ color: 'gray', textAlign: 'left', ml: 1, fontSize: 13 }}>
-                                        {value.stadium}
+                                        {JSON.parse(value.gameBoard).stadium}
                                     </Typography>
                                 </Box>
 
@@ -367,14 +365,14 @@ const Game = () => {
                                         transform: 'translateX(-50%)',
                                     }}
                                 >
-                                    {/* Away Team */}
+                                    {/* 원정팀 */}
                                     <Box display='flex' alignItems='center' sx={{ mr: 2 }}>
                                         <Typography variant='body1' sx={{ mr: 1 }}>
-                                            {value.awayTeamName}
+                                            {value.awayTeam}
                                         </Typography>
                                         <Avatar
-                                            src={`leagueLogo/${value.leagueName}/${value.awayTeamName}.png`}
-                                            alt={value.awayTeamName}
+                                            src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                            alt={value.awayTeam}
                                             sx={{ width: 30, height: 30 }}
                                         />
                                     </Box>
@@ -386,7 +384,7 @@ const Game = () => {
                                         alignItems='center'
                                         sx={{ fontWeight: '500', fontSize: 15 }}
                                     >
-                                        {value.awayTeamScore}
+                                        {JSON.parse(value.gameBoard).awayTeamScore}
                                         <Typography
                                             variant='h6'
                                             sx={{
@@ -396,23 +394,23 @@ const Game = () => {
                                         >
                                             {value.cancel
                                                 ? '취소'
-                                                : value.statusCode === 'RESULT'
+                                                : JSON.parse(value.gameBoard).statusCode === 'RESULT'
                                                   ? '경기종료'
-                                                  : value.statusCode === 'BEFORE'
+                                                  : JSON.parse(value.gameBoard).statusCode === 'BEFORE'
                                                     ? '경기 전'
-                                                    : value.statusInfo}
+                                                    : JSON.parse(value.gameBoard).statusInfo}
                                         </Typography>
-                                        {value.homeTeamScore}
+                                        {JSON.parse(value.gameBoard).homeTeamScore}
                                     </Typography>
 
-                                    {/* Home Team */}
+                                    {/* 홈팀 */}
                                     <Box display='flex' alignItems='center' sx={{ ml: 2 }}>
                                         <Avatar
-                                            src={`leagueLogo/${value.leagueName}/${value.homeTeamName}.png`}
-                                            alt={value.homeTeamName}
+                                            src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                            alt={value.homeTeam}
                                             sx={{ width: 30, height: 30, mr: 1 }}
                                         />
-                                        <Typography variant='body1'>{value.homeTeamName}</Typography>
+                                        <Typography variant='body1'>{value.homeTeam}</Typography>
 
                                         {selectedSport !== 'esports' && (
                                             <Typography
@@ -434,12 +432,12 @@ const Game = () => {
                                 {/* 리그 */}
                                 <Box display='flex' flexDirection='row' alignItems='center' sx={{ ml: 'auto' }}>
                                     <Avatar
-                                        src={`leagueLogo/${value.leagueName}/${value.leagueName}.png`}
-                                        alt={value.awayTeamName}
+                                        src={`/leagueLogo/${value.league}/${value.league}.png`}
+                                        alt={value.awayTeam}
                                         sx={{ width: 30, height: 30 }}
                                     />
                                     <Typography variant='body2' sx={{ color: 'black', textAlign: 'left', ml: 1, fontSize: 15 }}>
-                                        {value.leagueName}
+                                        {value.league}
                                     </Typography>
                                 </Box>
                             </Box>

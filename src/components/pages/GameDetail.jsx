@@ -32,13 +32,25 @@ const GameDetail = () => {
                 const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/game/detail`, {
                     params: {
                         gameId: id,
-                        league,
                     },
                 });
 
-                setGameDetail(res.data.result);
+                const boardToJson = JSON.parse(res.data.result.gameBoard);
+                const detailToJson = JSON.parse(res.data.result.gameDetail);
+
+                const mergedData = { ...res.data.result, boardToJson, detailToJson };
+                delete mergedData.gameBoard;
+                delete mergedData.gameDetail;
+                console.log(mergedData);
+
+                setGameDetail(mergedData);
             } catch (e) {
-                console.log('게임 데이터 로드 실패');
+                console.log(e);
+                if (e.response.data.statusMessage === '경기 정보를 찾을 수 없습니다.') {
+                    setGameDetail({});
+                } else {
+                    console.log('게임 데이터 로드 실패');
+                }
             }
         };
         loadData();

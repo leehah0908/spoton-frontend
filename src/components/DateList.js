@@ -69,7 +69,7 @@ const DateList = ({ gameList, selectedYear, selectedMonth, setSelectedYear, setS
 
     // 해당 날짜에 경기가 있는지 확인하는 함수
     const hasGamesOnDate = (day) => {
-        return Object.values(gameList).some((game) => new Date(game.gameStartTime).getDate() === day);
+        return Object.values(gameList).some((game) => new Date(game.gameDate).getDate() === day);
     };
 
     return (

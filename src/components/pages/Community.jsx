@@ -1,18 +1,4 @@
-import {
-    Box,
-    Button,
-    Container,
-    Divider,
-    IconButton,
-    InputAdornment,
-    List,
-    ListItem,
-    ListItemText,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, Container, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import BoardDetail from '../modals/BoardDetail';
