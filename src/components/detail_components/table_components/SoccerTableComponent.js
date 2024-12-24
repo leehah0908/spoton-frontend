@@ -14,7 +14,6 @@ const SoccerTableComponent = ({ gameDetail, league }) => {
         { field: 'assists', headerName: '도움', flex: 1 },
         { field: 'shots', headerName: '슈팅', flex: 1 },
         { field: 'shotsOnGoal', headerName: '유효슈팅', flex: 1 },
-        { field: 'playerPoint', headerName: '평균평점', flex: 1 },
         { field: 'foulsCommitted', headerName: '파울', flex: 1 },
         { field: 'booking', headerName: '경고', flex: 1 },
         { field: 'dismissal', headerName: '퇴장', flex: 1 },
@@ -36,31 +35,29 @@ const SoccerTableComponent = ({ gameDetail, league }) => {
                     assists: value.assists,
                     shots: value.shots,
                     shotsOnGoal: value.shotsOnGoal,
-                    playerPoint: value.playerPoint,
                     foulsCommitted: value.foulsCommitted,
                     booking: value.booking,
                     dismissal: value.dismissal,
                     workTime: value.workTime,
                 })),
             );
-        } else if (league === 'mlb') {
-            const loadData = selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayBatter : gameDetail.detailToJson.homeBatter;
+        } else if (league === 'epl') {
+            const loadData =
+                selectedTeam === 'AWAY' ? gameDetail.detailToJson.away_players : gameDetail.detailToJson.home_players;
 
             setRows(
                 loadData.map((value, index) => ({
                     id: index,
-                    batOrder: value.seqno === 1 ? value.batOrder : '⇋',
-                    name: value.name,
-                    pos: value.posName,
-                    ab: value.ab,
-                    run: value.run,
-                    hit: value.hit,
-                    rbi: value.rbi,
-                    hr: value.hr,
-                    bb: value.bb,
-                    kk: value.so,
-                    sb: value.sb,
-                    hra: value.hra,
+                    playerName: value.playerName,
+                    position: value.position,
+                    goals: value.goals,
+                    assists: value.assists,
+                    shots: value.shots,
+                    shotsOnGoal: value.shotsOnTarget,
+                    foulsCommitted: value.fouls,
+                    booking: value.yellowCards,
+                    dismissal: value.redCards,
+                    workTime: value.minsPlayed,
                 })),
             );
         }

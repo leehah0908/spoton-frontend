@@ -3,9 +3,14 @@ import React, { useEffect, useState } from 'react';
 
 const SoccerGraphComponent = ({ gameDetail, league }) => {
     const [graphData, setGraphData] = useState([]);
+    const [awayBallPos, setAwayBallPos] = useState('');
+    const [homeBallPos, setHomeBallPos] = useState('');
 
     useEffect(() => {
         if (league === 'kleague') {
+            setAwayBallPos(gameDetail.detailToJson.away.ballPossession);
+            setHomeBallPos(gameDetail.detailToJson.home.ballPossession);
+
             setGraphData([
                 {
                     label: '슈팅',
@@ -54,36 +59,54 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
                 },
             ]);
         } else if (league === 'epl') {
+            setAwayBallPos(gameDetail.detailToJson.away_teams[0].possession);
+            setHomeBallPos(gameDetail.detailToJson.home_teams[0].possession);
+
             setGraphData([
                 {
-                    label: '실책',
-                    home: gameDetail.detailToJson.homeKeyStat.err,
-                    away: gameDetail.detailToJson.awayKeyStat.err,
+                    label: '슈팅',
+                    home: gameDetail.detailToJson.home_teams[0].shots,
+                    away: gameDetail.detailToJson.away_teams[0].shots,
                 },
                 {
-                    label: '병살',
-                    home: gameDetail.detailToJson.homeKeyStat.gd,
-                    away: gameDetail.detailToJson.awayKeyStat.gd,
+                    label: '유효슈팅',
+                    home: gameDetail.detailToJson.home_teams[0].shotsOnTarget,
+                    away: gameDetail.detailToJson.away_teams[0].shotsOnTarget,
                 },
                 {
-                    label: '안타',
-                    home: gameDetail.detailToJson.homeKeyStat.hit,
-                    away: gameDetail.detailToJson.awayKeyStat.hit,
+                    label: '코너킥',
+                    home: gameDetail.detailToJson.home_teams[0].cornerKicks,
+                    away: gameDetail.detailToJson.away_teams[0].cornerKicks,
                 },
                 {
-                    label: '홈런',
-                    home: gameDetail.detailToJson.homeKeyStat.hr,
-                    away: gameDetail.detailToJson.awayKeyStat.hr,
+                    label: '골킥',
+                    home: gameDetail.detailToJson.home_teams[0].goalKicks,
+                    away: gameDetail.detailToJson.away_teams[0].goalKicks,
                 },
                 {
-                    label: '삼진',
-                    home: gameDetail.detailToJson.homeKeyStat.so,
-                    away: gameDetail.detailToJson.awayKeyStat.so,
+                    label: '오프사이드',
+                    home: gameDetail.detailToJson.home_teams[0].offsides,
+                    away: gameDetail.detailToJson.away_teams[0].offsides,
                 },
                 {
-                    label: '도루',
-                    home: gameDetail.detailToJson.homeKeyStat.sb,
-                    away: gameDetail.detailToJson.awayKeyStat.sb,
+                    label: '파울',
+                    home: gameDetail.detailToJson.home_teams[0].fouls,
+                    away: gameDetail.detailToJson.away_teams[0].fouls,
+                },
+                {
+                    label: '경고',
+                    home: gameDetail.detailToJson.home_teams[0].yellowCards,
+                    away: gameDetail.detailToJson.away_teams[0].yellowCards,
+                },
+                {
+                    label: '퇴장',
+                    home: gameDetail.detailToJson.home_teams[0].redCards,
+                    away: gameDetail.detailToJson.away_teams[0].redCards,
+                },
+                {
+                    label: '선수교체',
+                    home: gameDetail.detailToJson.home_teams[0].substitutions,
+                    away: gameDetail.detailToJson.away_teams[0].substitutions,
                 },
             ]);
         }
@@ -125,7 +148,7 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
                     >
                         <LinearProgress
                             variant='determinate'
-                            value={gameDetail.detailToJson.away.ballPossession}
+                            value={awayBallPos}
                             sx={{
                                 width: '100%',
                                 height: 8,
@@ -136,7 +159,7 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
                             }}
                         />
 
-                        <Typography sx={{ width: 10, mr: 1 }}>{gameDetail.detailToJson.away.ballPossession}</Typography>
+                        <Typography sx={{ width: 10, mr: 1 }}>{awayBallPos}</Typography>
                     </Box>
 
                     {/* 명칭 */}
@@ -148,7 +171,7 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
                     <Box sx={{ width: '42%', display: 'flex', alignItems: 'center', pl: 1 }}>
                         <LinearProgress
                             variant='determinate'
-                            value={gameDetail.detailToJson.home.ballPossession}
+                            value={homeBallPos}
                             sx={{
                                 width: '100%',
                                 height: 8,
@@ -157,7 +180,7 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
                             }}
                         />
 
-                        <Typography sx={{ width: 10, ml: 1 }}>{gameDetail.detailToJson.home.ballPossession}</Typography>
+                        <Typography sx={{ width: 10, ml: 1 }}>{homeBallPos}</Typography>
                     </Box>
                 </Box>
 
