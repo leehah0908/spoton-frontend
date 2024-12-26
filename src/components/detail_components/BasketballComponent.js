@@ -16,6 +16,9 @@ import BasketballGraphComponent from './graph_components/BasketballGraphComponen
 import BasketballTableComponent from './table_components/BasketballTableComponent';
 
 const BasketballComponent = ({ gameDetail }) => {
+    const now = new Date();
+    const gameDate = new Date(gameDetail.gameDate);
+
     if (!gameDetail || !gameDetail.boardToJson) {
         return (
             <Container maxWidth='md' sx={{ bgcolor: 'pink' }}>
@@ -214,13 +217,27 @@ const BasketballComponent = ({ gameDetail }) => {
                     </Box>
                 )}
 
-                <Divider sx={{ mt: 5, mb: 2 }} />
-                <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
-                <BasketballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
+                {gameDate < now ? (
+                    <>
+                        <Divider sx={{ mt: 5, mb: 2 }} />
+                        <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
+                        <BasketballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
 
-                <Divider sx={{ mt: 5, mb: 2 }} />
-                <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
-                <BasketballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
+                        <Divider sx={{ mt: 5, mb: 2 }} />
+                        <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
+                        <BasketballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
+                    </>
+                ) : (
+                    <Box
+                        display='flex'
+                        flexDirection='column'
+                        alignItems='center'
+                        justifyContent='center'
+                        sx={{ width: '83%', textAlign: 'center', backgroundColor: '#f5f5f5', py: 2, mt: 5, mx: 'auto' }}
+                    >
+                        <Typography sx={{ fontSize: 25 }}>상세 기록은 경기 시작 후에 확인이 가능합니다.</Typography>
+                    </Box>
+                )}
             </Box>
         </Container>
     );

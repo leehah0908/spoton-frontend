@@ -178,7 +178,7 @@ const Game = () => {
                             textAlign='center'
                             sx={{
                                 cursor: 'pointer',
-                                minWidth: '21%',
+                                minWidth: '23%',
                                 borderRadius: 2,
                                 pt: 1,
                                 bgcolor: 'white',
