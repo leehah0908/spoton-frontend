@@ -28,7 +28,6 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
     const commentInputRef = useRef(null);
 
     const [boardData, setBoardData] = useState(null);
-
     const [replyList, setReplyList] = useState([]);
     const [reply, setReply] = useState('');
 
@@ -47,13 +46,11 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
             setEditedContent('');
             setEditedSports('');
 
-            console.log('소페이지');
             loadBoardDataAndReplies();
         }
     }, [open]);
 
     const loadBoardDataAndReplies = async () => {
-        console.log('소 재요청 페이지');
         try {
             const [detailRes, replyRes] = await Promise.all([
                 axios.get(`${process.env.REACT_APP_BASE_URL}/board/detail`, {
@@ -241,8 +238,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
             });
 
             setIsEditing(false);
-            onClose();
-            loadBoardData();
+            loadBoardDataAndReplies();
         } catch (e) {
             console.error(e);
         }

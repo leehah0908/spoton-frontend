@@ -108,7 +108,7 @@ const Header = () => {
                                     },
                                 }}
                                 component={Link}
-                                to='/share'
+                                to='/nanum'
                             >
                                 나눔
                             </Button>

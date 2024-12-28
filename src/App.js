@@ -7,6 +7,7 @@ import MyPage from './components/pages/MyPage';
 import Game from './components/pages/Game';
 import GameDetail from './components/pages/GameDetail';
 import Community from './components/pages/Community';
+import Nanum from './components/pages/Nanum';
 import { ThemeProvider } from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
@@ -26,6 +27,7 @@ function App() {
                         <Route path='/game' element={<Game />} />
                         <Route path='/gameDetail/:league/:id' element={<GameDetail />} />
                         <Route path='/community' element={<Community />} />
+                        <Route path='/nanum' element={<Nanum />} />
 
                         {/* <Route
                                 path='/product/manage'

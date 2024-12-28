@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Box } from '@mui/material';
 import Swal from 'sweetalert2';
 import axiosInstance from '../../configs/axios-config';
@@ -6,6 +6,12 @@ import axiosInstance from '../../configs/axios-config';
 const BoardReportModal = ({ open, onClose, boardId }) => {
     const [reportContent, setReportContent] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (open) {
+            setReportContent('');
+        }
+    }, [open]);
 
     const handleReportSubmit = async () => {
         if (!reportContent.trim()) {

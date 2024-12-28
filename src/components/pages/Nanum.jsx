@@ -1,64 +1,64 @@
 import { Box, Button, Container, IconButton, InputAdornment, MenuItem, Select, TextField, Typography } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
-import BoardDetail from '../modals/BoardDetail';
-import { IoChatbubbleOutline, IoPersonSharp, IoEyeSharp } from 'react-icons/io5';
-import { FaThumbsUp } from 'react-icons/fa';
-import { MdDateRange } from 'react-icons/md';
+import { FaGift } from 'react-icons/fa6';
 import AuthContext from '../../contexts/UserContext';
-import WriteBoardModal from '../modals/WriteBoardModal';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import WriteNanumModal from '../modals/WriteNanumModal';
+import NanumDetail from '../modals/NanumDetail';
 
-const Community = () => {
+const Nanum = () => {
     const { isLoggedIn } = useContext(AuthContext);
 
-    const [boardList, setBoardList] = useState([]);
-    const [detatilModalOpen, setDetatilModalOpen] = useState(false);
+    const [nanumList, setNanumList] = useState([]);
+    const [detailModalOpen, setDetailModalOpen] = useState(false);
     const [WriteModalOpen, setWriteModalOpen] = useState(false);
 
-    const [selectedId, setSelectedId] = useState('');
+    const [selectedId, setSelectedId] = useState(null);
     const [searchType, setSearchType] = useState('subject');
     const [searchKeyword, setSearchKeyword] = useState('');
     const [selectedSports, setSelectedSports] = useState('ALL');
 
-    const [hotBoard, setHotBoard] = useState([]);
+    const [lastestNanum, setLastestNanum] = useState([]);
 
-    // 첫 렌더링 게시물 로드
     useEffect(() => {
-        loadBoardData();
+        console.log('왕 페이지');
+        sessionStorage.removeItem('gameState');
+
+        reRequestNanumData();
     }, []);
 
-    // 게시물 최신화 함수
-    const loadBoardData = async () => {
+    // 나눔글 최신화 함수
+    const reRequestNanumData = async () => {
+        console.log('왕 메서드');
         try {
-            const [hotBoardRes, boardListRes] = await Promise.all([
-                axios.get(`${process.env.REACT_APP_BASE_URL}/board/hot_board`),
-                axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
+            const [nanumListRes, lastestNanumRes] = await Promise.all([
+                axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/list`, {
                     params: {
                         searchType: '',
                         searchKeyword: '',
                     },
                 }),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/lastest_nanum`),
             ]);
 
-            setHotBoard(hotBoardRes.data.result);
-            setBoardList(boardListRes.data.result.content);
+            setNanumList(nanumListRes.data.result.content);
+            setLastestNanum(lastestNanumRes.data.result);
         } catch (e) {
-            console.log('게시물 데이터 로드 실패', e);
+            console.log('데이터 로드 실패', e);
         }
     };
 
-    // 상세보기 모달 열기
+    // 나눔글 상세정보 요청
     const handleOpenDetailModal = async (id) => {
-        // 조회수 증가
         try {
             await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/board/view`,
+                `${process.env.REACT_APP_BASE_URL}/nanum/view`,
                 {},
                 {
                     params: {
-                        boardId: id,
+                        nanumId: id,
                     },
                 },
             );
@@ -67,20 +67,17 @@ const Community = () => {
         }
 
         setSelectedId(id);
-        setDetatilModalOpen(true);
+        setDetailModalOpen(true);
     };
 
-    // 상세보기 모달 닫기
     const handleCloseDetailModal = () => {
-        setDetatilModalOpen(false);
+        setDetailModalOpen(false);
     };
 
-    // 글쓰기 모달 열기
     const handleOpenWriteModal = () => {
         setWriteModalOpen(true);
     };
 
-    // 글쓰기 모달 열기
     const handleCloseWriteModal = async () => {
         const result = await Swal.fire({
             width: '20rem',
@@ -110,17 +107,18 @@ const Community = () => {
         setWriteModalOpen(false);
     };
 
+    // 검색 로직
     const handleSearch = () => {
         const loadData = async () => {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/list`, {
                     params: {
                         searchType,
                         searchKeyword,
                     },
                 });
 
-                setBoardList(res.data.result.content);
+                setNanumList(res.data.result.content);
                 setSearchType('subject');
                 setSearchKeyword('');
             } catch (e) {
@@ -130,7 +128,7 @@ const Community = () => {
         loadData();
     };
 
-    const filteredBoards = selectedSports === 'ALL' ? boardList : boardList.filter((board) => board.sports === selectedSports);
+    const filteredNanums = selectedSports === 'ALL' ? nanumList : nanumList.filter((nanum) => nanum.sports === selectedSports);
 
     const requireLogin = () => {
         Swal.fire({
@@ -156,84 +154,81 @@ const Community = () => {
         <Container maxWidth='lg'>
             <Box>
                 <Typography variant='h6' sx={{ fontWeight: '500', display: 'flex', mt: 3, pl: 2, mb: 0.5 }}>
-                    🔥 실시간 인기글
+                    🎁 최신 나눔글
                 </Typography>
             </Box>
 
             <Box
                 gap={2}
-                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#EFF1F8', p: 2, borderRadius: 2 }}
+                sx={{
+                    display: 'flex',
+                    overflowX: 'auto',
+                    flexWrap: 'nowrap',
+                    bgcolor: '#EFF1F8',
+                    p: 2,
+                    borderRadius: 2,
+                }}
             >
-                {hotBoard.length > 0 &&
-                    hotBoard.map((value) => (
+                {lastestNanum.length > 0 &&
+                    lastestNanum.map((value) => (
                         <Box
-                            key={value.boardId}
-                            onClick={() => handleOpenDetailModal(value.boardId)}
+                            key={value.nanumId}
+                            onClick={() => handleOpenDetailModal(value.nanumId)}
                             textAlign='center'
                             display='flex'
                             flexDirection='column'
                             sx={{
                                 cursor: 'pointer',
-                                minWidth: '21%',
-                                maxWidth: '21%',
+                                minWidth: '15%',
+                                maxWidth: '15%',
                                 borderRadius: 2,
-                                pt: 1,
                                 bgcolor: 'white',
                                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                                p: 2,
                             }}
                         >
-                            <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
-                                {value.sports}
-                            </Typography>
+                            <Box
+                                alignContent='center'
+                                sx={{
+                                    mb: 1,
+                                    width: '100%',
+                                    position: 'relative',
+                                    paddingBottom: '100%',
+                                }}
+                            >
+                                <img
+                                    src={`/nanum_img/${value.imagePath[0]}`}
+                                    width='100%'
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: 10,
+                                    }}
+                                />
+                            </Box>
 
-                            <Box sx={{ px: 2 }}>
+                            <Box justifyItems='left' sx={{ width: '100%' }}>
                                 <Typography
                                     sx={{
-                                        fontSize: 15,
+                                        textAlign: 'left',
                                         width: '95%',
                                         whiteSpace: 'nowrap',
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',
-                                        ml: 1,
-                                        mt: 1,
                                     }}
                                 >
                                     {value.subject}
                                 </Typography>
 
                                 <Box sx={{ mt: 1 }}>
-                                    <Typography
-                                        sx={{
-                                            fontSize: 12,
-                                            color: '#666',
-                                            width: '95%',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            ml: 1,
-                                        }}
-                                    >
-                                        {value.content}
-                                    </Typography>
-                                </Box>
-
-                                <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 2, py: 2 }}>
-                                    {/* 작성자 */}
-                                    <Typography sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <IoPersonSharp size={13} style={{ marginRight: '4px' }} color='black' />
-                                        {value.nickname}
-                                    </Typography>
-
-                                    {/* 작성 날짜 */}
-                                    <Typography sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <MdDateRange size={13} style={{ marginRight: '3px' }} color='black' />
-                                        {value.createTime.substr(5, 5).replace('-', '/')}
-                                    </Typography>
-
-                                    {/* 좋아요 수 */}
-                                    <Typography sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <FaThumbsUp size={13} style={{ marginRight: '4px' }} color='red' />
-                                        {value.likeCount}
+                                    {/* 제공 수량 */}
+                                    <Typography sx={{ fontSize: 13 }}>
+                                        <FaGift size={12} style={{ marginRight: '4px' }} color='red' />
+                                        {value.quantity}개 나눔 ({value.giveMethod === 'direct' ? '직접 수령' : '택배 수령'})
                                     </Typography>
                                 </Box>
                             </Box>
@@ -242,7 +237,7 @@ const Community = () => {
             </Box>
 
             <Typography sx={{ fontSize: 23, mt: 5 }}>
-                스포츠 팬들을 위한 <span style={{ color: '#0d41e1' }}>자유로운 이야기</span> 공간!
+                스포츠 팬들이 함께 만드는 <span style={{ color: '#0d41e1' }}>굿즈 나눔</span>의 장소!
             </Typography>
 
             {/* 검색창 */}
@@ -401,126 +396,95 @@ const Community = () => {
                         textTransform: 'none',
                     }}
                 >
-                    글쓰기
+                    나눔하기
                 </Button>
             </Box>
 
-            {/* 게시물 리스트 */}
-            <Box gap={1} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '80%', m: 'auto' }}>
-                {filteredBoards &&
-                    filteredBoards.map((board) => (
+            {/* 나눔글 리스트 */}
+            <Box gap={2} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '80%', m: 'auto' }}>
+                {filteredNanums &&
+                    filteredNanums.map((nanum) => (
                         <Box
-                            key={board.boardId}
-                            onClick={() => handleOpenDetailModal(board.boardId)}
+                            key={nanum.nanumId}
+                            onClick={() => handleOpenDetailModal(nanum.nanumId)}
                             display='flex'
-                            flexDirection='row'
+                            flexDirection='column'
                             sx={{
-                                width: '49.3%',
-                                height: '115px',
+                                width: '23.6%',
                                 cursor: 'pointer',
-                                borderRadius: 2,
-                                border: 'solid 1px #E5E7EB',
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                                 '&:hover': {
                                     backgroundColor: '#f0f0f0',
                                 },
-                                mb: 1.5,
                             }}
                         >
-                            <Box sx={{ py: 1, px: 3, width: '90%' }}>
+                            <Box
+                                alignContent='center'
+                                sx={{
+                                    width: '100%',
+                                    position: 'relative',
+                                    paddingBottom: '100%',
+                                }}
+                            >
+                                <img
+                                    src={`/nanum_img/${nanum.imagePath[0]}`}
+                                    width='100%'
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: 13,
+                                    }}
+                                />
+                            </Box>
+
+                            <Box sx={{ py: 1, px: 1 }}>
                                 {/* 제목 및 내용 */}
-                                <Box sx={{ textAlign: 'left' }}>
-                                    <Typography
-                                        sx={{
-                                            color: 'black',
-                                            width: '100%',
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                        }}
-                                    >
-                                        {board.subject}
-                                    </Typography>
+                                <Typography
+                                    sx={{
+                                        textAlign: 'left',
+                                        color: 'black',
+                                        width: '100%',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                    }}
+                                >
+                                    {nanum.subject}
+                                </Typography>
 
-                                    <Typography
-                                        variant='body2'
-                                        sx={{
-                                            height: '40px',
-                                            color: '#666',
-                                            width: '100%',
-                                            display: '-webkit-box',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            WebkitLineClamp: 2,
-                                            WebkitBoxOrient: 'vertical',
-                                            mb: 1.5,
-                                            mt: 0.5,
-                                        }}
-                                    >
-                                        {board.content.length < 91 ? board.content : board.content.substr(0, 90) + '...'}
-                                    </Typography>
-                                </Box>
-
-                                {/* 게시물 정보 */}
-                                <Box gap={2} sx={{ display: 'flex', color: '#999' }}>
-                                    {/* 좋아요 수 */}
-                                    {board.likeCount !== 0 && (
-                                        <Typography variant='caption' sx={{ fontSize: 12, display: 'flex' }}>
-                                            <FaThumbsUp size={13} style={{ marginRight: '4px' }} color='red' />
-                                            {board.likeCount}
-                                        </Typography>
-                                    )}
-
-                                    {/* 댓글 수 */}
-                                    {board.replyCount !== 0 && (
-                                        <Typography
-                                            variant='caption'
-                                            sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}
-                                        >
-                                            <IoChatbubbleOutline size={13} style={{ marginRight: '3px' }} color='#0d41e1' />
-                                            {board.replyCount}
-                                        </Typography>
-                                    )}
-
-                                    {/* 작성 날짜 */}
-                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <MdDateRange size={13} style={{ marginRight: '3px' }} color='black' />
-                                        {board.createTime.substr(5, 5).replace('-', '/')}
-                                    </Typography>
-
-                                    {/* 작성자 */}
-                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <IoPersonSharp size={13} style={{ marginRight: '4px' }} color='black' />
-                                        {board.nickname}
-                                    </Typography>
-
-                                    {/* 조회수 */}
-                                    <Typography variant='caption' sx={{ fontSize: 12, display: 'flex', alignItems: 'center' }}>
-                                        <IoEyeSharp size={13} style={{ marginRight: '4px' }} color='black' />
-                                        {board.viewCount}
+                                {/* 수량 및 수령 방법 */}
+                                <Box sx={{ textAlign: 'left', mt: 1, mb: 3 }}>
+                                    <Typography sx={{ fontSize: 15, color: '#666' }}>
+                                        <FaGift size={12} style={{ marginRight: '5px' }} color='red' />
+                                        {nanum.quantity}개 나눔 ({nanum.giveMethod === 'direct' ? '직접 수령' : '택배 수령'})
                                     </Typography>
                                 </Box>
                             </Box>
                         </Box>
                     ))}
 
-                <Box sx={{ m: 'auto' }}>{filteredBoards.length === 0 && <Typography>게시물이 없습니다.</Typography>}</Box>
+                <Box sx={{ m: 'auto' }}>{filteredNanums.length === 0 && <Typography>게시물이 없습니다.</Typography>}</Box>
             </Box>
-            <BoardDetail
-                open={detatilModalOpen}
+
+            <NanumDetail
+                open={detailModalOpen}
                 onClose={handleCloseDetailModal}
-                setDetatilModalOpen={setDetatilModalOpen}
-                loadBoardData={loadBoardData}
-                boardId={selectedId}
+                setDetailModalOpen={setDetailModalOpen}
+                reRequestNanumData={reRequestNanumData}
+                nanumId={selectedId}
             />
-            <WriteBoardModal
+
+            <WriteNanumModal
                 open={WriteModalOpen}
                 onClose={handleCloseWriteModal}
                 setWriteModalOpen={setWriteModalOpen}
-                loadBoardData={loadBoardData}
+                reRequestNanumData={reRequestNanumData}
             />
         </Container>
     );
 };
 
-export default Community;
+export default Nanum;

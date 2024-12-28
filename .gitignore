@@ -6,6 +6,7 @@
 .pnp.js
 .env
 /public/leagueLogo
+/public/nanum_img
 
 # testing
 /coverage

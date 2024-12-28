@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, B
 import Swal from 'sweetalert2';
 import axiosInstance from '../../configs/axios-config';
 
-const ReplyReportModal = ({ open, onClose, replyId }) => {
+const NanumReportModal = ({ open, onClose, nanumId }) => {
     const [reportContent, setReportContent] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -38,8 +38,8 @@ const ReplyReportModal = ({ open, onClose, replyId }) => {
         setLoading(true);
 
         try {
-            await axiosInstance.post('/reply/report', {
-                replyId,
+            await axiosInstance.post('/nanum/report', {
+                nanumId,
                 reportContent,
             });
 
@@ -121,4 +121,4 @@ const ReplyReportModal = ({ open, onClose, replyId }) => {
     );
 };
 
-export default ReplyReportModal;
+export default NanumReportModal;
