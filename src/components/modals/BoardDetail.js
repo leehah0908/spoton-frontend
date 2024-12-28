@@ -23,13 +23,14 @@ import Swal from 'sweetalert2';
 import BoardReportModal from './BoardReportModal';
 import ReplyReportModal from './ReplyReportModal';
 
-const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, selecedBoardData, setBoardList }) => {
+const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardData }) => {
     const { isLoggedIn, userEmail } = useContext(AuthContext);
     const commentInputRef = useRef(null);
 
+    const [boardData, setBoardData] = useState(null);
+
     const [replyList, setReplyList] = useState([]);
     const [reply, setReply] = useState('');
-    const [clickReplyId, setClickReplyId] = useState('');
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedSubject, setEditedSubject] = useState('');
@@ -46,29 +47,40 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
             setEditedContent('');
             setEditedSports('');
 
-            const loadReply = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
-                        params: {
-                            boardId: selecedBoardData.boardId,
-                        },
-                    });
-
-                    setReplyList(res.data.result.content);
-                } catch (e) {
-                    console.log(e);
-                }
-            };
-            loadReply();
+            console.log('소페이지');
+            loadBoardDataAndReplies();
         }
     }, [open]);
+
+    const loadBoardDataAndReplies = async () => {
+        console.log('소 재요청 페이지');
+        try {
+            const [detailRes, replyRes] = await Promise.all([
+                axios.get(`${process.env.REACT_APP_BASE_URL}/board/detail`, {
+                    params: {
+                        boardId,
+                    },
+                }),
+                axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                    params: {
+                        boardId,
+                    },
+                }),
+            ]);
+
+            setBoardData(detailRes.data.result);
+            setReplyList(replyRes.data.result.content);
+        } catch (e) {
+            console.log('데이터 로드 실패', e);
+        }
+    };
 
     // 수정 화면 세팅
     const handleEditToggle = () => {
         setIsEditing(true);
-        setEditedSubject(selecedBoardData.subject);
-        setEditedContent(selecedBoardData.content);
-        setEditedSports(selecedBoardData.sports);
+        setEditedSubject(boardData.subject);
+        setEditedContent(boardData.content);
+        setEditedSports(boardData.sports);
     };
 
     // 게시물 좋아요
@@ -101,30 +113,12 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                 {},
                 {
                     params: {
-                        boardId: selecedBoardData.boardId,
+                        boardId: boardData.boardId,
                     },
                 },
             );
 
-            // 좋아요 반영
-            const loadData = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
-                        params: {
-                            searchType: '',
-                            searchKeyword: '',
-                        },
-                    });
-
-                    const resData = res.data.result.content;
-                    setBoardList(resData);
-
-                    setSelecedBoardData(resData.find((board) => board.boardId === selecedBoardData.boardId));
-                } catch (e) {
-                    console.log('게시물 데이터 로드 실패');
-                }
-            };
-            loadData();
+            loadBoardDataAndReplies();
         } catch (e) {
             console.log(e);
         }
@@ -163,7 +157,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                 {},
                 {
                     params: {
-                        boardId: selecedBoardData.boardId,
+                        boardId: boardData.boardId,
                     },
                 },
             );
@@ -187,6 +181,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
             });
 
             setDetatilModalOpen(false);
+            loadBoardData();
         } catch (e) {
             console.log(e);
         }
@@ -221,7 +216,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
 
         try {
             const res = await axiosInstance.patch('/board/modify', {
-                boardId: selecedBoardData.boardId,
+                boardId: boardData.boardId,
                 subject: editedSubject,
                 content: editedContent,
                 sports: editedSports,
@@ -247,6 +242,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
 
             setIsEditing(false);
             onClose();
+            loadBoardData();
         } catch (e) {
             console.error(e);
         }
@@ -329,48 +325,12 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
         // 생성 요청
         try {
             await axiosInstance.post('/reply/create', {
-                boardId: selecedBoardData.boardId,
+                boardId: boardData.boardId,
                 content: reply,
             });
 
             setReply('');
-
-            // 최신 댓글 반영
-            const loadReply = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
-                        params: {
-                            boardId: selecedBoardData.boardId,
-                        },
-                    });
-
-                    setReplyList(res.data.result.content);
-                } catch (e) {
-                    console.log(e);
-                }
-            };
-
-            // 댓글수 반영
-            const loadData = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
-                        params: {
-                            searchType: '',
-                            searchKeyword: '',
-                        },
-                    });
-
-                    const resData = res.data.result.content;
-                    setBoardList(resData);
-
-                    setSelecedBoardData(resData.find((board) => board.boardId === selecedBoardData.boardId));
-                } catch (e) {
-                    console.log('게시물 데이터 로드 실패');
-                }
-            };
-
-            loadReply();
-            loadData();
+            loadBoardDataAndReplies();
         } catch (e) {
             console.log(e);
         }
@@ -410,7 +370,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                 {
                     params: {
                         replyId: id,
-                        boardId: selecedBoardData.boardId,
+                        boardId: boardData.boardId,
                     },
                 },
             );
@@ -433,42 +393,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                 },
             });
 
-            // 최신 댓글 반영
-            const loadReply = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
-                        params: {
-                            boardId: selecedBoardData.boardId,
-                        },
-                    });
-
-                    setReplyList(res.data.result.content);
-                } catch (e) {
-                    console.log(e);
-                }
-            };
-
-            // 댓글수 반영
-            const loadData = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/board/list`, {
-                        params: {
-                            searchType: '',
-                            searchKeyword: '',
-                        },
-                    });
-
-                    const resData = res.data.result.content;
-                    setBoardList(resData);
-
-                    setSelecedBoardData(resData.find((board) => board.boardId === selecedBoardData.boardId));
-                } catch (e) {
-                    console.log('게시물 데이터 로드 실패');
-                }
-            };
-
-            loadReply();
-            loadData();
+            loadBoardDataAndReplies();
         } catch (e) {
             console.log(e);
         }
@@ -509,21 +434,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                 },
             );
 
-            // 좋아요 반영
-            const loadReply = async () => {
-                try {
-                    const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
-                        params: {
-                            boardId: selecedBoardData.boardId,
-                        },
-                    });
-
-                    setReplyList(res.data.result.content);
-                } catch (e) {
-                    console.log(e);
-                }
-            };
-            loadReply();
+            loadBoardDataAndReplies();
         } catch (e) {
             console.log(e);
         }
@@ -551,14 +462,12 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
             });
             return;
         }
-
-        setClickReplyId(reply.replyId);
         setReplyReportOpen(true);
     };
 
     return (
         <Box maxWidth='xs'>
-            {selecedBoardData && (
+            {boardData && (
                 <Dialog open={open} onClose={!isEditing ? onClose : handleCloseUpdateModal} fullWidth maxWidth='sm'>
                     {/* 상단 제목 및 닫기 버튼 */}
                     <DialogTitle
@@ -591,7 +500,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                 }}
                             >
                                 <img
-                                    src={selecedBoardData.profile || 'default_profile.png'}
+                                    src={boardData.profile || 'default_profile.png'}
                                     alt='프로필 사진'
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
@@ -605,20 +514,19 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                             >
                                 {/* 닉네임 */}
                                 <Typography variant='body2' sx={{ color: '#666' }}>
-                                    {selecedBoardData.nickname}
+                                    {boardData.nickname}
                                 </Typography>
 
                                 {/* 작성 날짜 */}
                                 <Typography variant='body2' sx={{ color: '#666', display: 'flex', alignItems: 'center' }}>
-                                    {selecedBoardData.createTime.substr(0, 10).replace(/-/g, '/')}{' '}
-                                    {selecedBoardData.createTime.substr(11, 5)}
+                                    {boardData.createTime.substr(0, 10).replace(/-/g, '/')} {boardData.createTime.substr(11, 5)}
                                 </Typography>
                             </Box>
 
                             {isLoggedIn && !isEditing && (
                                 <>
                                     {/* 수정하기 */}
-                                    {userEmail === selecedBoardData.email && (
+                                    {userEmail === boardData.email && (
                                         <IconButton
                                             onClick={handleEditToggle}
                                             style={{ height: 30, marginTop: 3 }}
@@ -633,7 +541,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                     )}
 
                                     {/* 삭제하기 */}
-                                    {userEmail === selecedBoardData.email && (
+                                    {userEmail === boardData.email && (
                                         <IconButton
                                             onClick={handleRemove}
                                             style={{ height: 30, padding: '0', marginRight: 10, marginTop: 3 }}
@@ -648,7 +556,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                     )}
 
                                     {/* 신고하기 */}
-                                    {userEmail !== selecedBoardData.email && (
+                                    {userEmail !== boardData.email && (
                                         <>
                                             <IconButton
                                                 onClick={() => setBoardReportOpen(true)}
@@ -665,7 +573,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                             <BoardReportModal
                                                 open={boardReportOpen}
                                                 onClose={() => setBoardReportOpen(false)}
-                                                boardId={selecedBoardData.boardId}
+                                                boardId={boardData.boardId}
                                             />
                                         </>
                                     )}
@@ -727,11 +635,11 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                             ) : (
                                 <>
                                     {/* 제목 */}
-                                    <Typography variant='h6'>{selecedBoardData.subject}</Typography>
+                                    <Typography variant='h6'>{boardData.subject}</Typography>
 
                                     {/* 내용 */}
-                                    <Typography sx={{ fontSize: 15, mb: 2, color: '#8F8F8F' }}>
-                                        {selecedBoardData.content}
+                                    <Typography sx={{ fontSize: 15, mb: 2, color: '#8F8F8F', whiteSpace: 'pre-line' }}>
+                                        {boardData.content}
                                     </Typography>
                                 </>
                             )}
@@ -765,7 +673,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                 onClick={handleLike}
                                 sx={{ textTransform: 'none', color: 'red' }}
                             >
-                                {selecedBoardData.likeCount} 좋아요
+                                {boardData.likeCount} 좋아요
                             </Button>
 
                             <Button
@@ -774,7 +682,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                 onClick={() => commentInputRef.current.focus()}
                                 sx={{ textTransform: 'none', color: '#0d41e1' }}
                             >
-                                {selecedBoardData.replyCount} 댓글
+                                {boardData.replyCount} 댓글
                             </Button>
                         </Box>
 
@@ -861,7 +769,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, setSelecedBoardData, 
                                                 <ReplyReportModal
                                                     open={replyReportOpen}
                                                     onClose={() => setReplyReportOpen(false)}
-                                                    replyId={clickReplyId}
+                                                    replyId={reply.replyId}
                                                 />
                                             </>
                                         ) : (

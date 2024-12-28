@@ -14,7 +14,7 @@ import {
 import Swal from 'sweetalert2';
 import axiosInstance from '../../configs/axios-config';
 
-const WriteBoardModal = ({ open, onClose, setWriteModalOpen }) => {
+const WriteBoardModal = ({ open, onClose, setWriteModalOpen, loadBoardData }) => {
     const [subject, setSubject] = useState('');
     const [content, setContent] = useState('');
     const [sports, setSports] = useState('');
@@ -119,6 +119,7 @@ const WriteBoardModal = ({ open, onClose, setWriteModalOpen }) => {
         });
 
         setWriteModalOpen(false);
+        loadBoardData();
     };
 
     return (
