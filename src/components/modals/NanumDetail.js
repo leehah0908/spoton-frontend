@@ -12,13 +12,13 @@ import {
     MenuItem,
     Select,
 } from '@mui/material';
-import { IoChatbubbleOutline, IoClose, IoChatboxEllipses } from 'react-icons/io5';
+import { IoClose, IoChatboxEllipses } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
-import { FaThumbsUp, FaPen, FaCamera, FaEye, FaHeart } from 'react-icons/fa';
+import { FaPen, FaCamera, FaEye, FaHeart, FaRegHeart } from 'react-icons/fa';
 import axiosInstance from '../../configs/axios-config';
 import axios from 'axios';
 import AuthContext from '../../contexts/UserContext';
-import { MdCancel, MdDeleteForever } from 'react-icons/md';
+import { MdCancel, MdDeleteForever, MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import NanumReportModal from './NanumReportModal';
 
@@ -27,6 +27,9 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
     const $fileTag = useRef();
 
     const [nanumData, setNanumData] = useState(null);
+    const [isNanumLike, setIsNanumLike] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isImageHovered, setIsImageHovered] = useState(false);
 
     const [isEditing, setIsEditing] = useState(false);
     const [editedSubject, setEditedSubject] = useState('');
@@ -47,21 +50,32 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
             setEditedQuantity('');
             setEditedGiveMethod('');
             setEditedImagePaths([]);
+            setCurrentImageIndex(0);
 
-            console.log('소 페이지');
             loadNanumDetail();
         }
     }, [open]);
 
     const loadNanumDetail = async () => {
-        console.log('소 메서드');
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/detail`, {
-                params: {
-                    nanumId,
-                },
-            });
-            setNanumData(res.data.result);
+            const [detailRes, nanumLikeListRes] = await Promise.all([
+                axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/detail`, {
+                    params: {
+                        nanumId,
+                    },
+                }),
+
+                axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/like_list`, {
+                    params: {
+                        nanumId,
+                    },
+                }),
+            ]);
+
+            setNanumData(detailRes.data.result);
+
+            const nanumLikeList = nanumLikeListRes.data.result;
+            setIsNanumLike(nanumLikeList.includes(userEmail));
         } catch (e) {
             console.log('데이터 로드 실패', e);
         }
@@ -321,6 +335,14 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
         setDetailModalOpen(false);
     };
 
+    const handlePrevImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? nanumData.imagePath.length - 1 : prevIndex - 1));
+    };
+
+    const handleNextImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex === nanumData.imagePath.length - 1 ? 0 : prevIndex + 1));
+    };
+
     return (
         <Box maxWidth='xs'>
             {nanumData && (
@@ -346,8 +368,69 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                         <>
                             <DialogContent sx={{ p: 0 }}>
                                 {/* 굿즈 이미지 */}
-                                <Box>
-                                    <img src='/default_profile.png' width='100%' />
+                                <Box
+                                    sx={{
+                                        position: 'relative',
+                                        aspectRatio: '1 / 1',
+                                    }}
+                                    onMouseEnter={() => setIsImageHovered(true)}
+                                    onMouseLeave={() => setIsImageHovered(false)}
+                                >
+                                    <img
+                                        src={`/nanum_img/${nanumData.imagePath[currentImageIndex]}`}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '10px',
+                                            right: '10px',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                            color: 'white',
+                                            padding: '5px 10px',
+                                            borderRadius: '5px',
+                                            fontSize: '15px',
+                                        }}
+                                    >
+                                        {`${currentImageIndex + 1} / ${nanumData.imagePath.length}`}
+                                    </Box>
+
+                                    {isImageHovered && (
+                                        <Box>
+                                            {/* 이전 화살표 */}
+                                            <IconButton
+                                                onClick={handlePrevImage}
+                                                sx={{
+                                                    position: 'absolute',
+                                                    left: '10px',
+                                                    top: '50%',
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                    color: 'white',
+                                                }}
+                                            >
+                                                <MdNavigateBefore />
+                                            </IconButton>
+
+                                            {/* 다음 화살표 */}
+                                            <IconButton
+                                                onClick={handleNextImage}
+                                                sx={{
+                                                    position: 'absolute',
+                                                    right: '10px',
+                                                    top: '50%',
+                                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                    color: 'white',
+                                                }}
+                                            >
+                                                <MdNavigateNext />
+                                            </IconButton>
+                                        </Box>
+                                    )}
                                 </Box>
 
                                 <Box display='flex' flexDirection='column' sx={{ m: 2, mb: 0 }}>
@@ -475,7 +558,11 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                                 <Box display='flex' flexDirection='row' alignItems='center' height='100%'>
                                     {/* 찜하기 */}
                                     <Box display='flex' alignItems='center' sx={{ cursor: 'pointer', ml: 1, mr: 2 }}>
-                                        <FaHeart onClick={handleLike} color='red' size={20} />
+                                        {isNanumLike ? (
+                                            <FaHeart onClick={handleLike} color='red' size={20} />
+                                        ) : (
+                                            <FaRegHeart onClick={handleLike} color='red' size={20} />
+                                        )}
                                     </Box>
 
                                     <Box sx={{ borderLeft: '1px solid gray', pl: 2 }}>

@@ -23,7 +23,6 @@ const Nanum = () => {
     const [lastestNanum, setLastestNanum] = useState([]);
 
     useEffect(() => {
-        console.log('왕 페이지');
         sessionStorage.removeItem('gameState');
 
         reRequestNanumData();
@@ -31,7 +30,6 @@ const Nanum = () => {
 
     // 나눔글 최신화 함수
     const reRequestNanumData = async () => {
-        console.log('왕 메서드');
         try {
             const [nanumListRes, lastestNanumRes] = await Promise.all([
                 axios.get(`${process.env.REACT_APP_BASE_URL}/nanum/list`, {

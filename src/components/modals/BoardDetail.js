@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { IoChatbubbleOutline, IoClose } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
-import { FaThumbsUp, FaPen } from 'react-icons/fa';
+import { FaThumbsUp, FaRegThumbsUp, FaPen } from 'react-icons/fa';
 import axiosInstance from '../../configs/axios-config';
 import axios from 'axios';
 import AuthContext from '../../contexts/UserContext';
@@ -28,6 +28,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
     const commentInputRef = useRef(null);
 
     const [boardData, setBoardData] = useState(null);
+    const [isBoardLike, setIsBoardLike] = useState(false);
     const [replyList, setReplyList] = useState([]);
     const [reply, setReply] = useState('');
 
@@ -52,13 +53,20 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
 
     const loadBoardDataAndReplies = async () => {
         try {
-            const [detailRes, replyRes] = await Promise.all([
+            const [detailRes, replyRes, boardLikeListRes] = await Promise.all([
                 axios.get(`${process.env.REACT_APP_BASE_URL}/board/detail`, {
                     params: {
                         boardId,
                     },
                 }),
+
                 axios.get(`${process.env.REACT_APP_BASE_URL}/reply/list`, {
+                    params: {
+                        boardId,
+                    },
+                }),
+
+                axios.get(`${process.env.REACT_APP_BASE_URL}/board/like_list`, {
                     params: {
                         boardId,
                     },
@@ -67,6 +75,9 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
 
             setBoardData(detailRes.data.result);
             setReplyList(replyRes.data.result.content);
+
+            const boardLikeList = boardLikeListRes.data.result;
+            setIsBoardLike(boardLikeList.includes(userEmail));
         } catch (e) {
             console.log('데이터 로드 실패', e);
         }
@@ -664,7 +675,7 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
                         {/* 좋아요, 댓글*/}
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Button
-                                startIcon={<FaThumbsUp color='red' />}
+                                startIcon={isBoardLike ? <FaThumbsUp color='red' /> : <FaRegThumbsUp color='red' />}
                                 variant='text'
                                 onClick={handleLike}
                                 sx={{ textTransform: 'none', color: 'red' }}

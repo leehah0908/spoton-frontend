@@ -93,9 +93,9 @@ const WriteBoardModal = ({ open, onClose, setWriteModalOpen, loadBoardData }) =>
         }
 
         const params = {
-            subject: subject,
-            content: content,
-            sports: sports,
+            subject,
+            content,
+            sports,
         };
 
         const res = await axiosInstance.post('/board/create', params);
