@@ -9,7 +9,7 @@ import WriteNanumModal from '../modals/WriteNanumModal';
 import NanumDetail from '../modals/NanumDetail';
 
 const Nanum = () => {
-    const { isLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, isNumber } = useContext(AuthContext);
 
     const [nanumList, setNanumList] = useState([]);
     const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -132,6 +132,26 @@ const Nanum = () => {
         Swal.fire({
             width: '20rem',
             text: '로그인이 필요합니다.',
+            confirmButtonText: '확인',
+            confirmButtonColor: '#0d41e1',
+            customClass: {
+                popup: 'custom-swal-popup',
+            },
+            didOpen: () => {
+                const popup = document.querySelector('.swal2-container');
+                if (popup) {
+                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                    document.body.appendChild(popup);
+                    popup.style.zIndex = '2001';
+                }
+            },
+        });
+    };
+
+    const requireIsNumber = () => {
+        Swal.fire({
+            width: '20rem',
+            html: '나눔글을 작성하기 위해서는<br>번호 인증을 해야 합니다.<br>(마이페이지 → 계정관리 → 번호 인증)',
             confirmButtonText: '확인',
             confirmButtonColor: '#0d41e1',
             customClass: {
@@ -386,7 +406,7 @@ const Nanum = () => {
                 <Button
                     variant='contained'
                     color='primary'
-                    onClick={isLoggedIn ? handleOpenWriteModal : requireLogin}
+                    onClick={isLoggedIn ? (isNumber ? handleOpenWriteModal : requireIsNumber) : requireLogin}
                     sx={{
                         borderRadius: 1,
                         bgcolor: '#0d41e1',
@@ -473,6 +493,7 @@ const Nanum = () => {
                 setDetailModalOpen={setDetailModalOpen}
                 reRequestNanumData={reRequestNanumData}
                 nanumId={selectedId}
+                setNanumId={setSelectedId}
             />
 
             <WriteNanumModal

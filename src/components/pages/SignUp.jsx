@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { IoHeartCircle } from 'react-icons/io5';
-import { Container, TextField, Button, Typography, Box, InputAdornment } from '@mui/material';
+import { Container, TextField, Button, Typography, Box, InputAdornment, Divider } from '@mui/material';
 import TeamSelectorModal from '../modals/TeamSelectorModal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import LoginModal from '../modals/LoginModal';
 
 const SignUp = () => {
     const navigate = useNavigate();
+    const [loginOpen, setLoginOpen] = useState(false);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -58,6 +60,14 @@ const SignUp = () => {
         password: false,
         checkPassword: false,
     });
+
+    const handleLoginClick = () => {
+        setLoginOpen(true);
+    };
+
+    const handleLoginClose = () => {
+        setLoginOpen(false);
+    };
 
     // 모달 핸들러
     const handleOpenTeamModal = () => setOpenTeamModal(true);
@@ -456,13 +466,38 @@ const SignUp = () => {
     };
 
     return (
-        <Container maxWidth='xs'>
-            <Box sx={{ mt: 3 }}>
-                <Typography variant='h4' sx={{ color: '#0d41e1', mb: 5, mt: 5 }}>
-                    회원가입
-                </Typography>
+        <Container maxWidth='sm' sx={{ p: 2 }}>
+            <Box
+                sx={{
+                    mt: 3,
+                    p: 4,
+                    bgcolor: 'rgb(234, 237, 244, 0.2)',
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                    borderRadius: 3,
+                }}
+            >
+                <Box
+                    sx={{
+                        padding: 1.5,
+                        borderRadius: 3,
+                        border: '2px solid #0d41e1',
+                        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                        bgcolor: 'rgba(13, 65, 225, 0.1)',
+                    }}
+                >
+                    <Typography sx={{ fontSize: 20 }}>
+                        SNS를 통해{' '}
+                        <span
+                            onClick={handleLoginClick}
+                            style={{ fontSize: 23, cursor: 'pointer', color: '#0d41e1', textDecoration: 'underline' }}
+                        >
+                            3초만에 가입하기!
+                        </span>
+                    </Typography>
+                </Box>
+                <LoginModal open={loginOpen} onClose={handleLoginClose} />
 
-                <Box display='flex' alignItems='center' gap={1} sx={{ mt: 3 }}>
+                <Box display='flex' alignItems='center' gap={1} sx={{ mt: 5 }}>
                     <FaUser size={24} />
                     <Typography sx={{ textTransform: 'none', fontSize: '1.3rem', textAlign: 'left' }}>회원 정보 입력</Typography>
                 </Box>
@@ -633,8 +668,10 @@ const SignUp = () => {
                         }}
                     />
 
+                    <Divider sx={{ my: 2, borderWidth: 1 }} />
+
                     {/* 마이팀 선택 */}
-                    <Box display='flex' alignItems='center' gap={1} sx={{ mt: 3 }}>
+                    <Box display='flex' alignItems='center' gap={1} sx={{ mt: 1 }}>
                         <IoHeartCircle size={24} />
                         <Typography sx={{ textTransform: 'none', fontSize: '1.3rem', textAlign: 'left' }}>마이팀 선택</Typography>
                     </Box>

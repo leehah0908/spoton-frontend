@@ -21,8 +21,9 @@ import AuthContext from '../../contexts/UserContext';
 import { MdCancel, MdDeleteForever, MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import Swal from 'sweetalert2';
 import NanumReportModal from './NanumReportModal';
+import ProviderComponent from '../ProviderComponent';
 
-const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanumData }) => {
+const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, reRequestNanumData }) => {
     const { isLoggedIn, userEmail } = useContext(AuthContext);
     const $fileTag = useRef();
 
@@ -41,6 +42,8 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
 
     const [nanumReportOpen, setNanumReportOpen] = useState(false);
 
+    const [isProvider, setIsProvider] = useState(false);
+
     useEffect(() => {
         if (open === true) {
             setIsEditing(false);
@@ -51,10 +54,11 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
             setEditedGiveMethod('');
             setEditedImagePaths([]);
             setCurrentImageIndex(0);
+            setIsProvider(false);
 
             loadNanumDetail();
         }
-    }, [open]);
+    }, [open, nanumId]);
 
     const loadNanumDetail = async () => {
         try {
@@ -353,10 +357,21 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                             p: 0,
                             minHeight: 40,
                             display: 'flex',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
                             pb: 2,
                         }}
                     >
+                        {isProvider ? (
+                            <MdNavigateBefore
+                                size={30}
+                                onClick={() => setIsProvider(false)}
+                                style={{ marginLeft: 20, marginTop: 20, cursor: 'pointer' }}
+                            ></MdNavigateBefore>
+                        ) : (
+                            <Box></Box>
+                        )}
+
                         <IoClose
                             color='red'
                             onClick={!isEditing ? onClose : handleCloseUpdateModal}
@@ -364,7 +379,15 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                         />
                     </DialogTitle>
 
-                    {!isEditing ? (
+                    {isProvider ? (
+                        <ProviderComponent
+                            providerEmail={nanumData.email}
+                            isProvider={isProvider}
+                            setIsProvider={setIsProvider}
+                            nanumId={nanumId}
+                            setNanumId={setNanumId}
+                        />
+                    ) : !isEditing ? (
                         <>
                             <DialogContent sx={{ p: 0 }}>
                                 {/* 굿즈 이미지 */}
@@ -453,7 +476,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                                         </Box>
 
                                         {/* 프로필 정보 */}
-                                        <Box display='flex' flexDirection='column'>
+                                        <Box display='flex' flexDirection='column' sx={{ flexGrow: 1 }}>
                                             <Typography variant='body2' sx={{}}>
                                                 {nanumData.nickname}
                                             </Typography>
@@ -463,6 +486,13 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, reRequestNanu
                                                 {nanumData.createTime.substr(11, 5)}
                                             </Typography>
                                         </Box>
+
+                                        <Button
+                                            onClick={() => setIsProvider(true)}
+                                            sx={{ fontSize: 15, bgcolor: '#0d41e1', color: 'white', mr: 1 }}
+                                        >
+                                            판매자 정보 보기
+                                        </Button>
                                     </Box>
 
                                     <Divider sx={{ my: 2 }} />
