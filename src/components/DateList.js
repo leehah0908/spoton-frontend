@@ -73,7 +73,7 @@ const DateList = ({ gameList, selectedYear, selectedMonth, setSelectedYear, setS
     };
 
     return (
-        <Container maxWidth='md'>
+        <Container maxWidth='lg'>
             {/* 연도, 월 선택 */}
             <Box display='flex' alignItems='center' justifyContent='center' gap={2} sx={{ position: 'relative' }}>
                 <IconButton onClick={handlePreviousMonth}>

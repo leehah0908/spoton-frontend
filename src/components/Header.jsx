@@ -1,4 +1,4 @@
-import { AppBar, Button, Container, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Container, Toolbar, Typography } from '@mui/material';
 import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import AuthContext from '../contexts/UserContext';
@@ -24,22 +24,23 @@ const Header = () => {
 
     return (
         <AppBar position='static ' sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-            <Toolbar sx={{ height: '100%' }}>
-                <Container>
-                    <Grid container alignItems='center'>
-                        <Grid
-                            item
-                            xs={9}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                            }}
-                        >
+            <Container maxWidth='lg'>
+                <Toolbar disableGutters sx={{ mt: 2, mb: 2 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            width: '100%',
+                        }}
+                    >
+                        <Box>
                             <Button
                                 component={Link}
                                 to='/'
                                 disableRipple
                                 sx={{
+                                    py: 0,
                                     '&:hover': {
                                         backgroundColor: 'transparent',
                                     },
@@ -48,7 +49,7 @@ const Header = () => {
                                 <Typography
                                     sx={{
                                         color: '#0d41e1',
-                                        fontSize: '2.5rem',
+                                        fontSize: 40,
                                         fontWeight: 'bold',
                                         textTransform: 'none',
                                     }}
@@ -56,146 +57,154 @@ const Header = () => {
                                     SpotOn
                                 </Typography>
                             </Button>
+                        </Box>
 
-                            <Button
-                                disableRipple
-                                sx={{
-                                    color: location.pathname === '/game' ? '#0d41e1' : 'black',
-                                    fontSize: '1.2rem',
-                                    fontWeight: '500',
-                                    ml: 3,
-                                    mr: 1,
-                                    top: '3px',
-                                    '&:hover': {
-                                        color: '#0d41e1',
-                                        backgroundColor: 'transparent',
-                                    },
-                                }}
-                                component={Link}
-                                to='/game'
-                            >
-                                경기 일정
-                            </Button>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                            <Box>
+                                {isLoggedIn ? (
+                                    <Box sx={{ mb: 1 }}>
+                                        <Button
+                                            disableRipple
+                                            sx={{
+                                                p: 0,
+                                                color: location.pathname === '/mypage' ? '#0d41e1' : 'gray',
+                                                fontSize: 13,
+                                                '&:hover': {
+                                                    backgroundColor: 'transparent',
+                                                },
+                                            }}
+                                            component={Link}
+                                            to='/mypage'
+                                        >
+                                            마이페이지
+                                        </Button>
+                                        <Button
+                                            disableRipple
+                                            sx={{
+                                                p: 0,
+                                                color: 'gray',
+                                                fontSize: 13,
+                                                mr: 1,
+                                                '&:hover': {
+                                                    backgroundColor: 'transparent',
+                                                },
+                                            }}
+                                            onClick={handelLogout}
+                                        >
+                                            로그아웃
+                                        </Button>
+                                    </Box>
+                                ) : (
+                                    <Box sx={{ mb: 1 }}>
+                                        <Button
+                                            disableRipple
+                                            sx={{
+                                                p: 0,
+                                                color: location.pathname === '/signup' ? '#0d41e1' : 'gray',
+                                                fontSize: 13,
+                                                '&:hover': {
+                                                    backgroundColor: 'transparent',
+                                                },
+                                            }}
+                                            component={Link}
+                                            to='/signup'
+                                        >
+                                            회원가입
+                                        </Button>
+                                        <Button
+                                            disableRipple
+                                            sx={{
+                                                p: 0,
+                                                color: 'gray',
+                                                fontSize: 13,
+                                                mr: 1,
+                                                '&:hover': {
+                                                    backgroundColor: 'transparent',
+                                                },
+                                            }}
+                                            onClick={handleLoginClick}
+                                        >
+                                            로그인
+                                        </Button>
+                                    </Box>
+                                )}
+                            </Box>
 
-                            <Button
-                                disableRipple
-                                sx={{
-                                    color: location.pathname === '/community' ? '#0d41e1' : 'black',
-                                    fontSize: '1.2rem',
-                                    fontWeight: '500',
-                                    top: '3px',
-                                    '&:hover': {
-                                        color: '#0d41e1',
-                                        backgroundColor: 'transparent',
-                                    },
-                                }}
-                                component={Link}
-                                to='/community'
-                            >
-                                커뮤니티
-                            </Button>
+                            <Box>
+                                <Button
+                                    disableRipple
+                                    sx={{
+                                        color: location.pathname === '/' ? '#0d41e1' : 'black',
+                                        fontSize: 20,
+                                        mr: 2,
+                                        p: 0,
+                                        '&:hover': {
+                                            color: '#0d41e1',
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}
+                                    component={Link}
+                                    to='/'
+                                >
+                                    Home
+                                </Button>
 
-                            <Button
-                                disableRipple
-                                sx={{
-                                    color: location.pathname === '/share' ? '#0d41e1' : 'black',
-                                    fontSize: '1.2rem',
-                                    fontWeight: '500',
-                                    top: '3px',
-                                    '&:hover': {
-                                        color: '#0d41e1',
-                                        backgroundColor: 'transparent',
-                                    },
-                                }}
-                                component={Link}
-                                to='/nanum'
-                            >
-                                나눔
-                            </Button>
-                        </Grid>
+                                <Button
+                                    disableRipple
+                                    sx={{
+                                        color: location.pathname === '/game' ? '#0d41e1' : 'black',
+                                        fontSize: 20,
+                                        mr: 2,
+                                        p: 0,
+                                        '&:hover': {
+                                            color: '#0d41e1',
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}
+                                    component={Link}
+                                    to='/game'
+                                >
+                                    경기 일정
+                                </Button>
 
-                        <Grid
-                            item
-                            xs={3}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                            }}
-                        >
-                            {isLoggedIn ? (
-                                <>
-                                    <Button
-                                        disableRipple
-                                        sx={{
+                                <Button
+                                    disableRipple
+                                    sx={{
+                                        color: location.pathname === '/community' ? '#0d41e1' : 'black',
+                                        fontSize: 20,
+                                        p: 0,
+                                        '&:hover': {
                                             color: '#0d41e1',
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            top: '3px',
-                                            '&:hover': {
-                                                backgroundColor: 'transparent',
-                                            },
-                                        }}
-                                        component={Link}
-                                        to='/mypage'
-                                    >
-                                        마이페이지
-                                    </Button>
-                                    <Button
-                                        disableRipple
-                                        sx={{
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}
+                                    component={Link}
+                                    to='/community'
+                                >
+                                    커뮤니티
+                                </Button>
+
+                                <Button
+                                    disableRipple
+                                    sx={{
+                                        color: location.pathname === '/nanum' ? '#0d41e1' : 'black',
+                                        fontSize: 20,
+                                        p: 0,
+                                        '&:hover': {
                                             color: '#0d41e1',
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            top: '3px',
-                                            '&:hover': {
-                                                backgroundColor: 'transparent',
-                                            },
-                                        }}
-                                        onClick={handelLogout}
-                                    >
-                                        로그아웃
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                    <Button
-                                        disableRipple
-                                        sx={{
-                                            color: '#0d41e1',
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            top: '2.5px',
-                                            '&:hover': {
-                                                backgroundColor: 'transparent',
-                                            },
-                                        }}
-                                        component={Link}
-                                        to='/signup'
-                                    >
-                                        회원가입
-                                    </Button>
-                                    <Button
-                                        disableRipple
-                                        sx={{
-                                            color: '#0d41e1',
-                                            fontSize: '1.2rem',
-                                            fontWeight: '500',
-                                            top: '2.5px',
-                                            ml: 2,
-                                            '&:hover': {
-                                                backgroundColor: 'transparent',
-                                            },
-                                        }}
-                                        onClick={handleLoginClick}
-                                    >
-                                        로그인
-                                    </Button>
-                                </>
-                            )}
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Toolbar>
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}
+                                    component={Link}
+                                    to='/nanum'
+                                >
+                                    나눔
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Toolbar>
+            </Container>
             <LoginModal open={loginOpen} onClose={handleLoginClose} />
         </AppBar>
     );

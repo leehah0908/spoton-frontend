@@ -169,7 +169,7 @@ const Game = () => {
 
             <Box
                 gap={2}
-                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#EFF1F8', p: 2, borderRadius: 2 }}
+                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#F4F4F4', p: 2, borderRadius: 2 }}
             >
                 {todayGames.length > 0 ? (
                     todayGames.map((value) => (
@@ -324,7 +324,7 @@ const Game = () => {
 
             {/* 일정 표시 */}
             {selectGameData.length !== 0 && (
-                <Box maxWidth='md' sx={{ margin: 'auto' }}>
+                <Box maxWidth='lg' sx={{ margin: 'auto' }}>
                     <Box sx={{ mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
                         <Typography
                             variant='h5'
@@ -447,7 +447,7 @@ const Game = () => {
             )}
 
             {selectGameData.length === 0 && (
-                <Box maxWidth='md' sx={{ margin: 'auto', mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
+                <Box maxWidth='lg' sx={{ margin: 'auto', mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
                     <Typography variant='h5' sx={{ fontSize: 20, fontWeight: '500', color: 'white', letterSpacing: '0.05em' }}>
                         해당 날짜에 경기가 없습니다.
                     </Typography>

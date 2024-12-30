@@ -162,7 +162,7 @@ const Community = () => {
 
             <Box
                 gap={2}
-                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#EFF1F8', p: 2, borderRadius: 2 }}
+                sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#F4F4F4', p: 2, borderRadius: 2 }}
             >
                 {hotBoard.length > 0 &&
                     hotBoard.map((value) => (
@@ -389,7 +389,7 @@ const Community = () => {
             </Box>
 
             {/* 글쓰기 버튼 */}
-            <Box sx={{ width: '89%', display: 'flex', justifyContent: 'flex-end', my: 1 }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', my: 1 }}>
                 <Button
                     variant='contained'
                     color='primary'
@@ -399,6 +399,7 @@ const Community = () => {
                         bgcolor: '#0d41e1',
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                         textTransform: 'none',
+                        mr: 1,
                     }}
                 >
                     글쓰기
@@ -406,7 +407,7 @@ const Community = () => {
             </Box>
 
             {/* 게시물 리스트 */}
-            <Box gap={1} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '80%', m: 'auto' }}>
+            <Box gap={1} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '100%', m: 'auto' }}>
                 {filteredBoards &&
                     filteredBoards.map((board) => (
                         <Box
@@ -415,7 +416,7 @@ const Community = () => {
                             display='flex'
                             flexDirection='row'
                             sx={{
-                                width: '49.3%',
+                                width: '32.6%',
                                 height: '115px',
                                 cursor: 'pointer',
                                 borderRadius: 2,

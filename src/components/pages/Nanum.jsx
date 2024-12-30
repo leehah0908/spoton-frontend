@@ -182,7 +182,7 @@ const Nanum = () => {
                     display: 'flex',
                     overflowX: 'auto',
                     flexWrap: 'nowrap',
-                    bgcolor: '#EFF1F8',
+                    bgcolor: '#F4F4F4',
                     p: 2,
                     borderRadius: 2,
                 }}
@@ -402,7 +402,7 @@ const Nanum = () => {
             </Box>
 
             {/* 글쓰기 버튼 */}
-            <Box sx={{ width: '89%', display: 'flex', justifyContent: 'flex-end', my: 1 }}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'flex-end', my: 1 }}>
                 <Button
                     variant='contained'
                     color='primary'
@@ -412,6 +412,7 @@ const Nanum = () => {
                         bgcolor: '#0d41e1',
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                         textTransform: 'none',
+                        mr: 1,
                     }}
                 >
                     나눔하기
@@ -419,7 +420,7 @@ const Nanum = () => {
             </Box>
 
             {/* 나눔글 리스트 */}
-            <Box gap={2} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '80%', m: 'auto' }}>
+            <Box gap={2} display='flex' flexDirection='row' sx={{ flexWrap: 'wrap', width: '100%', m: 'auto' }}>
                 {filteredNanums &&
                     filteredNanums.map((nanum) => (
                         <Box
@@ -428,7 +429,7 @@ const Nanum = () => {
                             display='flex'
                             flexDirection='column'
                             sx={{
-                                width: '23.6%',
+                                width: '18.8%',
                                 cursor: 'pointer',
                                 '&:hover': {
                                     backgroundColor: '#f0f0f0',
