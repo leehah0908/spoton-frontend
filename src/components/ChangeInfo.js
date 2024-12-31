@@ -1,17 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Box, Typography, Avatar, Button, TextField, Card, CardContent, Container } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { Box, Typography, Avatar, Button, TextField, Container, Divider } from '@mui/material';
 import TeamSelectorModal from './modals/TeamSelectorModal';
 import PasswordModifyModal from './modals/PasswordModifyModal';
-import AuthContext from '../contexts/UserContext';
 import axiosInstance from '../configs/axios-config';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
 
 const ChangeInfo = () => {
-    const navigate = useNavigate();
-    const { onLogout } = useContext(AuthContext);
-
-    const [email, setEmail] = useState('');
     const [nickname, setNickname] = useState('');
     const [myTeam, setMyTeam] = useState({});
     const [profile, setProfile] = useState('');
@@ -50,7 +44,6 @@ const ChangeInfo = () => {
                         }),
                 );
 
-                setEmail(res.data.result.email);
                 setNickname(res.data.result.nickname);
                 setMyTeam(fitedMyTeam);
                 setProfilePicture(res.data.result.profile);
@@ -206,312 +199,136 @@ const ChangeInfo = () => {
         }
     };
 
-    // SNS 연동 해제
-    const disconnectSNS = async () => {
-        const result = await Swal.fire({
-            width: '40rem',
-            html: '<div style="color: #333; text-align: center; line-height: 2;">SNS 연동을 해제하려면 새로운 비밀번호 설정이 필요합니다.<br />그래도 진행하시겠습니까?</div>',
-            showCancelButton: true,
-            confirmButtonText: '네',
-            cancelButtonText: '아니요',
-            confirmButtonColor: '#0d41e1',
-            customClass: {
-                popup: 'custom-swal-popup',
-            },
-            didOpen: () => {
-                document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-            },
-        });
-
-        if (!result.isConfirmed) {
-            return;
-        }
-
-        try {
-            axiosInstance.post('/user/pw_send', {}, { params: { email } });
-        } catch (e) {
-            await Swal.fire({
-                width: '20rem',
-                text: '다시 시도해주세요.',
-                confirmButtonText: '확인',
-                confirmButtonColor: '#0d41e1',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                },
-                didOpen: () => {
-                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-                },
-            });
-        }
-
-        await Swal.fire({
-            width: '40rem',
-            html: '<div style="color: #333; text-align: center; line-height: 2;">회원정보에 등록된 이메일로 임시 비밀번호를 전송합니다.<br />로그아웃 하시고, 임시 비밀번호로 로그인한 후 비밀번호를 변경해주세요.</div>',
-            confirmButtonText: '연동 해제중...',
-            confirmButtonColor: '#0d41e1',
-            customClass: {
-                popup: 'custom-swal-popup',
-            },
-            didOpen: () => {
-                document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-
-                // 버튼 비활성화
-                const confirmButton = Swal.getConfirmButton();
-                confirmButton.disabled = true;
-
-                // 3초 후 버튼 활성화
-                setTimeout(() => {
-                    confirmButton.disabled = false;
-                    confirmButton.textContent = '확인';
-                }, 5000);
-            },
-        });
-
-        navigate('/');
-        onLogout();
-    };
-
-    const withDraw = () => {
-        // sweetalert2로 전체 로직 처리
-        Swal.fire({
-            width: '40rem',
-            text: "회원탈퇴를 하시려면 계정 정보를 '이메일/닉네임' 형식으로 입력해주세요.",
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off',
-            },
-            showCancelButton: true,
-            confirmButtonText: '탈퇴하기',
-            cancelButtonText: '취소',
-            confirmButtonColor: '#AAAAAA',
-            cancelButtonColor: '#0d41e1',
-            showLoaderOnConfirm: true,
-            allowOutsideClick: () => !Swal.isLoading(),
-            customClass: {
-                popup: 'custom-swal-popup',
-            },
-            didOpen: () => {
-                document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-            },
-            preConfirm: async (input) => {
-                // 입력값 검증
-                if (input === `${email}/${nickname}`) {
-                    const result = await Swal.fire({
-                        width: '20rem',
-                        text: '정말 탈퇴하시겠습니까?',
-                        showCancelButton: true,
-                        confirmButtonText: '네',
-                        cancelButtonText: '아니요',
-                        confirmButtonColor: '#AAAAAA',
-                        cancelButtonColor: '#0d41e1',
-                        customClass: {
-                            popup: 'custom-swal-popup',
-                        },
-                        didOpen: () => {
-                            document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-                        },
-                    });
-
-                    if (!result.isConfirmed) {
-                        return false;
-                    }
-
-                    try {
-                        await axiosInstance.post('/user/withdraw', {});
-                    } catch (e) {
-                        await Swal.fire({
-                            width: '20rem',
-                            text: e.response.data.statusMessage,
-                            confirmButtonText: '확인',
-                            confirmButtonColor: '#0d41e1',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                            },
-                            didOpen: () => {
-                                document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-                            },
-                        });
-                    }
-                    onLogout();
-                    navigate('/');
-                    return true;
-                } else {
-                    await Swal.fire({
-                        width: '20rem',
-                        text: '계정 정보가 일치하지 않습니다.',
-                        confirmButtonText: '확인',
-                        confirmButtonColor: '#0d41e1',
-                        customClass: {
-                            popup: 'custom-swal-popup',
-                        },
-                        didOpen: () => {
-                            document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-                        },
-                    });
-                    return false;
-                }
-            },
-        }).then(async (result) => {
-            if (result.dismiss === Swal.DismissReason.cancel || !result.value) {
-                return;
-            }
-
-            await Swal.fire({
-                width: '20rem',
-                text: '회원탈퇴가 완료되었습니다.',
-                confirmButtonText: '확인',
-                confirmButtonColor: '#0d41e1',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                },
-                didOpen: () => {
-                    document.querySelector('.custom-swal-popup').style.fontFamily = '"Do Hyeon", sans-serif';
-                },
-            });
-        });
-    };
-
     return (
-        <Container maxWidth='sm'>
-            <Typography sx={{ fontSize: 28, mb: 2, color: '#0d41e1' }}>내 정보 수정</Typography>
-
+        <Container disableGutters>
             {/* 닉네임 수정 */}
-            <Card sx={{ mb: 4, bgcolor: 'rgb(234, 237, 244, 0.2)' }}>
-                <Typography variant='h6' sx={{ mb: 0, mt: 2 }}>
-                    닉네임
-                </Typography>
+            <Box sx={{ mt: 3 }}>
+                <Typography sx={{ fontSize: 17, mb: 1, textAlign: 'left' }}>닉네임 변경</Typography>
 
-                <CardContent sx={{ pt: 0 }}>
-                    <Box display='flex' flexDirection='row' alignItems='center' gap={3} justifyContent='center'>
-                        <TextField
-                            label='닉네임'
-                            variant='outlined'
-                            margin='normal'
-                            value={nickname}
-                            onChange={(e) => setNickname(e.target.value)}
-                        />
+                <Box display='flex' flexDirection='row' alignItems='center' gap={3}>
+                    <TextField variant='standard' value={nickname} onChange={(e) => setNickname(e.target.value)} />
 
-                        <Button variant='contained' color='primary' onClick={saveNickname} sx={{ bgcolor: '#0d41e1' }}>
-                            변경 사항 적용
-                        </Button>
-                    </Box>
-                </CardContent>
-            </Card>
+                    <Button
+                        variant='outlined'
+                        color='primary'
+                        onClick={saveNickname}
+                        sx={{ color: '#0d41e1', borderColor: '#0d41e1', bgcolor: 'rgba(13, 66, 225, 0.1)' }}
+                    >
+                        닉네임 저장
+                    </Button>
+                </Box>
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
 
             {/* 마이팀 수정 */}
-            <Card sx={{ mb: 4 }}>
-                <Typography variant='h6' sx={{ mt: 2 }}>
-                    마이팀
-                </Typography>
+            <Box>
+                <Typography sx={{ fontSize: 17, mb: 1, textAlign: 'left' }}>마이팀 변경</Typography>
 
-                <CardContent sx={{ pt: 0 }}>
-                    <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
-                        <Button
-                            variant='outlined'
-                            sx={{
-                                mt: 2,
-                                width: '70%',
-                                bgcolor: 'rgba(13, 65, 225, 0.05)',
-                                color: '#343a40',
-                                borderColor: Object.keys(myTeam).length > 0 ? '#0d41e1' : '#C4C4C4',
-                                borderWidth: 2,
-                            }}
-                            onClick={() => setOpenTeamModal(true)}
-                        >
-                            {Object.keys(myTeam).length > 0 ? (
-                                <Box>
-                                    {Object.entries(myTeam).map(([league, team]) => (
-                                        <Typography key={league} sx={{ mb: 0.5, textTransform: 'none', textAlign: 'left' }}>
-                                            {league} : {team}
-                                        </Typography>
-                                    ))}
-                                </Box>
-                            ) : (
-                                '팀 선택'
-                            )}
-                        </Button>
+                <Box display='flex' flexDirection='row' alignItems='flex-start' sx={{ mt: 2 }}>
+                    <Button
+                        variant='outlined'
+                        sx={{
+                            width: '38%',
+                            bgcolor: '#f8f8f8',
+                            color: '#343a40',
+                            borderColor: '#858585',
+                            borderWidth: 2,
+                            py: 1,
+                            mb: 1,
+                        }}
+                        onClick={() => setOpenTeamModal(true)}
+                    >
+                        {Object.keys(myTeam).length > 0 ? (
+                            <Box>
+                                {Object.entries(myTeam).map(([league, team]) => (
+                                    <Typography key={league} sx={{ mb: 0.5, textTransform: 'none', textAlign: 'left' }}>
+                                        {league} : {team}
+                                    </Typography>
+                                ))}
+                            </Box>
+                        ) : (
+                            <Box>
+                                <Typography sx={{ textTransform: 'none', textAlign: 'left' }}>팀선택</Typography>
+                            </Box>
+                        )}
+                    </Button>
 
-                        <Button
-                            variant='contained'
-                            color='primary'
-                            onClick={saveMyTeam}
-                            sx={{ width: '70%', bgcolor: '#0d41e1' }}
-                        >
-                            변경 사항 적용
-                        </Button>
-                    </Box>
-                </CardContent>
-            </Card>
+                    <Button
+                        variant='outlined'
+                        onClick={saveMyTeam}
+                        sx={{
+                            color: '#0d41e1',
+                            borderColor: '#0d41e1',
+                            bgcolor: 'rgba(13, 66, 225, 0.1)',
+                            ml: 2,
+                            alignSelf: 'flex-end',
+                            my: 1,
+                        }}
+                    >
+                        마이팀 저장
+                    </Button>
+                </Box>
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
 
             {/* 프로필 사진 변경 */}
-            <Card sx={{ mb: 4 }}>
-                <Typography variant='h6' sx={{ mb: 2, mt: 2 }}>
-                    프로필 사진
-                </Typography>
+            <Box>
+                <Typography sx={{ fontSize: 17, mb: 1, textAlign: 'left' }}>프로필 사진 변경</Typography>
 
-                <CardContent sx={{ pt: 0 }}>
-                    <Box display='flex' flexDirection='column' alignItems='center' gap={2}>
-                        <Avatar src={profilePicture || '/default-profile.png'} sx={{ width: 50, height: 50 }} />
+                <Box display='flex' flexDirection='row' alignItems='flex-start' sx={{ mt: 2 }}>
+                    <Avatar
+                        src={profilePicture || '/default-profile.png'}
+                        onClick={() => $fileTag.current.click()}
+                        sx={{ width: 100, height: 100, cursor: 'pointer', mr: 2 }}
+                    />
 
-                        <Box display='flex' flexDirection='row' alignItems='center' gap={3}>
-                            <Button
-                                variant='contained'
-                                sx={{ width: '70%', bgcolor: '#0d41e1' }}
-                                onClick={() => $fileTag.current.click()}
-                            >
-                                프로필 사진 변경
-                                {/* 사진 변경 태그 (숨겨놓고 사용) */}
-                                <input
-                                    type='file'
-                                    accept='image/*'
-                                    onChange={handleProfilePictureChange}
-                                    style={{ display: 'none' }}
-                                    ref={$fileTag}
-                                />
-                            </Button>
+                    {/* 사진 변경 태그 (숨겨놓고 사용) */}
+                    <input
+                        type='file'
+                        accept='image/*'
+                        onChange={handleProfilePictureChange}
+                        style={{ display: 'none' }}
+                        ref={$fileTag}
+                    />
 
-                            <Button variant='contained' onClick={removeProfile} sx={{ width: '70%', bgcolor: '#0d41e1' }}>
-                                프로필 사진 삭제
-                            </Button>
-                        </Box>
-                        <Button variant='contained' sx={{ width: '54%', bgcolor: '#0d41e1' }} onClick={saveProfile}>
-                            변경 사항 적용
+                    <Box display='flex' flexDirection='row' gap={1} sx={{ alignSelf: 'flex-end' }}>
+                        <Button
+                            variant='outlined'
+                            sx={{ color: '#0d41e1', borderColor: '#0d41e1', bgcolor: 'rgba(13, 66, 225, 0.1)' }}
+                            onClick={saveProfile}
+                        >
+                            프로필 저장
+                        </Button>
+
+                        <Button
+                            variant='outlined'
+                            onClick={removeProfile}
+                            sx={{ color: '#0d41e1', borderColor: '#0d41e1', bgcolor: 'rgba(13, 66, 225, 0.1)' }}
+                        >
+                            프로필 삭제
                         </Button>
                     </Box>
-                </CardContent>
-            </Card>
+                </Box>
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
 
             {/* 비밀번호 변경 */}
-            <Card sx={{ mb: 4 }}>
-                <Typography variant='h6' sx={{ mb: 0, mt: 2 }}>
-                    비밀번호 변경
-                </Typography>
+            <Box>
+                <Typography sx={{ fontSize: 17, mb: 1, textAlign: 'left' }}>비밀번호 변경</Typography>
 
-                <CardContent>
-                    <Button variant='contained' sx={{ bgcolor: '#0d41e1' }} onClick={() => setOpenPasswordModal(true)}>
+                <Box display='flex' alignItems='flex-start' sx={{ mt: 2 }}>
+                    <Button
+                        variant='outlined'
+                        sx={{ color: '#0d41e1', borderColor: '#0d41e1', bgcolor: 'rgba(13, 66, 225, 0.1)' }}
+                        onClick={() => setOpenPasswordModal(true)}
+                    >
                         비밀번호 변경
                     </Button>
-                </CardContent>
-            </Card>
-
-            {/* SNS 계정 연동 해제 및 회원탈퇴 */}
-            {/* <Card sx={{ mb: 4 }}>
-                <Typography variant='h6' sx={{ mb: 0, mt: 2 }}>
-                    계정 관리
-                </Typography>
-
-                <CardContent>
-                    <Box display='flex' flexDirection='row' alignItems='center' gap={3} justifyContent='center'>
-                        <Button variant='contained' color='error' onClick={disconnectSNS}>
-                            SNS 연동 해제
-                        </Button>
-
-                        <Button variant='contained' color='error' onClick={withDraw}>
-                            회원탈퇴
-                        </Button>
-                    </Box>
-                </CardContent>
-            </Card> */}
+                </Box>
+            </Box>
 
             {/* 마이팀 모달 */}
             <TeamSelectorModal
