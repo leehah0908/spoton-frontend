@@ -13,6 +13,7 @@ import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRouter from './routers/PrivateRouter';
+import GameChat from './components/GameChat';
 
 function App() {
     return (

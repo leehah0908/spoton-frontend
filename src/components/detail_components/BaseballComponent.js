@@ -14,6 +14,7 @@ import { IoHomeSharp } from 'react-icons/io5';
 import React from 'react';
 import BaseballGraphComponent from './graph_components/BaseballGraphComponent';
 import BaseballTableComponent from './table_components/BaseballTableComponent';
+import GameChat from '../GameChat';
 
 const BaseballComponent = ({ gameDetail }) => {
     const now = new Date();
@@ -30,8 +31,8 @@ const BaseballComponent = ({ gameDetail }) => {
     }
 
     return (
-        <Container maxWidth='lg'>
-            <Box sx={{ mx: 3 }}>
+        <Container maxWidth='lg' sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box sx={{ width: '70%' }}>
                 {/* 경기보드 */}
                 <Box display='flex' flexDirection='row' alignItems='center'>
                     {/* 원정팀 */}
@@ -202,6 +203,7 @@ const BaseballComponent = ({ gameDetail }) => {
                     </Box>
                 )}
             </Box>
+            <GameChat gameId={gameDetail.gameId} />
         </Container>
     );
 };

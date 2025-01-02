@@ -3,6 +3,7 @@ import React from 'react';
 import { IoHomeSharp } from 'react-icons/io5';
 import SoccerGraphComponent from './graph_components/SoccerGraphComponent';
 import SoccerTableComponent from './table_components/SoccerTableComponent';
+import GameChat from '../GameChat';
 
 const SoccerComponent = ({ gameDetail }) => {
     const now = new Date();
@@ -19,8 +20,8 @@ const SoccerComponent = ({ gameDetail }) => {
     }
 
     return (
-        <Container maxWidth='lg'>
-            <Box sx={{ mx: 3 }}>
+        <Container maxWidth='lg' sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box sx={{ width: '70%' }}>
                 {/* 경기보드 */}
                 <Box display='flex' flexDirection='row' alignItems='center' sx={{ mt: 5 }}>
                     {/* 원정팀 */}
@@ -119,6 +120,8 @@ const SoccerComponent = ({ gameDetail }) => {
                     </Box>
                 )}
             </Box>
+
+            <GameChat gameId={gameDetail.gameId} />
         </Container>
     );
 };

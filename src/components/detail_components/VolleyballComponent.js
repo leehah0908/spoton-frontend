@@ -14,6 +14,7 @@ import React from 'react';
 import { IoHomeSharp } from 'react-icons/io5';
 import VolleyballGraphComponent from './graph_components/VolleyballGraphComponent';
 import VolleyballTableComponent from './table_components/VolleyballTableComponent';
+import GameChat from '../GameChat';
 
 const VolleyballComponent = ({ gameDetail }) => {
     const now = new Date();
@@ -30,8 +31,8 @@ const VolleyballComponent = ({ gameDetail }) => {
     }
 
     return (
-        <Container maxWidth='lg'>
-            <Box sx={{ mx: 3 }}>
+        <Container maxWidth='lg' sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Box sx={{ width: '70%' }}>
                 {/* 경기보드 */}
                 <Box display='flex' flexDirection='row' alignItems='center' sx={{ my: 5 }}>
                     {/* 원정팀 */}
@@ -175,6 +176,8 @@ const VolleyballComponent = ({ gameDetail }) => {
                     </Box>
                 )}
             </Box>
+
+            <GameChat gameId={gameDetail.gameId} />
         </Container>
     );
 };
