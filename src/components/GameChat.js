@@ -20,14 +20,14 @@ const GameChat = ({ gameId }) => {
 
     useEffect(() => {
         // 소켓 초기화
-        const socket = new WebSocket('ws://localhost:8181/game_chat');
+        const socket = new WebSocket('ws://localhost:8181/chat');
         stompClient.current = Stomp.over(socket);
 
         stompClient.current.connect({}, () => {
             setIsConnected(true);
 
             // 현재 경기 채팅 채널 구독
-            stompClient.current.subscribe(`/sub/game_chat/${gameId}`, (message) => {
+            stompClient.current.subscribe(`/sub/chat/game_chat/${gameId}`, (message) => {
                 const newMessage = JSON.parse(message.body);
                 setMessages((prevMessages) => [...prevMessages, newMessage]);
             });
@@ -36,7 +36,7 @@ const GameChat = ({ gameId }) => {
         // 이전 채팅 기록 가져오기
         const dataLoad = async () => {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/game_chat/history/${gameId}`);
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/chat/game_chat/history/${gameId}`);
                 setMessages(res.data.result);
             } catch (e) {
                 console.log('채팅 데이터 로드 실패');
@@ -88,7 +88,7 @@ const GameChat = ({ gameId }) => {
             };
 
             // 구독자들에게 보내기
-            stompClient.current.send(`/pub/game_chat/${gameId}`, {}, JSON.stringify(body));
+            stompClient.current.send(`/pub/chat/game_chat/${gameId}`, {}, JSON.stringify(body));
             setInputValue('');
         } else {
             console.error('메세지 보내기에 실패했습니다.');

@@ -22,8 +22,11 @@ import { MdCancel, MdDeleteForever, MdNavigateNext, MdNavigateBefore } from 'rea
 import Swal from 'sweetalert2';
 import NanumReportModal from './NanumReportModal';
 import ProviderComponent from '../ProviderComponent';
+import { useNavigate } from 'react-router-dom';
 
 const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, reRequestNanumData }) => {
+    const navigate = useNavigate();
+
     const { isLoggedIn, userEmail } = useContext(AuthContext);
     const $fileTag = useRef();
 
@@ -347,6 +350,42 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
         setCurrentImageIndex((prevIndex) => (prevIndex === nanumData.imagePath.length - 1 ? 0 : prevIndex + 1));
     };
 
+    const handleChat = async () => {
+        if (!isLoggedIn) {
+            await Swal.fire({
+                width: '20rem',
+                text: '로그인 후 채팅이 가능힙니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
+        try {
+            const res = await axiosInstance.post('/nanum_chat/room_create', {
+                providerEmail: nanumData.email,
+                receiverEmail: userEmail,
+                nanumId,
+            });
+
+            onClose();
+            navigate('/chat', { state: { chatRoom: res.data.result } });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     return (
         <Box maxWidth='xs'>
             {nanumData && (
@@ -606,6 +645,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
 
                                     <Box display='flex' alignItems='center'>
                                         <Button
+                                            onClick={handleChat}
                                             sx={{ color: 'white', px: 2, mr: 1, fontSize: 18, height: 40, bgcolor: '#0d41e1' }}
                                         >
                                             채팅하기

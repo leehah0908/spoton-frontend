@@ -15,7 +15,6 @@ const ProviderComponent = ({ providerEmail, isProvider, setIsProvider, nanumId, 
                         email: providerEmail,
                     },
                 });
-                console.log(res.data.result);
                 setProviderData(res.data.result);
             };
             loadProvider();

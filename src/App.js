@@ -13,7 +13,7 @@ import { AuthContextProvider } from './contexts/UserContext';
 import theme from './assets/theme';
 import { Route, Routes } from 'react-router-dom';
 import PrivateRouter from './routers/PrivateRouter';
-import GameChat from './components/GameChat';
+import NanumChat from './components/pages/NanumChat';
 
 function App() {
     return (
@@ -29,6 +29,7 @@ function App() {
                         <Route path='/gameDetail/:league/:id' element={<GameDetail />} />
                         <Route path='/community' element={<Community />} />
                         <Route path='/nanum' element={<Nanum />} />
+                        <Route path='/chat' element={<NanumChat />} />
 
                         {/* <Route
                                 path='/product/manage'
