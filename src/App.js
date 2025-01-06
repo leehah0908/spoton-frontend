@@ -29,7 +29,7 @@ function App() {
                         <Route path='/gameDetail/:league/:id' element={<GameDetail />} />
                         <Route path='/community' element={<Community />} />
                         <Route path='/nanum' element={<Nanum />} />
-                        <Route path='/chat' element={<NanumChat />} />
+                        <Route path='/chat' element={<PrivateRouter element={<NanumChat />} />} />
 
                         {/* <Route
                                 path='/product/manage'

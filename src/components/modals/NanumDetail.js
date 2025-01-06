@@ -372,8 +372,23 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
             return;
         }
 
+        // 좋아요 누르기 및 취소
         try {
-            const res = await axiosInstance.post('/nanum_chat/room_create', {
+            await axiosInstance.post(
+                '/nanum/like',
+                {},
+                {
+                    params: {
+                        nanumId: nanumData.nanumId,
+                    },
+                },
+            );
+        } catch (e) {
+            console.log(e);
+        }
+
+        try {
+            const res = await axiosInstance.post('/chat/nanum_chat/room_create', {
                 providerEmail: nanumData.email,
                 receiverEmail: userEmail,
                 nanumId,
@@ -643,14 +658,23 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
 
                                     <Box sx={{ flexGrow: 1 }} />
 
-                                    <Box display='flex' alignItems='center'>
-                                        <Button
-                                            onClick={handleChat}
-                                            sx={{ color: 'white', px: 2, mr: 1, fontSize: 18, height: 40, bgcolor: '#0d41e1' }}
-                                        >
-                                            채팅하기
-                                        </Button>
-                                    </Box>
+                                    {userEmail !== nanumData.email && (
+                                        <Box display='flex' alignItems='center'>
+                                            <Button
+                                                onClick={handleChat}
+                                                sx={{
+                                                    color: 'white',
+                                                    px: 2,
+                                                    mr: 1,
+                                                    fontSize: 18,
+                                                    height: 40,
+                                                    bgcolor: '#0d41e1',
+                                                }}
+                                            >
+                                                채팅하기
+                                            </Button>
+                                        </Box>
+                                    )}
                                 </Box>
                             </DialogContent>
                         </>

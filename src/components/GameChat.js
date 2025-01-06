@@ -128,64 +128,42 @@ const GameChat = ({ gameId }) => {
                 gap={1}
                 sx={{ flex: 1, m: 1.5, mr: 0, pr: 1.5, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
             >
-                {messages.map((item, index) =>
-                    item.email === userEmail ? (
-                        <Box
-                            key={index}
-                            sx={{
-                                maxWidth: '70%',
-                                bgcolor: '#D8ECFF',
-                                borderRadius: 2,
-                                alignSelf: 'flex-end',
-                                p: 1,
-                                px: 1.5,
-                            }}
-                        >
-                            <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 0.5 }}>
-                                <Box>
-                                    <Typography sx={{ fontSize: 15 }}>{item.nickname}</Typography>
-                                </Box>
-
-                                <Box>
-                                    <Typography sx={{ fontSize: 12, ml: 2, color: 'gray' }}>
-                                        {item.createTime.substr(0, 10).replace(/-/g, '/')} {item.createTime.substr(11, 5)}
-                                    </Typography>
-                                </Box>
+                {messages.map((item, index) => (
+                    <Box
+                        key={index}
+                        sx={{
+                            maxWidth: '70%',
+                            bgcolor: item.email === userEmail ? '#D8ECFF' : '#F0F1F4',
+                            borderRadius: 2,
+                            alignSelf: item.email === userEmail ? 'flex-end' : 'flex-start',
+                            p: 1,
+                            px: 1.5,
+                        }}
+                    >
+                        <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 0.5 }}>
+                            <Box>
+                                <Typography sx={{ fontSize: 15 }}>{item.nickname}</Typography>
                             </Box>
 
-                            <Typography sx={{ fontSize: 14, textAlign: 'right', mt: 1, letterSpacing: 0.5 }}>
-                                {item.content}
-                            </Typography>
+                            <Box>
+                                <Typography sx={{ fontSize: 12, ml: 2, color: 'gray' }}>
+                                    {item.createTime.substr(0, 10).replace(/-/g, '/')} {item.createTime.substr(11, 5)}
+                                </Typography>
+                            </Box>
                         </Box>
-                    ) : (
-                        <Box
-                            key={index}
+
+                        <Typography
                             sx={{
-                                bgcolor: '#F0F1F4',
-                                borderRadius: 2,
-                                alignSelf: 'flex-start',
-                                p: 1,
-                                px: 1.5,
+                                fontSize: 14,
+                                textAlign: item.email === userEmail ? 'right' : 'left',
+                                mt: 1,
+                                letterSpacing: 0.5,
                             }}
                         >
-                            <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 0.5 }}>
-                                <Box>
-                                    <Typography sx={{ fontSize: 15 }}>{item.nickname}</Typography>
-                                </Box>
-
-                                <Box>
-                                    <Typography sx={{ fontSize: 12, ml: 2, color: 'gray' }}>
-                                        {item.createTime.substr(0, 10).replace(/-/g, '/')} {item.createTime.substr(11, 5)}
-                                    </Typography>
-                                </Box>
-                            </Box>
-
-                            <Typography sx={{ fontSize: 14, textAlign: 'left', mt: 1, letterSpacing: 0.5 }}>
-                                {item.content}
-                            </Typography>
-                        </Box>
-                    ),
-                )}
+                            {item.content}
+                        </Typography>
+                    </Box>
+                ))}
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center', p: 1, borderTop: '1px solid gray' }}>

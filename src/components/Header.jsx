@@ -84,7 +84,6 @@ const Header = () => {
                                                 p: 0,
                                                 color: 'gray',
                                                 fontSize: 13,
-                                                mr: 1,
                                                 '&:hover': {
                                                     backgroundColor: 'transparent',
                                                 },
@@ -117,7 +116,6 @@ const Header = () => {
                                                 p: 0,
                                                 color: 'gray',
                                                 fontSize: 13,
-                                                mr: 1,
                                                 '&:hover': {
                                                     backgroundColor: 'transparent',
                                                 },
@@ -146,7 +144,7 @@ const Header = () => {
                                     component={Link}
                                     to='/'
                                 >
-                                    Home
+                                    홈
                                 </Button>
 
                                 <Button
@@ -199,6 +197,23 @@ const Header = () => {
                                     to='/nanum'
                                 >
                                     나눔
+                                </Button>
+
+                                <Button
+                                    disableRipple
+                                    sx={{
+                                        color: location.pathname === '/chat' ? '#0d41e1' : 'black',
+                                        fontSize: 20,
+                                        p: 0,
+                                        '&:hover': {
+                                            color: '#0d41e1',
+                                            backgroundColor: 'transparent',
+                                        },
+                                    }}
+                                    component={Link}
+                                    to='/chat'
+                                >
+                                    채팅 목록
                                 </Button>
                             </Box>
                         </Box>
