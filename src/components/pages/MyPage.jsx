@@ -80,7 +80,7 @@ const MyPage = () => {
                     <Box sx={{ width: '100%', borderTop: '3px solid black', pt: 3 }}>
                         {
                             {
-                                dashBoard: <DashBoard />,
+                                dashBoard: <DashBoard setSelectedMenu={setSelectedMenu} />,
                                 changeInfo: <ChangeInfo />,
                                 accountManage: <AccountManage />,
                             }[selectedMenu]
