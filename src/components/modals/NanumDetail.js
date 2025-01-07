@@ -16,7 +16,7 @@ import { IoClose, IoChatboxEllipses } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
 import { FaPen, FaCamera, FaEye, FaHeart, FaRegHeart } from 'react-icons/fa';
 import axiosInstance from '../../configs/axios-config';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import AuthContext from '../../contexts/UserContext';
 import { MdCancel, MdDeleteForever, MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import Swal from 'sweetalert2';
@@ -42,10 +42,37 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
     const [editedQuantity, setEditedQuantity] = useState('');
     const [editedGiveMethod, setEditedGiveMethod] = useState('');
     const [editedImagePaths, setEditedImagePaths] = useState([]);
+    const [nanumImage, setNanumImage] = useState([]);
 
     const [nanumReportOpen, setNanumReportOpen] = useState(false);
 
     const [isProvider, setIsProvider] = useState(false);
+
+    // 경로로 받은 이미지를 File 형태로 변환
+    const onvertImagesToFileList = async (imagePaths) => {
+        const fileList = [];
+
+        for (const imagePath of imagePaths) {
+            const allPath = '/nanum_img/' + imagePath;
+            const file = await fetchImageAsFile(allPath, imagePath);
+            if (file) {
+                fileList.push(file);
+            }
+        }
+        setNanumImage(fileList);
+    };
+
+    // 이미지 경로를 File로 변환
+    const fetchImageAsFile = async (imageUrl, fileName) => {
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            return new File([blob], fileName, { type: blob.type });
+        } catch (e) {
+            console.error('이미지 변환 실패');
+            return null;
+        }
+    };
 
     useEffect(() => {
         if (open === true) {
@@ -83,6 +110,9 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
 
             const nanumLikeList = nanumLikeListRes.data.result;
             setIsNanumLike(nanumLikeList.includes(userEmail));
+
+            // 경로로 받은 이미지를 File 형태로 변환
+            onvertImagesToFileList(detailRes.data.result.imagePath);
         } catch (e) {
             console.log('데이터 로드 실패', e);
         }
@@ -96,7 +126,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
         setEditedSports(nanumData.sports);
         setEditedQuantity(nanumData.quantity);
         setEditedGiveMethod(nanumData.giveMethod);
-        setEditedImagePaths(nanumData.imagePath);
+        setEditedImagePaths(nanumImage);
     };
 
     // 나눔글 좋아요
@@ -206,10 +236,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
     // 업로드 사진 세팅
     const handleFileChange = async (event) => {
         if (event.target.files) {
-            console.log('bas', nanumData.imagePath);
-            console.log('edi', editedImagePaths);
             const selectedFiles = Array.from(event.target.files);
-            console.log('sel', selectedFiles);
             if (selectedFiles.length + editedImagePaths.length > 10) {
                 await Swal.fire({
                     width: '20rem',
@@ -231,8 +258,6 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                 return;
             }
             setEditedImagePaths((prevFiles) => [...prevFiles, ...selectedFiles]);
-            console.log('bas', nanumData.imagePath);
-            console.log('edi', editedImagePaths);
         }
     };
 
@@ -243,6 +268,27 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
 
     // 게시물 수정
     const handleUpdate = async () => {
+        if (editedImagePaths.length === 0) {
+            await Swal.fire({
+                width: '20rem',
+                text: '최소 1개의 이미지가 필요합니다.',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
+            return;
+        }
+
         const result = await Swal.fire({
             width: '20rem',
             html: '수정하시겠습니까?',
@@ -269,6 +315,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
         }
 
         const jsonData = {
+            nanumId,
             subject: editedSubject,
             content: editedContent,
             sports: editedSports,
@@ -285,7 +332,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
         formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
 
         try {
-            const res = await axiosInstance.post('/nanum/modify', formData);
+            const res = await axiosInstance.patch('/nanum/modify', formData);
 
             await Swal.fire({
                 width: '20rem',
@@ -583,7 +630,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                 {isLoggedIn && (
                                     <Box display='flex' justifyContent='right' sx={{ mr: 4, mb: 2 }}>
                                         {/* 수정하기 */}
-                                        {userEmail === nanumData.email && (
+                                        {nanumData.status !== '나눔 종료' && userEmail === nanumData.email && (
                                             <IconButton
                                                 onClick={handleEditToggle}
                                                 style={{ padding: '0' }}
@@ -596,7 +643,6 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                                 <Typography>글 수정</Typography>
                                             </IconButton>
                                         )}
-
                                         {/* 삭제하기 */}
                                         {userEmail === nanumData.email && (
                                             <IconButton
@@ -611,7 +657,6 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                                 <Typography sx={{ color: 'red' }}>글 삭제</Typography>
                                             </IconButton>
                                         )}
-
                                         {/* 신고하기 */}
                                         {userEmail !== nanumData.email && (
                                             <Box>
@@ -650,7 +695,12 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                     </Box>
 
                                     <Box sx={{ borderLeft: '1px solid gray', pl: 2 }}>
-                                        <Typography sx={{ fontSize: 18 }}>{nanumData.quantity}개 나눔</Typography>
+                                        <Typography sx={{ fontSize: 18 }}>
+                                            {nanumData.status === '나눔 종료' && (
+                                                <span style={{ color: 'red' }}>[{nanumData.status}]</span>
+                                            )}{' '}
+                                            {nanumData.quantity}개 나눔
+                                        </Typography>
                                         <Typography sx={{ fontSize: 15 }}>
                                             ({nanumData.giveMethod === 'direct' ? '직접 수령' : '택배 수령'})
                                         </Typography>
@@ -805,7 +855,8 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                                 }}
                                             >
                                                 <img
-                                                    src={`/nanum_img/${file}`}
+                                                    // src={`/nanum_img/${file}`}
+                                                    src={URL.createObjectURL(file)}
                                                     alt={`preview-${index}`}
                                                     style={{
                                                         width: '100%',
@@ -827,7 +878,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                     {/* 제목 입력 */}
                                     <TextField
                                         value={editedSubject}
-                                        onChange={(e) => editedSubject(e.target.value)}
+                                        onChange={(e) => setEditedSubject(e.target.value)}
                                         fullWidth
                                         variant='standard'
                                         sx={{ mb: 2, mt: 1 }}
@@ -836,7 +887,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                     {/* 내용 입력 */}
                                     <TextField
                                         value={editedContent}
-                                        onChange={(e) => editedContent(e.target.value)}
+                                        onChange={(e) => setEditedContent(e.target.value)}
                                         fullWidth
                                         multiline
                                         rows={10}
@@ -853,6 +904,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                 <Button variant='contained' sx={{ bgcolor: '#0d41e1', mr: 1 }} onClick={handleUpdate}>
                                     저장
                                 </Button>
+
                                 <Button
                                     variant='contained'
                                     sx={{ color: 'white', bgcolor: 'red' }}

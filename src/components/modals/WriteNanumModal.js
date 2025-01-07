@@ -219,28 +219,32 @@ const WriteNanumModal = ({ open, onClose, setWriteModalOpen, reRequestNanumData 
         });
         formData.append('dto', new Blob([JSON.stringify(jsonData)], { type: 'application/json' }));
 
-        const res = await axiosInstance.post('/nanum/create', formData);
+        try {
+            const res = await axiosInstance.post('/nanum/create', formData);
 
-        await Swal.fire({
-            width: '20rem',
-            text: res.data.statusMessage,
-            confirmButtonText: '확인',
-            confirmButtonColor: '#0d41e1',
-            customClass: {
-                popup: 'custom-swal-popup',
-            },
-            didOpen: () => {
-                const popup = document.querySelector('.swal2-container');
-                if (popup) {
-                    popup.style.fontFamily = '"Do Hyeon", sans-serif';
-                    document.body.appendChild(popup);
-                    popup.style.zIndex = '2001';
-                }
-            },
-        });
+            await Swal.fire({
+                width: '20rem',
+                text: res.data.statusMessage,
+                confirmButtonText: '확인',
+                confirmButtonColor: '#0d41e1',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                },
+                didOpen: () => {
+                    const popup = document.querySelector('.swal2-container');
+                    if (popup) {
+                        popup.style.fontFamily = '"Do Hyeon", sans-serif';
+                        document.body.appendChild(popup);
+                        popup.style.zIndex = '2001';
+                    }
+                },
+            });
 
-        setWriteModalOpen(false);
-        reRequestNanumData();
+            setWriteModalOpen(false);
+            reRequestNanumData();
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
