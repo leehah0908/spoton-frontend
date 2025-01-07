@@ -183,6 +183,9 @@ const Game = () => {
                                 pt: 1,
                                 bgcolor: 'white',
                                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                },
                             }}
                         >
                             <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
@@ -323,133 +326,148 @@ const Game = () => {
             </Box>
 
             {/* 일정 표시 */}
-            {selectGameData.length !== 0 && (
-                <Box maxWidth='lg' sx={{ margin: 'auto' }}>
-                    <Box sx={{ mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
+            {selectedSport !== '' ? (
+                selectGameData.length !== 0 ? (
+                    <Box maxWidth='lg' sx={{ margin: 'auto' }}>
+                        <Box sx={{ mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
+                            <Typography
+                                variant='h5'
+                                sx={{ fontSize: 20, fontWeight: '500', color: 'white', letterSpacing: '0.05em' }}
+                            >
+                                {`${selectedFullDate.getMonth() + 1}월 ${selectedFullDate.getDate()}일 (${new Intl.DateTimeFormat('ko-KR', { weekday: 'long' }).format(selectedFullDate)})`}
+                            </Typography>
+                        </Box>
+
+                        <Box sx={{ position: 'relative' }}>
+                            {selectGameData.map((value) => (
+                                <Box
+                                    key={value.gameId}
+                                    onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
+                                    display='flex'
+                                    alignItems='center'
+                                    sx={{ border: '1px solid #ddd', borderRadius: 1, p: 2, cursor: 'pointer' }}
+                                >
+                                    {/* 경기 시간 및 경기장 */}
+                                    <Box display='flex' flexDirection='row' alignItems='center'>
+                                        <Typography variant='h6' sx={{ fontWeight: '500', fontSize: 15 }}>
+                                            {format(new Date(value.gameDate), 'HH:mm')}
+                                        </Typography>
+                                        <Typography
+                                            variant='body2'
+                                            sx={{ color: 'gray', textAlign: 'left', ml: 1, fontSize: 13 }}
+                                        >
+                                            {JSON.parse(value.gameBoard).stadium}
+                                        </Typography>
+                                    </Box>
+
+                                    {/* 팀 정보 */}
+                                    <Box
+                                        role='button'
+                                        display='flex'
+                                        alignItems='center'
+                                        justifyContent='center'
+                                        sx={{
+                                            position: 'absolute',
+                                            left: '50%',
+                                            transform: 'translateX(-50%)',
+                                        }}
+                                    >
+                                        {/* 원정팀 */}
+                                        <Box display='flex' alignItems='center' sx={{ mr: 2 }}>
+                                            <Typography variant='body1' sx={{ mr: 1 }}>
+                                                {value.awayTeam}
+                                            </Typography>
+                                            <Avatar
+                                                src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                                alt={value.awayTeam}
+                                                sx={{ width: 30, height: 30 }}
+                                            />
+                                        </Box>
+
+                                        {/* 점수 */}
+                                        <Typography
+                                            display='flex'
+                                            variant='h6'
+                                            alignItems='center'
+                                            sx={{ fontWeight: '500', fontSize: 15 }}
+                                        >
+                                            {JSON.parse(value.gameBoard).awayTeamScore}
+                                            <Typography
+                                                variant='h6'
+                                                sx={{
+                                                    fontSize: 13,
+                                                    mx: 2,
+                                                }}
+                                            >
+                                                {value.cancel
+                                                    ? '취소'
+                                                    : JSON.parse(value.gameBoard).statusCode === 'RESULT'
+                                                      ? '경기종료'
+                                                      : JSON.parse(value.gameBoard).statusCode === 'BEFORE'
+                                                        ? '경기 전'
+                                                        : JSON.parse(value.gameBoard).statusInfo}
+                                            </Typography>
+                                            {JSON.parse(value.gameBoard).homeTeamScore}
+                                        </Typography>
+
+                                        {/* 홈팀 */}
+                                        <Box display='flex' alignItems='center' sx={{ ml: 2 }}>
+                                            <Avatar
+                                                src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                                alt={value.homeTeam}
+                                                sx={{ width: 30, height: 30, mr: 1 }}
+                                            />
+                                            <Typography variant='body1'>{value.homeTeam}</Typography>
+
+                                            {selectedSport !== 'esports' && (
+                                                <Typography
+                                                    variant='caption'
+                                                    sx={{
+                                                        ml: 1,
+                                                        px: 0.5,
+                                                        color: 'white',
+                                                        backgroundColor: '#0d41e1',
+                                                        borderRadius: 1,
+                                                    }}
+                                                >
+                                                    홈
+                                                </Typography>
+                                            )}
+                                        </Box>
+                                    </Box>
+
+                                    {/* 리그 */}
+                                    <Box display='flex' flexDirection='row' alignItems='center' sx={{ ml: 'auto' }}>
+                                        <Avatar
+                                            src={`/leagueLogo/${value.league}/${value.league}.png`}
+                                            alt={value.awayTeam}
+                                            sx={{ width: 30, height: 30 }}
+                                        />
+                                        <Typography
+                                            variant='body2'
+                                            sx={{ color: 'black', textAlign: 'left', ml: 1, fontSize: 15 }}
+                                        >
+                                            {value.league}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                            ))}
+                        </Box>
+                    </Box>
+                ) : (
+                    <Box maxWidth='lg' sx={{ margin: 'auto', mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
                         <Typography
                             variant='h5'
                             sx={{ fontSize: 20, fontWeight: '500', color: 'white', letterSpacing: '0.05em' }}
                         >
-                            {`${selectedFullDate.getMonth() + 1}월 ${selectedFullDate.getDate()}일 (${new Intl.DateTimeFormat('ko-KR', { weekday: 'long' }).format(selectedFullDate)})`}
+                            해당 날짜에 경기가 없습니다.
                         </Typography>
                     </Box>
-
-                    <Box sx={{ position: 'relative' }}>
-                        {selectGameData.map((value) => (
-                            <Box
-                                key={value.gameId}
-                                onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
-                                display='flex'
-                                alignItems='center'
-                                sx={{ border: '1px solid #ddd', borderRadius: 1, p: 2, cursor: 'pointer' }}
-                            >
-                                {/* 경기 시간 및 경기장 */}
-                                <Box display='flex' flexDirection='row' alignItems='center'>
-                                    <Typography variant='h6' sx={{ fontWeight: '500', fontSize: 15 }}>
-                                        {format(new Date(value.gameDate), 'HH:mm')}
-                                    </Typography>
-                                    <Typography variant='body2' sx={{ color: 'gray', textAlign: 'left', ml: 1, fontSize: 13 }}>
-                                        {JSON.parse(value.gameBoard).stadium}
-                                    </Typography>
-                                </Box>
-
-                                {/* 팀 정보 */}
-                                <Box
-                                    role='button'
-                                    display='flex'
-                                    alignItems='center'
-                                    justifyContent='center'
-                                    sx={{
-                                        position: 'absolute',
-                                        left: '50%',
-                                        transform: 'translateX(-50%)',
-                                    }}
-                                >
-                                    {/* 원정팀 */}
-                                    <Box display='flex' alignItems='center' sx={{ mr: 2 }}>
-                                        <Typography variant='body1' sx={{ mr: 1 }}>
-                                            {value.awayTeam}
-                                        </Typography>
-                                        <Avatar
-                                            src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
-                                            alt={value.awayTeam}
-                                            sx={{ width: 30, height: 30 }}
-                                        />
-                                    </Box>
-
-                                    {/* 점수 */}
-                                    <Typography
-                                        display='flex'
-                                        variant='h6'
-                                        alignItems='center'
-                                        sx={{ fontWeight: '500', fontSize: 15 }}
-                                    >
-                                        {JSON.parse(value.gameBoard).awayTeamScore}
-                                        <Typography
-                                            variant='h6'
-                                            sx={{
-                                                fontSize: 13,
-                                                mx: 2,
-                                            }}
-                                        >
-                                            {value.cancel
-                                                ? '취소'
-                                                : JSON.parse(value.gameBoard).statusCode === 'RESULT'
-                                                  ? '경기종료'
-                                                  : JSON.parse(value.gameBoard).statusCode === 'BEFORE'
-                                                    ? '경기 전'
-                                                    : JSON.parse(value.gameBoard).statusInfo}
-                                        </Typography>
-                                        {JSON.parse(value.gameBoard).homeTeamScore}
-                                    </Typography>
-
-                                    {/* 홈팀 */}
-                                    <Box display='flex' alignItems='center' sx={{ ml: 2 }}>
-                                        <Avatar
-                                            src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
-                                            alt={value.homeTeam}
-                                            sx={{ width: 30, height: 30, mr: 1 }}
-                                        />
-                                        <Typography variant='body1'>{value.homeTeam}</Typography>
-
-                                        {selectedSport !== 'esports' && (
-                                            <Typography
-                                                variant='caption'
-                                                sx={{
-                                                    ml: 1,
-                                                    px: 0.5,
-                                                    color: 'white',
-                                                    backgroundColor: '#0d41e1',
-                                                    borderRadius: 1,
-                                                }}
-                                            >
-                                                홈
-                                            </Typography>
-                                        )}
-                                    </Box>
-                                </Box>
-
-                                {/* 리그 */}
-                                <Box display='flex' flexDirection='row' alignItems='center' sx={{ ml: 'auto' }}>
-                                    <Avatar
-                                        src={`/leagueLogo/${value.league}/${value.league}.png`}
-                                        alt={value.awayTeam}
-                                        sx={{ width: 30, height: 30 }}
-                                    />
-                                    <Typography variant='body2' sx={{ color: 'black', textAlign: 'left', ml: 1, fontSize: 15 }}>
-                                        {value.league}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        ))}
-                    </Box>
-                </Box>
-            )}
-
-            {selectGameData.length === 0 && (
+                )
+            ) : (
                 <Box maxWidth='lg' sx={{ margin: 'auto', mt: 3, py: 1, bgcolor: '#0d41e1', borderRadius: 1 }}>
                     <Typography variant='h5' sx={{ fontSize: 20, fontWeight: '500', color: 'white', letterSpacing: '0.05em' }}>
-                        해당 날짜에 경기가 없습니다.
+                        종목을 선택해주세요.
                     </Typography>
                 </Box>
             )}

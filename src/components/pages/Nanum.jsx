@@ -202,6 +202,9 @@ const Nanum = () => {
                                 borderRadius: 2,
                                 bgcolor: 'white',
                                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                },
                                 p: 2,
                             }}
                         >
@@ -431,6 +434,7 @@ const Nanum = () => {
                             sx={{
                                 width: '18.8%',
                                 cursor: 'pointer',
+                                borderRadius: 3,
                                 '&:hover': {
                                     backgroundColor: '#f0f0f0',
                                 },

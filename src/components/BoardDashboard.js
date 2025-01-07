@@ -1,4 +1,4 @@
-import { Box, Typography, Avatar, Button, TextField, Card, CardContent, Container, Divider, Grid } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BoardDetail from './modals/BoardDetail';

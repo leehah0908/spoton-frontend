@@ -26,6 +26,7 @@ const Community = () => {
 
     // 첫 렌더링 게시물 로드
     useEffect(() => {
+        sessionStorage.removeItem('gameState');
         loadBoardData();
     }, []);
 
@@ -180,6 +181,9 @@ const Community = () => {
                                 pt: 1,
                                 bgcolor: 'white',
                                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                                '&:hover': {
+                                    backgroundColor: '#f0f0f0',
+                                },
                             }}
                         >
                             <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
@@ -458,7 +462,7 @@ const Community = () => {
                                             mt: 0.5,
                                         }}
                                     >
-                                        {board.content.length < 91 ? board.content : board.content.substr(0, 90) + '...'}
+                                        {board.content}
                                     </Typography>
                                 </Box>
 

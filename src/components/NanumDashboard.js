@@ -1,4 +1,4 @@
-import { Box, Typography, Avatar, Button, TextField, Card, CardContent, Container, Divider, Grid } from '@mui/material';
+import { Box, Typography, Button, Grid } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -191,22 +191,23 @@ const NanumDashboard = ({ writeNanums, likeNanums, loadData }) => {
                             </Box>
 
                             {nanum.status === '나눔중' && (
-                                <Box>
-                                    <Button
-                                        variant='outlined'
-                                        onClick={() => changeStatus(nanum.nanumId)}
-                                        sx={{
-                                            ml: 2,
-                                            fontSize: 13,
-                                            px: 1.5,
-                                            color: '#0d41e1',
-                                            borderColor: '#0d41e1',
-                                            bgcolor: 'rgba(13, 66, 225, 0.1)',
-                                        }}
-                                    >
-                                        나눔 종료
-                                    </Button>
-                                </Box>
+                                <Button
+                                    variant='outlined'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        changeStatus(nanum.nanumId);
+                                    }}
+                                    sx={{
+                                        ml: 2,
+                                        fontSize: 13,
+                                        px: 1.5,
+                                        color: '#0d41e1',
+                                        borderColor: '#0d41e1',
+                                        bgcolor: 'rgba(13, 66, 225, 0.1)',
+                                    }}
+                                >
+                                    나눔 종료
+                                </Button>
                             )}
                         </Box>
                     ),
