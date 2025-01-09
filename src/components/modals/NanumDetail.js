@@ -53,7 +53,8 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
         const fileList = [];
 
         for (const imagePath of imagePaths) {
-            const allPath = '/nanum_img/' + imagePath;
+            const allPath = `${process.env.REACT_APP_NANUM_IMAGE_URL}/${imagePath}`;
+            console.log('allPath', allPath);
             const file = await fetchImageAsFile(allPath, imagePath);
             if (file) {
                 fileList.push(file);
@@ -501,7 +502,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                     onMouseLeave={() => setIsImageHovered(false)}
                                 >
                                     <img
-                                        src={`/nanum_img/${nanumData.imagePath[currentImageIndex]}`}
+                                        src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${nanumData.imagePath[currentImageIndex]}`}
                                         style={{
                                             width: '100%',
                                             height: '100%',

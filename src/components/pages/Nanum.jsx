@@ -217,8 +217,9 @@ const Nanum = () => {
                                     paddingBottom: '100%',
                                 }}
                             >
+                                {console.log(value)}
                                 <img
-                                    src={`/nanum_img/${value.imagePath[0]}`}
+                                    src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${value.thumbnail}`}
                                     width='100%'
                                     style={{
                                         position: 'absolute',
@@ -449,7 +450,7 @@ const Nanum = () => {
                                 }}
                             >
                                 <img
-                                    src={`/nanum_img/${nanum.imagePath[0]}`}
+                                    src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${nanum.thumbnail}`}
                                     width='100%'
                                     style={{
                                         position: 'absolute',
