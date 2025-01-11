@@ -7,6 +7,7 @@
 .env
 /public/leagueLogo
 /public/nanum_img
+/public/logos
 
 # testing
 /coverage
