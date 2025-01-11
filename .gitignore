@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-.env
+# .env
 /public/leagueLogo
 /public/nanum_img
 /public/logos
