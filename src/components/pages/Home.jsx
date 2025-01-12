@@ -153,7 +153,7 @@ const Home = () => {
                             <Box display='flex' flexDirection='row' sx={{ p: 1, height: '100px' }}>
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/${value.league}/${value.awayTeam}.png`}
                                         alt={value.awayTeam}
                                         width='50'
                                         height='50'
@@ -170,7 +170,7 @@ const Home = () => {
 
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/${value.league}/${value.homeTeam}.png`}
                                         alt={value.homeTeam}
                                         width='50'
                                         height='50'
@@ -224,7 +224,7 @@ const Home = () => {
                                     >
                                         <Box alignContent='center'>
                                             <img
-                                                src={`/nanum_img/${nanum.imagePath[0]}`}
+                                                src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${nanum.imagePath[0]}`}
                                                 style={{
                                                     width: 80,
                                                     height: 80,
@@ -417,7 +417,7 @@ const Home = () => {
                                         <Box display='flex' flexDirection='row' sx={{ height: '70px' }}>
                                             <Box sx={{ minWidth: '40%', alignSelf: 'center' }}>
                                                 <img
-                                                    src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                                    src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/${value.league}/${value.awayTeam}.png`}
                                                     alt={value.awayTeam}
                                                     width='35'
                                                     height='35'
@@ -438,7 +438,7 @@ const Home = () => {
 
                                             <Box sx={{ minWidth: '40%', alignSelf: 'center' }}>
                                                 <img
-                                                    src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                                    src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/${value.league}/${value.homeTeam}.png`}
                                                     alt={value.homeTeam}
                                                     width='35'
                                                     height='35'
