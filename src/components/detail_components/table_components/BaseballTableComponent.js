@@ -175,7 +175,7 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
                 >
                     {gameDetail.awayTeam}
                     <img
-                        src={`/leagueLogo/${gameDetail.league}/${gameDetail.awayTeam}.png`}
+                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${gameDetail.league}/${encodeURIComponent(gameDetail.awayTeam.normalize('NFD'))}.png`}
                         alt={gameDetail.awayTeam}
                         width='40'
                         height='40'
@@ -196,7 +196,7 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
                     }}
                 >
                     <img
-                        src={`/leagueLogo/${gameDetail.league}/${gameDetail.homeTeam}.png`}
+                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${gameDetail.league}/${encodeURIComponent(gameDetail.homeTeam.normalize('NFD'))}.png`}
                         alt={gameDetail.homeTeam}
                         width='40'
                         height='40'

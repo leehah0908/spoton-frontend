@@ -42,7 +42,7 @@ const VolleyballComponent = ({ gameDetail }) => {
                         </Box>
 
                         <img
-                            src={`/leagueLogo/${gameDetail.league}/${gameDetail.awayTeam}.png`}
+                            src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${gameDetail.league}/${encodeURIComponent(gameDetail.awayTeam.normalize('NFD'))}.png`}
                             alt={gameDetail.awayTeam}
                             width='80'
                             height='80'
@@ -76,7 +76,7 @@ const VolleyballComponent = ({ gameDetail }) => {
 
                     <Box display='flex' flexDirection='row' justifyContent='left' sx={{ width: '40%', pl: 5 }}>
                         <img
-                            src={`/leagueLogo/${gameDetail.league}/${gameDetail.homeTeam}.png`}
+                            src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${gameDetail.league}/${encodeURIComponent(gameDetail.homeTeam.normalize('NFD'))}.png`}
                             alt={gameDetail.homeTeam}
                             width='80'
                             height='80'

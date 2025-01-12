@@ -195,7 +195,7 @@ const Game = () => {
                             <Box display='flex' flexDirection='row' sx={{ p: 1, height: '100px' }}>
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${value.league}/${encodeURIComponent(value.awayTeam.normalize('NFD'))}.png`}
                                         alt={value.awayTeam}
                                         width='50'
                                         height='50'
@@ -212,7 +212,7 @@ const Game = () => {
 
                                 <Box sx={{ minWidth: '40%', pt: 1 }}>
                                     <img
-                                        src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                        src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${value.league}/${encodeURIComponent(value.homeTeam.normalize('NFD'))}.png`}
                                         alt={value.homeTeam}
                                         width='50'
                                         height='50'
@@ -378,7 +378,7 @@ const Game = () => {
                                                 {value.awayTeam}
                                             </Typography>
                                             <Avatar
-                                                src={`/leagueLogo/${value.league}/${value.awayTeam}.png`}
+                                                src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${value.league}/${encodeURIComponent(value.awayTeam.normalize('NFD'))}.png`}
                                                 alt={value.awayTeam}
                                                 sx={{ width: 30, height: 30 }}
                                             />
@@ -413,7 +413,7 @@ const Game = () => {
                                         {/* 홈팀 */}
                                         <Box display='flex' alignItems='center' sx={{ ml: 2 }}>
                                             <Avatar
-                                                src={`/leagueLogo/${value.league}/${value.homeTeam}.png`}
+                                                src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${value.league}/${encodeURIComponent(value.homeTeam.normalize('NFD'))}.png`}
                                                 alt={value.homeTeam}
                                                 sx={{ width: 30, height: 30, mr: 1 }}
                                             />
@@ -439,7 +439,7 @@ const Game = () => {
                                     {/* 리그 */}
                                     <Box display='flex' flexDirection='row' alignItems='center' sx={{ ml: 'auto' }}>
                                         <Avatar
-                                            src={`/leagueLogo/${value.league}/${value.league}.png`}
+                                            src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/leagueLogo/${value.league}/${value.league}.png`}
                                             alt={value.awayTeam}
                                             sx={{ width: 30, height: 30 }}
                                         />

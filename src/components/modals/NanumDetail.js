@@ -502,7 +502,7 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
                                     onMouseLeave={() => setIsImageHovered(false)}
                                 >
                                     <img
-                                        src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${nanumData.imagePath[currentImageIndex]}`}
+                                        src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${encodeURIComponent(nanumData.imagePath[currentImageIndex].normalize('NFD'))}`}
                                         style={{
                                             width: '100%',
                                             height: '100%',
