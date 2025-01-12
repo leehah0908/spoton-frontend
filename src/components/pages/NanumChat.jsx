@@ -288,7 +288,8 @@ const NanumChat = () => {
                             }}
                         >
                             <img
-                                src={`/nanum_img/${seletedRoomData.nanumImage}`}
+                                src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${encodeURIComponent(seletedRoomData.nanumImage.normalize('NFD'))}`}
+                                // src={`/nanum_img/${seletedRoomData.nanumImage}`}
                                 alt='썸네일 사진'
                                 style={{ width: 70, height: 70, borderRadius: 10, objectFit: 'cover' }}
                             />
