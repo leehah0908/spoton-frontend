@@ -16,7 +16,7 @@ import { IoClose, IoChatboxEllipses } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
 import { FaPen, FaCamera, FaEye, FaHeart, FaRegHeart } from 'react-icons/fa';
 import axiosInstance from '../../configs/axios-config';
-import axios, { all } from 'axios';
+import axios from 'axios';
 import AuthContext from '../../contexts/UserContext';
 import { MdCancel, MdDeleteForever, MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 import Swal from 'sweetalert2';

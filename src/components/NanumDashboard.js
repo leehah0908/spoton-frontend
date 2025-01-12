@@ -165,8 +165,8 @@ const NanumDashboard = ({ writeNanums, likeNanums, loadData }) => {
                             }}
                         >
                             <img
-                                src={`/nanum_img/${nanum.thumbnail}` || 'default_profile.png'}
-                                alt='프로필 사진'
+                                src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${encodeURIComponent(nanum.imagePath[0].normalize('NFD'))}`}
+                                alt='나눔 사진'
                                 style={{ width: 60, height: 60, borderRadius: 3, objectFit: 'cover' }}
                             />
                             <Box flex={1} sx={{ ml: 2 }}>
@@ -255,8 +255,8 @@ const NanumDashboard = ({ writeNanums, likeNanums, loadData }) => {
                             }}
                         >
                             <img
-                                src={`/nanum_img/${nanum.thumbnail}` || 'default_profile.png'}
-                                alt='프로필 사진'
+                                src={`${process.env.REACT_APP_NANUM_IMAGE_URL}/${encodeURIComponent(nanum.imagePath[0].normalize('NFD'))}`}
+                                alt='나눔 사진'
                                 style={{ width: 60, height: 60, borderRadius: 3, objectFit: 'cover' }}
                             />
                             <Box flex={1} sx={{ ml: 2 }}>
