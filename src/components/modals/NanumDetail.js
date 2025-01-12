@@ -54,7 +54,6 @@ const NanumDetail = ({ open, onClose, setDetailModalOpen, nanumId, setNanumId, r
 
         for (const imagePath of imagePaths) {
             const allPath = `${process.env.REACT_APP_NANUM_IMAGE_URL}/${imagePath}`;
-            console.log('allPath', allPath);
             const file = await fetchImageAsFile(allPath, imagePath);
             if (file) {
                 fileList.push(file);
