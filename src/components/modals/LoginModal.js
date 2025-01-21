@@ -166,7 +166,11 @@ const LoginModal = ({ open, onClose }) => {
                         color='primary'
                         onClick={handleKakaoLogin}
                         startIcon={
-                            <img src='logos/kakao_logo.png' alt='Kakao Logo' style={{ width: 25, height: 25, marginRight: 3 }} />
+                            <img
+                                src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/logos/kakao_logo.png`}
+                                alt='Kakao Logo'
+                                style={{ width: 25, height: 25, marginRight: 3 }}
+                            />
                         }
                         sx={{
                             backgroundColor: '#FEE500',
@@ -185,7 +189,11 @@ const LoginModal = ({ open, onClose }) => {
                         color='primary'
                         onClick={handleNaverLogin}
                         startIcon={
-                            <img src='logos/naver_logo.png' alt='Naver Logo' style={{ width: 25, height: 25, marginRight: 3 }} />
+                            <img
+                                src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/logos/naver_logo.png`}
+                                alt='Naver Logo'
+                                style={{ width: 25, height: 25, marginRight: 3 }}
+                            />
                         }
                         sx={{
                             backgroundColor: '#03C75A',
@@ -204,7 +212,7 @@ const LoginModal = ({ open, onClose }) => {
                         onClick={handleGoogleLogin}
                         startIcon={
                             <img
-                                src='logos/google_logo.png'
+                                src={`${process.env.REACT_APP_STATIC_IMAGE_URL}/logos/google_logo.png`}
                                 alt='Google Logo'
                                 style={{ width: 25, height: 25, marginRight: 15 }}
                             />
