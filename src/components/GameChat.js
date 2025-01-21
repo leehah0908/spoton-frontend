@@ -20,7 +20,8 @@ const GameChat = ({ gameId }) => {
 
     useEffect(() => {
         // 소켓 초기화
-        const socket = new WebSocket('wss://api.onspoton.com/chat');
+        // const socket = new WebSocket('wss://api.onspoton.com/chat');
+        const socket = new WebSocket('ws://localhost:8181/chat');
         stompClient.current = Stomp.over(socket);
 
         stompClient.current.connect({}, () => {
@@ -142,7 +143,11 @@ const GameChat = ({ gameId }) => {
                     >
                         <Box display='flex' flexDirection='row' justifyContent='space-between' sx={{ px: 0.5 }}>
                             <Box>
-                                <Typography sx={{ fontSize: 15 }}>{item.nickname}</Typography>
+                                <Typography
+                                    sx={{ fontSize: 13, fontWeight: '800', fontFamily: 'Noto Sans Korean', letterSpacing: 0.5 }}
+                                >
+                                    {item.nickname}
+                                </Typography>
                             </Box>
 
                             <Box>
@@ -158,6 +163,8 @@ const GameChat = ({ gameId }) => {
                                 textAlign: item.email === userEmail ? 'right' : 'left',
                                 mt: 1,
                                 letterSpacing: 0.5,
+                                fontWeight: '600',
+                                fontFamily: 'Noto Sans Korean',
                             }}
                         >
                             {item.content}
