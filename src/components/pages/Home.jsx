@@ -20,6 +20,7 @@ const Home = () => {
     const [hotBoard, setHotBoard] = useState(null);
     const [lastestNanum, setLastestNanum] = useState(null);
     const [myTeamData, setMyTeamData] = useState([]);
+    const [myTeamLength, setMyTeamLength] = useState(false);
 
     const [boardDetailModalOpen, setBoardDetailModalOpen] = useState(false);
     const [selectedBoardId, setSelectedBoardId] = useState(null);
@@ -43,6 +44,7 @@ const Home = () => {
 
                 if (isLoggedIn) {
                     const res = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/game/myteam`);
+                    setMyTeamLength(Object.keys(res.data.result).length === 0);
 
                     // 오늘의 경기 중 마이팀 필터링
                     const myTeamGame = todayGameRes.data.result.filter((game) => {
@@ -236,7 +238,19 @@ const Home = () => {
 
                                         <Box sx={{ ml: 2 }}>
                                             {/* 제목 및 내용 */}
-                                            <Typography sx={{ fontSize: 15, textAlign: 'left', color: 'black', width: '100%' }}>
+                                            <Typography
+                                                sx={{
+                                                    fontSize: 15,
+                                                    textAlign: 'left',
+                                                    color: 'black',
+                                                    width: '100%',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
+                                                    display: '-webkit-box',
+                                                    WebkitLineClamp: 1,
+                                                    WebkitBoxOrient: 'vertical',
+                                                }}
+                                            >
                                                 {nanum.subject}
                                             </Typography>
 
@@ -247,9 +261,11 @@ const Home = () => {
                                                     color: '#666',
                                                     width: '100%',
                                                     height: '40px',
-                                                    display: '-webkit-box',
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
+                                                    display: '-webkit-box',
+                                                    WebkitLineClamp: 2,
+                                                    WebkitBoxOrient: 'vertical',
                                                 }}
                                             >
                                                 {nanum.content}
@@ -393,7 +409,7 @@ const Home = () => {
 
                     <Box display='flex' flexDirection='column' gap={2} sx={{ p: 2, pr: 0.5 }}>
                         {isLoggedIn ? (
-                            myTeamData.length !== 0 ? (
+                            !myTeamLength ? (
                                 myTeamData.map((value) => (
                                     <Box
                                         onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
