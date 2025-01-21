@@ -99,7 +99,7 @@ const Header = () => {
                                             disableRipple
                                             sx={{
                                                 p: 0,
-                                                color: location.pathname === '/signup' ? '#0d41e1' : 'gray',
+                                                color: 'gray',
                                                 fontSize: 13,
                                                 '&:hover': {
                                                     backgroundColor: 'transparent',
