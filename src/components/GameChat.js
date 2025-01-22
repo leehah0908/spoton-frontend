@@ -20,8 +20,8 @@ const GameChat = ({ gameId }) => {
 
     useEffect(() => {
         // 소켓 초기화
-        // const socket = new WebSocket('wss://api.onspoton.com/chat');
-        const socket = new WebSocket('ws://localhost:8181/chat');
+        const socket = new WebSocket('wss://api.onspoton.com/chat');
+        // const socket = new WebSocket('ws://localhost:8181/chat');
         stompClient.current = Stomp.over(socket);
 
         stompClient.current.connect({}, () => {
