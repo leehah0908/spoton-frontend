@@ -34,7 +34,6 @@ const GameDetail = () => {
                         gameId: id,
                     },
                 });
-                console.log(res);
 
                 const boardToJson = JSON.parse(res.data.result.gameBoard);
                 const detailToJson = JSON.parse(res.data.result.gameDetail);

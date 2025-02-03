@@ -86,6 +86,7 @@ const BasketballComponent = ({ gameDetail }) => {
                             <Typography sx={{ fontSize: 25 }}>
                                 <IoHomeSharp size={18} /> {gameDetail.homeTeam}
                             </Typography>
+                            <Typography sx={{ fontSize: 25 }}>{gameDetail}</Typography>
                         </Box>
                     </Box>
                 </Box>
