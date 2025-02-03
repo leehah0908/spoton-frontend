@@ -42,6 +42,7 @@ const GameDetail = () => {
                 const mergedData = { ...res.data.result, boardToJson, detailToJson };
                 delete mergedData.gameBoard;
                 delete mergedData.gameDetail;
+                console.log(mergedData);
 
                 setGameDetail(mergedData);
             } catch (e) {
