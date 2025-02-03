@@ -12,6 +12,7 @@ import axiosInstance from '../../configs/axios-config';
 const Game = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
     const today = new Date();
 
     const [selectedYear, setSelectedYear] = useState(today.getFullYear());
@@ -50,7 +51,10 @@ const Game = () => {
                 console.log('게임 데이터 로드 실패');
             }
         };
+
+        setIsLoading(true);
         todayDataLoad();
+        setIsLoading(false);
     }, []);
 
     // 상태 저장: 상태가 변경될 때마다 실행
@@ -222,8 +226,12 @@ const Game = () => {
                             </Box>
                         </Box>
                     ))
+                ) : isLoading ? (
+                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
+                        <Typography variant='h4'>경기를 불러오고 있습니다.</Typography>
+                    </Box>
                 ) : (
-                    <Box textAlign='center' sx={{ p: 3, borderRadius: 2 }}>
+                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
                         <Typography variant='h4'>오늘은 경기가 없습니다.</Typography>
                     </Box>
                 )}

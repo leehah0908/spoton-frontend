@@ -15,6 +15,7 @@ import BoardDetail from '../modals/BoardDetail';
 const Home = () => {
     const navigate = useNavigate();
     const { isLoggedIn } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [todayGames, setTodayGames] = useState(null);
     const [hotBoard, setHotBoard] = useState(null);
@@ -60,8 +61,9 @@ const Home = () => {
                 console.log('데이터 로드 실패', e);
             }
         };
-
+        setIsLoading(true);
         loadData();
+        setIsLoading(false);
     }, []);
 
     // 나눔글 상세정보 요청
@@ -182,8 +184,12 @@ const Home = () => {
                             </Box>
                         </Box>
                     ))
+                ) : isLoading ? (
+                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
+                        <Typography variant='h4'>경기를 불러오고 있습니다.</Typography>
+                    </Box>
                 ) : (
-                    <Box textAlign='center' sx={{ p: 3, borderRadius: 2 }}>
+                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
                         <Typography variant='h4'>오늘은 경기가 없습니다.</Typography>
                     </Box>
                 )}
