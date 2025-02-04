@@ -35,16 +35,9 @@ const GameDetail = () => {
                     },
                 });
                 console.log(res);
+                console.log(res.data.result);
 
-                const boardToJson = JSON.parse(res.data.result.gameBoard);
-                const detailToJson = JSON.parse(res.data.result.gameDetail);
-
-                const mergedData = { ...res.data.result, boardToJson, detailToJson };
-                delete mergedData.gameBoard;
-                delete mergedData.gameDetail;
-                console.log(mergedData);
-
-                setGameDetail(mergedData);
+                setGameDetail(res.data.result);
             } catch (e) {
                 console.log(e);
                 if (e.response.data.statusMessage === '경기 정보를 찾을 수 없습니다.') {
