@@ -399,23 +399,9 @@ const Game = () => {
                                             alignItems='center'
                                             sx={{ fontWeight: '500', fontSize: 15 }}
                                         >
-                                            {JSON.parse(value.gameBoard).awayTeamScore}
-                                            <Typography
-                                                variant='h6'
-                                                sx={{
-                                                    fontSize: 13,
-                                                    mx: 2,
-                                                }}
-                                            >
-                                                {value.cancel
-                                                    ? '취소'
-                                                    : JSON.parse(value.gameBoard).statusCode === 'RESULT'
-                                                      ? '경기종료'
-                                                      : JSON.parse(value.gameBoard).statusCode === 'BEFORE'
-                                                        ? '경기 전'
-                                                        : JSON.parse(value.gameBoard).statusInfo}
+                                            <Typography variant='h6' sx={{ fontSize: 13, mx: 2 }}>
+                                                VS
                                             </Typography>
-                                            {JSON.parse(value.gameBoard).homeTeamScore}
                                         </Typography>
 
                                         {/* 홈팀 */}
