@@ -34,8 +34,6 @@ const GameDetail = () => {
                         gameId: id,
                     },
                 });
-                console.log(res);
-                console.log(res.data.result);
 
                 setGameDetail(res.data.result);
             } catch (e) {

@@ -46,6 +46,7 @@ const Home = () => {
 
                 if (isLoggedIn) {
                     const res = await axiosInstance.get(`${process.env.REACT_APP_BASE_URL}/game/myteam`);
+                    console.log(res);
                     setMyTeamLength(Object.keys(res.data.result).length === 0);
 
                     // 오늘의 경기 중 마이팀 필터링
