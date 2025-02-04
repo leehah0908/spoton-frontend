@@ -11,7 +11,7 @@ const SoccerComponent = ({ gameDetail }) => {
 
     if (!gameDetail || !gameDetail.gameBoard) {
         return (
-            <Container maxWidth='md' sx={{ bgcolor: 'gray' }}>
+            <Container maxWidth='md' sx={{ bgcolor: '#f5f5f5' }}>
                 <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' sx={{ mx: 10 }}>
                     <Typography sx={{ fontSize: 30 }}>해당 날짜의 경기 기록이 없습니다.</Typography>
                 </Box>
@@ -99,15 +99,29 @@ const SoccerComponent = ({ gameDetail }) => {
                 </Box>
 
                 {gameDate < now ? (
-                    <>
-                        <Divider sx={{ mt: 5, mb: 2 }} />
-                        <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
-                        <SoccerGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
+                    gameDetail.gameDetail ? (
+                        <>
+                            <Divider sx={{ mt: 5, mb: 2 }} />
+                            <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
+                            <BaseballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
 
-                        <Divider sx={{ mt: 5, mb: 2 }} />
-                        <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
-                        <SoccerTableComponent gameDetail={gameDetail} league={gameDetail.league} />
-                    </>
+                            <Divider sx={{ mt: 5, mb: 2 }} />
+                            <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
+                            <BaseballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
+                        </>
+                    ) : (
+                        <Box
+                            display='flex'
+                            flexDirection='column'
+                            alignItems='center'
+                            justifyContent='center'
+                            sx={{ width: '83%', textAlign: 'center', backgroundColor: '#f5f5f5', py: 2, mt: 5, mx: 'auto' }}
+                        >
+                            <Typography sx={{ fontSize: 25 }}>
+                                상세 기록을 불러오는데 오류가 발생했습니다. 다시 시도해주세요.
+                            </Typography>
+                        </Box>
+                    )
                 ) : (
                     <Box
                         display='flex'
