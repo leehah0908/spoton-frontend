@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import React from 'react';
 
-const EsportsComponent = ({}) => {
+const EsportsComponent = () => {
     return (
         <Container maxWidth='lg' sx={{ display: 'flex', flexDirection: 'row' }}>
             <Box sx={{ width: '70%' }}>
