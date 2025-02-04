@@ -32,6 +32,7 @@ const Home = () => {
         sessionStorage.removeItem('gameState');
 
         const loadData = async () => {
+            setIsLoading(true);
             try {
                 const [todayGameRes, hotBoardRes, lastestNanumRes] = await Promise.all([
                     axios.get(`${process.env.REACT_APP_BASE_URL}/game/today`),
@@ -59,11 +60,11 @@ const Home = () => {
                 }
             } catch (e) {
                 console.log('데이터 로드 실패', e);
+            } finally {
+                setIsLoading(false);
             }
         };
-        setIsLoading(true);
         loadData();
-        setIsLoading(false);
     }, []);
 
     // 나눔글 상세정보 요청
@@ -133,7 +134,11 @@ const Home = () => {
                 gap={2}
                 sx={{ display: 'flex', overflowX: 'auto', flexWrap: 'nowrap', bgcolor: '#F4F4F4', p: 2, borderRadius: 2 }}
             >
-                {todayGames ? (
+                {isLoading ? (
+                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
+                        <Typography variant='h4'>경기를 불러오고 있습니다.</Typography>
+                    </Box>
+                ) : todayGames && todayGames.length > 0 ? (
                     todayGames.map((value) => (
                         <Box
                             onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
@@ -184,10 +189,6 @@ const Home = () => {
                             </Box>
                         </Box>
                     ))
-                ) : isLoading ? (
-                    <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
-                        <Typography variant='h4'>경기를 불러오고 있습니다.</Typography>
-                    </Box>
                 ) : (
                     <Box display='flex' justifyContent='center' alignItems='center' sx={{ width: '100%', p: 3, borderRadius: 2 }}>
                         <Typography variant='h4'>오늘은 경기가 없습니다.</Typography>
