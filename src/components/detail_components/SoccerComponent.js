@@ -103,11 +103,11 @@ const SoccerComponent = ({ gameDetail }) => {
                         <>
                             <Divider sx={{ mt: 5, mb: 2 }} />
                             <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
-                            <BaseballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
+                            <SoccerGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
 
                             <Divider sx={{ mt: 5, mb: 2 }} />
                             <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
-                            <BaseballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
+                            <SoccerTableComponent gameDetail={gameDetail} league={gameDetail.league} />
                         </>
                     ) : (
                         <Box

@@ -89,7 +89,6 @@ const BasketballComponent = ({ gameDetail }) => {
                         </Box>
                     </Box>
                 </Box>
-
                 {gameDetail.gameBoard.statusInfo.includes('연장') ? (
                     <Box>
                         <TableContainer
@@ -217,17 +216,16 @@ const BasketballComponent = ({ gameDetail }) => {
                         </TableContainer>
                     </Box>
                 )}
-
                 {gameDate < now ? (
                     gameDetail.gameDetail ? (
                         <>
                             <Divider sx={{ mt: 5, mb: 2 }} />
                             <Typography sx={{ fontSize: 30 }}>경기 기록</Typography>
-                            <BaseballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
+                            <BasketballGraphComponent gameDetail={gameDetail} league={gameDetail.league} />
 
                             <Divider sx={{ mt: 5, mb: 2 }} />
                             <Typography sx={{ fontSize: 30 }}>선수 기록</Typography>
-                            <BaseballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
+                            <BasketballTableComponent gameDetail={gameDetail} league={gameDetail.league} />
                         </>
                     ) : (
                         <Box
@@ -253,6 +251,7 @@ const BasketballComponent = ({ gameDetail }) => {
                         <Typography sx={{ fontSize: 25 }}>상세 기록은 경기 시작 후에 확인이 가능합니다.</Typography>
                     </Box>
                 )}
+                ㅋ
             </Box>
 
             <GameChat gameId={gameDetail.gameId} />
