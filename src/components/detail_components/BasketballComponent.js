@@ -251,7 +251,6 @@ const BasketballComponent = ({ gameDetail }) => {
                         <Typography sx={{ fontSize: 25 }}>상세 기록은 경기 시작 후에 확인이 가능합니다.</Typography>
                     </Box>
                 )}
-                ㅋ
             </Box>
 
             <GameChat gameId={gameDetail.gameId} />
