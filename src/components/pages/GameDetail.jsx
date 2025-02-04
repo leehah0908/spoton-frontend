@@ -5,6 +5,7 @@ import BaseballComponent from '../detail_components/BaseballComponent';
 import SoccerComponent from '../detail_components/SoccerComponent';
 import BasketballComponent from '../detail_components/BasketballComponent';
 import VolleyballComponent from '../detail_components/VolleyballComponent';
+import EsportsComponent from '../detail_components/EsportsComponent';
 
 const GameDetail = () => {
     const { id, league } = useParams();
@@ -22,6 +23,8 @@ const GameDetail = () => {
 
         kovo: VolleyballComponent,
         wkovo: VolleyballComponent,
+
+        lck: EsportsComponent,
     };
 
     const SelectedComponent = componentMap[league] || (() => <div>Unknown league</div>);
