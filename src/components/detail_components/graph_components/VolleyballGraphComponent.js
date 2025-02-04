@@ -8,38 +8,38 @@ const VolleyballGraphComponent = ({ gameDetail }) => {
         setGraphData([
             {
                 label: '공격 득점',
-                home: gameDetail.detailToJson.gameRecord.home.attackSuccessCount,
-                away: gameDetail.detailToJson.gameRecord.away.attackSuccessCount,
+                home: gameDetail.gameDetail.gameRecord.home.attackSuccessCount,
+                away: gameDetail.gameDetail.gameRecord.away.attackSuccessCount,
             },
             {
                 label: '블로킹 득점',
-                home: gameDetail.detailToJson.gameRecord.home.blockSuccessCount,
-                away: gameDetail.detailToJson.gameRecord.away.blockSuccessCount,
+                home: gameDetail.gameDetail.gameRecord.home.blockSuccessCount,
+                away: gameDetail.gameDetail.gameRecord.away.blockSuccessCount,
             },
             {
                 label: '서브 득점',
-                home: gameDetail.detailToJson.gameRecord.home.serveSuccessCount,
-                away: gameDetail.detailToJson.gameRecord.away.serveSuccessCount,
+                home: gameDetail.gameDetail.gameRecord.home.serveSuccessCount,
+                away: gameDetail.gameDetail.gameRecord.away.serveSuccessCount,
             },
             {
                 label: '삼대 범실',
-                home: gameDetail.detailToJson.gameRecord.home.opponentErrorCount,
-                away: gameDetail.detailToJson.gameRecord.away.opponentErrorCount,
+                home: gameDetail.gameDetail.gameRecord.home.opponentErrorCount,
+                away: gameDetail.gameDetail.gameRecord.away.opponentErrorCount,
             },
             {
                 label: '디그 성공',
-                home: gameDetail.detailToJson.gameRecord.home.digSuccessCount,
-                away: gameDetail.detailToJson.gameRecord.away.digSuccessCount,
+                home: gameDetail.gameDetail.gameRecord.home.digSuccessCount,
+                away: gameDetail.gameDetail.gameRecord.away.digSuccessCount,
             },
             {
                 label: '리시브 정확',
-                home: gameDetail.detailToJson.gameRecord.home.exactReceiveCount,
-                away: gameDetail.detailToJson.gameRecord.away.exactReceiveCount,
+                home: gameDetail.gameDetail.gameRecord.home.exactReceiveCount,
+                away: gameDetail.gameDetail.gameRecord.away.exactReceiveCount,
             },
             {
                 label: '세트 성공',
-                home: gameDetail.detailToJson.gameRecord.home.exactTossCount,
-                away: gameDetail.detailToJson.gameRecord.away.exactTossCount,
+                home: gameDetail.gameDetail.gameRecord.home.exactTossCount,
+                away: gameDetail.gameDetail.gameRecord.away.exactTossCount,
             },
         ]);
     }, [gameDetail]);
@@ -80,7 +80,7 @@ const VolleyballGraphComponent = ({ gameDetail }) => {
                     >
                         <LinearProgress
                             variant='determinate'
-                            value={gameDetail.detailToJson.gameRecord.away.attackSuccessRate}
+                            value={gameDetail.gameDetail.gameRecord.away.attackSuccessRate}
                             sx={{
                                 width: '100%',
                                 height: 8,
@@ -92,7 +92,7 @@ const VolleyballGraphComponent = ({ gameDetail }) => {
                         />
 
                         <Typography sx={{ width: 10, mr: 1 }}>
-                            {gameDetail.detailToJson.gameRecord.away.attackSuccessRate}
+                            {gameDetail.gameDetail.gameRecord.away.attackSuccessRate}
                         </Typography>
                     </Box>
 
@@ -105,7 +105,7 @@ const VolleyballGraphComponent = ({ gameDetail }) => {
                     <Box sx={{ width: '42%', display: 'flex', alignItems: 'center', pl: 1 }}>
                         <LinearProgress
                             variant='determinate'
-                            value={gameDetail.detailToJson.gameRecord.home.attackSuccessRate}
+                            value={gameDetail.gameDetail.gameRecord.home.attackSuccessRate}
                             sx={{
                                 width: '100%',
                                 height: 8,
@@ -115,7 +115,7 @@ const VolleyballGraphComponent = ({ gameDetail }) => {
                         />
 
                         <Typography sx={{ width: 10, ml: 1 }}>
-                            {gameDetail.detailToJson.gameRecord.home.attackSuccessRate}
+                            {gameDetail.gameDetail.gameRecord.home.attackSuccessRate}
                         </Typography>
                     </Box>
                 </Box>

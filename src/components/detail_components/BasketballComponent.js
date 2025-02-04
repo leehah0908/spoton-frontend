@@ -20,10 +20,10 @@ const BasketballComponent = ({ gameDetail }) => {
     const now = new Date();
     const gameDate = new Date(gameDetail.gameDate);
 
-    if (!gameDetail || !gameDetail.boardToJson) {
+    if (!gameDetail || !gameDetail.gameBoard) {
         return (
-            <Container maxWidth='md' sx={{ bgcolor: 'pink' }}>
-                <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ mx: 10 }}>
+            <Container maxWidth='md' sx={{ bgcolor: 'gray' }}>
+                <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' sx={{ mx: 10 }}>
                     <Typography sx={{ fontSize: 30 }}>해당 날짜의 경기 기록이 없습니다.</Typography>
                 </Box>
             </Container>
@@ -49,18 +49,18 @@ const BasketballComponent = ({ gameDetail }) => {
                         />
                     </Box>
 
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.awayTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.awayTeamScore}</Typography>
 
                     {/* 경기 정보 */}
                     <Box sx={{ width: '20%' }}>
                         <Typography>
                             {gameDetail.cancel
                                 ? '취소'
-                                : gameDetail.boardToJson.statusCode === 'RESULT'
+                                : gameDetail.gameBoard.statusCode === 'RESULT'
                                   ? '경기종료'
-                                  : gameDetail.boardToJson.statusCode === 'BEFORE'
+                                  : gameDetail.gameBoard.statusCode === 'BEFORE'
                                     ? '경기 전'
-                                    : gameDetail.boardToJson.statusInfo}
+                                    : gameDetail.gameBoard.statusInfo}
                         </Typography>
 
                         <Typography>
@@ -68,11 +68,11 @@ const BasketballComponent = ({ gameDetail }) => {
                             {gameDetail.gameDate.substr(11, 5).replace('-', '.')}
                         </Typography>
 
-                        <Typography>{gameDetail.boardToJson.stadium}</Typography>
+                        <Typography>{gameDetail.gameBoard.stadium}</Typography>
                     </Box>
 
                     {/* 홈팀 */}
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.homeTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.homeTeamScore}</Typography>
 
                     <Box display='flex' flexDirection='row' justifyContent='left' sx={{ width: '40%', pl: 5 }}>
                         <img
@@ -90,7 +90,7 @@ const BasketballComponent = ({ gameDetail }) => {
                     </Box>
                 </Box>
 
-                {gameDetail.boardToJson.statusInfo.includes('연장') ? (
+                {gameDetail.gameBoard.statusInfo.includes('연장') ? (
                     <Box>
                         <TableContainer
                             sx={{
@@ -110,7 +110,7 @@ const BasketballComponent = ({ gameDetail }) => {
                                             팀명
                                         </TableCell>
 
-                                        {Array.from({ length: gameDetail.boardToJson.awayTeamScoreByQuarter.length }, (_, i) => (
+                                        {Array.from({ length: gameDetail.gameBoard.awayTeamScoreByQuarter.length }, (_, i) => (
                                             <TableCell key={i} sx={{ width: '50px', fontWeight: 'bold', p: 0 }}>
                                                 {i + 1}
                                             </TableCell>
@@ -126,14 +126,14 @@ const BasketballComponent = ({ gameDetail }) => {
                                     <TableRow>
                                         <TableCell sx={{ letterSpacing: 3, p: 0, pt: 1 }}>{gameDetail.awayTeam}</TableCell>
 
-                                        {gameDetail.boardToJson.awayTeamScoreByQuarter.map((score, i) => (
+                                        {gameDetail.gameBoard.awayTeamScoreByQuarter.map((score, i) => (
                                             <TableCell key={i} sx={{ p: 0, pt: 1 }}>
                                                 {score}
                                             </TableCell>
                                         ))}
 
                                         <TableCell sx={{ width: '50px', p: 0, pl: 2 }}>
-                                            {gameDetail.boardToJson.awayTeamScore}
+                                            {gameDetail.gameBoard.awayTeamScore}
                                         </TableCell>
                                     </TableRow>
 
@@ -141,14 +141,14 @@ const BasketballComponent = ({ gameDetail }) => {
                                     <TableRow>
                                         <TableCell sx={{ letterSpacing: 3, p: 0 }}>{gameDetail.homeTeam}</TableCell>
 
-                                        {gameDetail.boardToJson.homeTeamScoreByQuarter.map((score, i) => (
+                                        {gameDetail.gameBoard.homeTeamScoreByQuarter.map((score, i) => (
                                             <TableCell key={i} sx={{ p: 0 }}>
                                                 {score}
                                             </TableCell>
                                         ))}
 
                                         <TableCell sx={{ width: '50px', p: 0, pl: 2 }}>
-                                            {gameDetail.boardToJson.homeTeamScore}
+                                            {gameDetail.gameBoard.homeTeamScore}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
@@ -191,12 +191,12 @@ const BasketballComponent = ({ gameDetail }) => {
                                     <TableRow>
                                         <TableCell sx={{ letterSpacing: 3, p: 0, pt: 1 }}>{gameDetail.awayTeam}</TableCell>
 
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.awayTeamScoreByQuarter[0]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.awayTeamScoreByQuarter[1]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.awayTeamScoreByQuarter[2]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.awayTeamScoreByQuarter[3]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.awayTeamScoreByQuarter[0]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.awayTeamScoreByQuarter[1]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.awayTeamScoreByQuarter[2]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.awayTeamScoreByQuarter[3]}</TableCell>
                                         <TableCell sx={{ width: '50px', p: 0, pl: 2 }}>
-                                            {gameDetail.boardToJson.awayTeamScore}
+                                            {gameDetail.gameBoard.awayTeamScore}
                                         </TableCell>
                                     </TableRow>
 
@@ -204,12 +204,12 @@ const BasketballComponent = ({ gameDetail }) => {
                                     <TableRow>
                                         <TableCell sx={{ letterSpacing: 3, p: 0 }}>{gameDetail.homeTeam}</TableCell>
 
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.homeTeamScoreByQuarter[0]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.homeTeamScoreByQuarter[1]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.homeTeamScoreByQuarter[2]}</TableCell>
-                                        <TableCell sx={{ p: 0 }}>{gameDetail.boardToJson.homeTeamScoreByQuarter[3]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.homeTeamScoreByQuarter[0]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.homeTeamScoreByQuarter[1]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.homeTeamScoreByQuarter[2]}</TableCell>
+                                        <TableCell sx={{ p: 0 }}>{gameDetail.gameBoard.homeTeamScoreByQuarter[3]}</TableCell>
                                         <TableCell sx={{ width: '50px', p: 0, pl: 2 }}>
-                                            {gameDetail.boardToJson.homeTeamScore}
+                                            {gameDetail.gameBoard.homeTeamScore}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

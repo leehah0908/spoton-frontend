@@ -8,105 +8,105 @@ const SoccerGraphComponent = ({ gameDetail, league }) => {
 
     useEffect(() => {
         if (league === 'kleague') {
-            setAwayBallPos(gameDetail.detailToJson.away.ballPossession);
-            setHomeBallPos(gameDetail.detailToJson.home.ballPossession);
+            setAwayBallPos(gameDetail.gameDetail.away.ballPossession);
+            setHomeBallPos(gameDetail.gameDetail.home.ballPossession);
 
             setGraphData([
                 {
                     label: '슈팅',
-                    home: gameDetail.detailToJson.home.shooting,
-                    away: gameDetail.detailToJson.away.shooting,
+                    home: gameDetail.gameDetail.home.shooting,
+                    away: gameDetail.gameDetail.away.shooting,
                 },
                 {
                     label: '유효슈팅',
-                    home: gameDetail.detailToJson.home.shotsOnGoal,
-                    away: gameDetail.detailToJson.away.shotsOnGoal,
+                    home: gameDetail.gameDetail.home.shotsOnGoal,
+                    away: gameDetail.gameDetail.away.shotsOnGoal,
                 },
                 {
                     label: '코너킥',
-                    home: gameDetail.detailToJson.home.cornerKick,
-                    away: gameDetail.detailToJson.away.cornerKick,
+                    home: gameDetail.gameDetail.home.cornerKick,
+                    away: gameDetail.gameDetail.away.cornerKick,
                 },
                 {
                     label: '골킥',
-                    home: gameDetail.detailToJson.home.goalKick,
-                    away: gameDetail.detailToJson.away.goalKick,
+                    home: gameDetail.gameDetail.home.goalKick,
+                    away: gameDetail.gameDetail.away.goalKick,
                 },
                 {
                     label: '오프사이드',
-                    home: gameDetail.detailToJson.home.offside,
-                    away: gameDetail.detailToJson.away.offside,
+                    home: gameDetail.gameDetail.home.offside,
+                    away: gameDetail.gameDetail.away.offside,
                 },
                 {
                     label: '파울',
-                    home: gameDetail.detailToJson.home.foul,
-                    away: gameDetail.detailToJson.away.foul,
+                    home: gameDetail.gameDetail.home.foul,
+                    away: gameDetail.gameDetail.away.foul,
                 },
                 {
                     label: '경고',
-                    home: gameDetail.detailToJson.home.yellow,
-                    away: gameDetail.detailToJson.away.yellow,
+                    home: gameDetail.gameDetail.home.yellow,
+                    away: gameDetail.gameDetail.away.yellow,
                 },
                 {
                     label: '퇴장',
-                    home: gameDetail.detailToJson.home.dismissal,
-                    away: gameDetail.detailToJson.away.dismissal,
+                    home: gameDetail.gameDetail.home.dismissal,
+                    away: gameDetail.gameDetail.away.dismissal,
                 },
                 {
                     label: '선수교체',
-                    home: gameDetail.detailToJson.home.substitution,
-                    away: gameDetail.detailToJson.away.substitution,
+                    home: gameDetail.gameDetail.home.substitution,
+                    away: gameDetail.gameDetail.away.substitution,
                 },
             ]);
         } else if (league === 'epl') {
-            setAwayBallPos(gameDetail.detailToJson.away_teams[0].possession);
-            setHomeBallPos(gameDetail.detailToJson.home_teams[0].possession);
+            setAwayBallPos(gameDetail.gameDetail.away_teams[0].possession);
+            setHomeBallPos(gameDetail.gameDetail.home_teams[0].possession);
 
             setGraphData([
                 {
                     label: '슈팅',
-                    home: gameDetail.detailToJson.home_teams[0].shots,
-                    away: gameDetail.detailToJson.away_teams[0].shots,
+                    home: gameDetail.gameDetail.home_teams[0].shots,
+                    away: gameDetail.gameDetail.away_teams[0].shots,
                 },
                 {
                     label: '유효슈팅',
-                    home: gameDetail.detailToJson.home_teams[0].shotsOnTarget,
-                    away: gameDetail.detailToJson.away_teams[0].shotsOnTarget,
+                    home: gameDetail.gameDetail.home_teams[0].shotsOnTarget,
+                    away: gameDetail.gameDetail.away_teams[0].shotsOnTarget,
                 },
                 {
                     label: '코너킥',
-                    home: gameDetail.detailToJson.home_teams[0].cornerKicks,
-                    away: gameDetail.detailToJson.away_teams[0].cornerKicks,
+                    home: gameDetail.gameDetail.home_teams[0].cornerKicks,
+                    away: gameDetail.gameDetail.away_teams[0].cornerKicks,
                 },
                 {
                     label: '골킥',
-                    home: gameDetail.detailToJson.home_teams[0].goalKicks,
-                    away: gameDetail.detailToJson.away_teams[0].goalKicks,
+                    home: gameDetail.gameDetail.home_teams[0].goalKicks,
+                    away: gameDetail.gameDetail.away_teams[0].goalKicks,
                 },
                 {
                     label: '오프사이드',
-                    home: gameDetail.detailToJson.home_teams[0].offsides,
-                    away: gameDetail.detailToJson.away_teams[0].offsides,
+                    home: gameDetail.gameDetail.home_teams[0].offsides,
+                    away: gameDetail.gameDetail.away_teams[0].offsides,
                 },
                 {
                     label: '파울',
-                    home: gameDetail.detailToJson.home_teams[0].fouls,
-                    away: gameDetail.detailToJson.away_teams[0].fouls,
+                    home: gameDetail.gameDetail.home_teams[0].fouls,
+                    away: gameDetail.gameDetail.away_teams[0].fouls,
                 },
                 {
                     label: '경고',
-                    home: gameDetail.detailToJson.home_teams[0].yellowCards,
-                    away: gameDetail.detailToJson.away_teams[0].yellowCards,
+                    home: gameDetail.gameDetail.home_teams[0].yellowCards,
+                    away: gameDetail.gameDetail.away_teams[0].yellowCards,
                 },
                 {
                     label: '퇴장',
-                    home: gameDetail.detailToJson.home_teams[0].redCards,
-                    away: gameDetail.detailToJson.away_teams[0].redCards,
+                    home: gameDetail.gameDetail.home_teams[0].redCards,
+                    away: gameDetail.gameDetail.away_teams[0].redCards,
                 },
                 {
                     label: '선수교체',
-                    home: gameDetail.detailToJson.home_teams[0].substitutions,
-                    away: gameDetail.detailToJson.away_teams[0].substitutions,
+                    home: gameDetail.gameDetail.home_teams[0].substitutions,
+                    away: gameDetail.gameDetail.away_teams[0].substitutions,
                 },
             ]);
         }

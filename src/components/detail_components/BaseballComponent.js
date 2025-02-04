@@ -20,10 +20,10 @@ const BaseballComponent = ({ gameDetail }) => {
     const now = new Date();
     const gameDate = new Date(gameDetail.gameDate);
 
-    if (!gameDetail || !gameDetail.boardToJson) {
+    if (!gameDetail || !gameDetail.gameBoard) {
         return (
-            <Container maxWidth='md' sx={{ bgcolor: 'pink' }}>
-                <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ mx: 10 }}>
+            <Container maxWidth='md' sx={{ bgcolor: 'gray' }}>
+                <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' sx={{ mx: 10 }}>
                     <Typography sx={{ fontSize: 30 }}>해당 날짜의 경기 기록이 없습니다.</Typography>
                 </Box>
             </Container>
@@ -41,13 +41,13 @@ const BaseballComponent = ({ gameDetail }) => {
                             <Typography sx={{ fontSize: 30 }}>{gameDetail.awayTeam}</Typography>
 
                             <Typography>
-                                {gameDetail.boardToJson.statusCode === 'RESULT'
-                                    ? gameDetail.boardToJson.winner === 'HOME'
-                                        ? `패-${gameDetail.boardToJson.losePitcherName}`
-                                        : `승-${gameDetail.boardToJson.winPitcherName}`
-                                    : gameDetail.boardToJson.statusCode === 'BEFORE'
-                                      ? gameDetail.boardToJson.awayStarterName
-                                      : gameDetail.boardToJson.awayCurrentPitcherName}
+                                {gameDetail.gameBoard.statusCode === 'RESULT'
+                                    ? gameDetail.gameBoard.winner === 'HOME'
+                                        ? `패-${gameDetail.gameBoard.losePitcherName}`
+                                        : `승-${gameDetail.gameBoard.winPitcherName}`
+                                    : gameDetail.gameBoard.statusCode === 'BEFORE'
+                                      ? gameDetail.gameBoard.awayStarterName
+                                      : gameDetail.gameBoard.awayCurrentPitcherName}
                             </Typography>
                         </Box>
 
@@ -59,18 +59,18 @@ const BaseballComponent = ({ gameDetail }) => {
                         />
                     </Box>
 
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.awayTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.awayTeamScore}</Typography>
 
                     {/* 경기 정보 */}
                     <Box sx={{ width: '20%', my: 5 }}>
                         <Typography>
                             {gameDetail.cancel
                                 ? '취소'
-                                : gameDetail.boardToJson.statusCode === 'RESULT'
+                                : gameDetail.gameBoard.statusCode === 'RESULT'
                                   ? '경기종료'
-                                  : gameDetail.boardToJson.statusCode === 'BEFORE'
+                                  : gameDetail.gameBoard.statusCode === 'BEFORE'
                                     ? '경기 전'
-                                    : gameDetail.boardToJson.statusInfo}
+                                    : gameDetail.gameBoard.statusInfo}
                         </Typography>
 
                         <Typography>
@@ -78,11 +78,11 @@ const BaseballComponent = ({ gameDetail }) => {
                             {gameDetail.gameDate.substr(11, 5).replace('-', '.')}
                         </Typography>
 
-                        <Typography>{gameDetail.boardToJson.stadium}</Typography>
+                        <Typography>{gameDetail.gameBoard.stadium}</Typography>
                     </Box>
 
                     {/* 홈팀 */}
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.homeTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.homeTeamScore}</Typography>
 
                     <Box display='flex' flexDirection='row' justifyContent='left' sx={{ width: '40%', my: 5, pl: 5 }}>
                         <img
@@ -98,13 +98,13 @@ const BaseballComponent = ({ gameDetail }) => {
                             </Typography>
 
                             <Typography>
-                                {gameDetail.boardToJson.statusCode === 'RESULT'
-                                    ? gameDetail.boardToJson.winner !== 'HOME'
-                                        ? `패-${gameDetail.boardToJson.losePitcherName}`
-                                        : `승-${gameDetail.boardToJson.winPitcherName}`
-                                    : gameDetail.boardToJson.statusCode === 'BEFORE'
-                                      ? gameDetail.boardToJson.homeStarterName
-                                      : gameDetail.boardToJson.homeCurrentPitcherName}
+                                {gameDetail.gameBoard.statusCode === 'RESULT'
+                                    ? gameDetail.gameBoard.winner !== 'HOME'
+                                        ? `패-${gameDetail.gameBoard.losePitcherName}`
+                                        : `승-${gameDetail.gameBoard.winPitcherName}`
+                                    : gameDetail.gameBoard.statusCode === 'BEFORE'
+                                      ? gameDetail.gameBoard.homeStarterName
+                                      : gameDetail.gameBoard.homeCurrentPitcherName}
                             </Typography>
                         </Box>
                     </Box>
@@ -128,7 +128,7 @@ const BaseballComponent = ({ gameDetail }) => {
                                 <TableRow>
                                     <TableCell sx={{ width: '15%', fontWeight: '600', letterSpacing: 3, p: 0 }}>팀명</TableCell>
 
-                                    {Array.from({ length: gameDetail.boardToJson.awayTeamScoreByInning.length }, (_, i) => (
+                                    {Array.from({ length: gameDetail.gameBoard.awayTeamScoreByInning.length }, (_, i) => (
                                         <TableCell key={i} sx={{ width: '50px', fontWeight: 'bold', p: 0 }}>
                                             {i + 1}
                                         </TableCell>
@@ -147,13 +147,13 @@ const BaseballComponent = ({ gameDetail }) => {
                                 <TableRow>
                                     <TableCell sx={{ letterSpacing: 3, p: 0, pt: 1 }}>{gameDetail.awayTeam}</TableCell>
 
-                                    {gameDetail.boardToJson.awayTeamScoreByInning.map((score, i) => (
+                                    {gameDetail.gameBoard.awayTeamScoreByInning.map((score, i) => (
                                         <TableCell key={i} sx={{ p: 0, pt: 1 }}>
                                             {score}
                                         </TableCell>
                                     ))}
 
-                                    {gameDetail.boardToJson.awayTeamRheb.map((value, i) => (
+                                    {gameDetail.gameBoard.awayTeamRheb.map((value, i) => (
                                         <TableCell key={i} sx={{ p: 0, pt: 1, ...(i === 0 && { pl: 2 }) }}>
                                             {value}
                                         </TableCell>
@@ -164,13 +164,13 @@ const BaseballComponent = ({ gameDetail }) => {
                                 <TableRow>
                                     <TableCell sx={{ letterSpacing: 3, p: 0 }}>{gameDetail.homeTeam}</TableCell>
 
-                                    {gameDetail.boardToJson.homeTeamScoreByInning.map((score, i) => (
+                                    {gameDetail.gameBoard.homeTeamScoreByInning.map((score, i) => (
                                         <TableCell key={i} sx={{ p: 0 }}>
                                             {score}
                                         </TableCell>
                                     ))}
 
-                                    {gameDetail.boardToJson.homeTeamRheb.map((value, i) => (
+                                    {gameDetail.gameBoard.homeTeamRheb.map((value, i) => (
                                         <TableCell key={i} sx={{ p: 0, ...(i === 0 && { pl: 2 }) }}>
                                             {value}
                                         </TableCell>

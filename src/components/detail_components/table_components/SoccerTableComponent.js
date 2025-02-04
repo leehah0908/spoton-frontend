@@ -24,7 +24,7 @@ const SoccerTableComponent = ({ gameDetail, league }) => {
         // 데이터 세팅
         if (league === 'kleague') {
             const loadData =
-                selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayPlayerStats : gameDetail.detailToJson.homePlayerStats;
+                selectedTeam === 'AWAY' ? gameDetail.gameDetail.awayPlayerStats : gameDetail.gameDetail.homePlayerStats;
 
             setRows(
                 loadData.map((value, index) => ({
@@ -42,8 +42,7 @@ const SoccerTableComponent = ({ gameDetail, league }) => {
                 })),
             );
         } else if (league === 'epl') {
-            const loadData =
-                selectedTeam === 'AWAY' ? gameDetail.detailToJson.away_players : gameDetail.detailToJson.home_players;
+            const loadData = selectedTeam === 'AWAY' ? gameDetail.gameDetail.away_players : gameDetail.gameDetail.home_players;
 
             setRows(
                 loadData.map((value, index) => ({

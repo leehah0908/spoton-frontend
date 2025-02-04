@@ -70,9 +70,7 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
         // 타자 데이터 세팅
         if (league === 'kbo') {
             const loadData =
-                selectedTeam === 'AWAY'
-                    ? gameDetail.detailToJson.battersBoxscore.away
-                    : gameDetail.detailToJson.battersBoxscore.home;
+                selectedTeam === 'AWAY' ? gameDetail.gameDetail.battersBoxscore.away : gameDetail.gameDetail.battersBoxscore.home;
 
             setBatterRows(
                 loadData.map((value, index) => ({
@@ -92,7 +90,7 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
                 })),
             );
         } else if (league === 'mlb') {
-            const loadData = selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayBatter : gameDetail.detailToJson.homeBatter;
+            const loadData = selectedTeam === 'AWAY' ? gameDetail.gameDetail.awayBatter : gameDetail.gameDetail.homeBatter;
 
             setBatterRows(
                 loadData.map((value, index) => ({
@@ -117,8 +115,8 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
         if (league === 'kbo') {
             const loadData =
                 selectedTeam === 'AWAY'
-                    ? gameDetail.detailToJson.pitchersBoxscore.away
-                    : gameDetail.detailToJson.pitchersBoxscore.home;
+                    ? gameDetail.gameDetail.pitchersBoxscore.away
+                    : gameDetail.gameDetail.pitchersBoxscore.home;
 
             setPitcherRows(
                 loadData.map((value, index) => ({
@@ -137,7 +135,7 @@ const BaseballTableComponent = ({ gameDetail, league }) => {
                 })),
             );
         } else if (league === 'mlb') {
-            const loadData = selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayPitcher : gameDetail.detailToJson.homePitcher;
+            const loadData = selectedTeam === 'AWAY' ? gameDetail.gameDetail.awayPitcher : gameDetail.gameDetail.homePitcher;
             setPitcherRows(
                 loadData.map((value, index) => ({
                     id: index,

@@ -30,7 +30,7 @@ const BasketballTableComponent = ({ gameDetail, league }) => {
     useEffect(() => {
         if (league === 'kbl') {
             const loadData =
-                selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayPlayerStats : gameDetail.detailToJson.homePlayerStats;
+                selectedTeam === 'AWAY' ? gameDetail.gameDetail.awayPlayerStats : gameDetail.gameDetail.homePlayerStats;
 
             setRows(
                 loadData.map((value, index) => ({
@@ -56,7 +56,7 @@ const BasketballTableComponent = ({ gameDetail, league }) => {
             );
         } else if (league === 'nba') {
             const loadData =
-                selectedTeam === 'AWAY' ? gameDetail.detailToJson.awayPlayerStats : gameDetail.detailToJson.homePlayerStats;
+                selectedTeam === 'AWAY' ? gameDetail.gameDetail.awayPlayerStats : gameDetail.gameDetail.homePlayerStats;
 
             setRows(
                 loadData.map((value, index) => ({

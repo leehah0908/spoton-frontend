@@ -26,9 +26,7 @@ const VolleyballTableComponent = ({ gameDetail, league }) => {
 
     useEffect(() => {
         const loadData =
-            selectedTeam === 'AWAY'
-                ? gameDetail.detailToJson.playerStatOfGame.away
-                : gameDetail.detailToJson.playerStatOfGame.home;
+            selectedTeam === 'AWAY' ? gameDetail.gameDetail.playerStatOfGame.away : gameDetail.gameDetail.playerStatOfGame.home;
 
         setRows(
             loadData.map((value, index) => ({

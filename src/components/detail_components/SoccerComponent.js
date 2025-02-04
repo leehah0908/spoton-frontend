@@ -9,10 +9,10 @@ const SoccerComponent = ({ gameDetail }) => {
     const now = new Date();
     const gameDate = new Date(gameDetail.gameDate);
 
-    if (!gameDetail || !gameDetail.boardToJson) {
+    if (!gameDetail || !gameDetail.gameBoard) {
         return (
-            <Container maxWidth='md' sx={{ bgcolor: 'pink' }}>
-                <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' sx={{ mx: 10 }}>
+            <Container maxWidth='md' sx={{ bgcolor: 'gray' }}>
+                <Box display='flex' flexDirection='row' justifyContent='center' alignItems='center' sx={{ mx: 10 }}>
                     <Typography sx={{ fontSize: 30 }}>해당 날짜의 경기 기록이 없습니다.</Typography>
                 </Box>
             </Container>
@@ -38,18 +38,18 @@ const SoccerComponent = ({ gameDetail }) => {
                         />
                     </Box>
 
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.awayTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.awayTeamScore}</Typography>
 
                     {/* 경기 정보 */}
                     <Box sx={{ width: '20%' }}>
                         <Typography>
                             {gameDetail.cancel
                                 ? '취소'
-                                : gameDetail.boardToJson.statusCode === 'RESULT'
+                                : gameDetail.gameBoard.statusCode === 'RESULT'
                                   ? '경기종료'
-                                  : gameDetail.boardToJson.statusCode === 'BEFORE'
+                                  : gameDetail.gameBoard.statusCode === 'BEFORE'
                                     ? '경기 전'
-                                    : gameDetail.boardToJson.statusInfo}
+                                    : gameDetail.gameBoard.statusInfo}
                         </Typography>
 
                         <Typography>
@@ -57,11 +57,11 @@ const SoccerComponent = ({ gameDetail }) => {
                             {gameDetail.gameDate.substr(11, 5).replace('-', '.')}
                         </Typography>
 
-                        <Typography>{gameDetail.boardToJson.stadium}</Typography>
+                        <Typography>{gameDetail.gameBoard.stadium}</Typography>
                     </Box>
 
                     {/* 홈팀 */}
-                    <Typography sx={{ fontSize: 30 }}>{gameDetail.boardToJson.homeTeamScore}</Typography>
+                    <Typography sx={{ fontSize: 30 }}>{gameDetail.gameBoard.homeTeamScore}</Typography>
 
                     <Box display='flex' flexDirection='row' justifyContent='left' sx={{ width: '40%', pl: 5 }}>
                         <img
@@ -82,7 +82,7 @@ const SoccerComponent = ({ gameDetail }) => {
                 {/* 스코어보드 */}
                 <Box display='flex' flexDirection='row' sx={{ mt: 1 }}>
                     <Box display='flex' flexDirection='column' sx={{ width: '50%' }}>
-                        {gameDetail.boardToJson.scorers.away.map((value) => (
+                        {gameDetail.gameBoard.scorers.away.map((value) => (
                             <Typography sx={{ fontSize: 15, pr: 2, textAlign: 'right' }}>
                                 {value.playerName} {value.time}&apos; ⚽
                             </Typography>
@@ -90,7 +90,7 @@ const SoccerComponent = ({ gameDetail }) => {
                     </Box>
 
                     <Box display='flex' flexDirection='column' sx={{ width: '50%' }}>
-                        {gameDetail.boardToJson.scorers.home.map((value) => (
+                        {gameDetail.gameBoard.scorers.home.map((value) => (
                             <Typography sx={{ fontSize: 15, pl: 2, textAlign: 'left' }}>
                                 ⚽ {value.time}&apos; {value.playerName}
                             </Typography>

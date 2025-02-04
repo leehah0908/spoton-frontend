@@ -9,66 +9,66 @@ const BaseballGraphComponent = ({ gameDetail, league }) => {
             setGraphData([
                 {
                     label: '안타',
-                    home: gameDetail.detailToJson.todayKeyStats.home.hit,
-                    away: gameDetail.detailToJson.todayKeyStats.away.hit,
+                    home: gameDetail.gameDetail.todayKeyStats.home.hit,
+                    away: gameDetail.gameDetail.todayKeyStats.away.hit,
                 },
                 {
                     label: '홈런',
-                    home: gameDetail.detailToJson.todayKeyStats.home.hr,
-                    away: gameDetail.detailToJson.todayKeyStats.away.hr,
+                    home: gameDetail.gameDetail.todayKeyStats.home.hr,
+                    away: gameDetail.gameDetail.todayKeyStats.away.hr,
                 },
                 {
                     label: '도루',
-                    home: gameDetail.detailToJson.todayKeyStats.home.sb,
-                    away: gameDetail.detailToJson.todayKeyStats.away.sb,
+                    home: gameDetail.gameDetail.todayKeyStats.home.sb,
+                    away: gameDetail.gameDetail.todayKeyStats.away.sb,
                 },
                 {
                     label: '삼진',
-                    home: gameDetail.detailToJson.todayKeyStats.home.kk,
-                    away: gameDetail.detailToJson.todayKeyStats.away.kk,
+                    home: gameDetail.gameDetail.todayKeyStats.home.kk,
+                    away: gameDetail.gameDetail.todayKeyStats.away.kk,
                 },
                 {
                     label: '실책',
-                    home: gameDetail.detailToJson.todayKeyStats.home.err,
-                    away: gameDetail.detailToJson.todayKeyStats.away.err,
+                    home: gameDetail.gameDetail.todayKeyStats.home.err,
+                    away: gameDetail.gameDetail.todayKeyStats.away.err,
                 },
                 {
                     label: '병살',
-                    home: gameDetail.detailToJson.todayKeyStats.home.gd,
-                    away: gameDetail.detailToJson.todayKeyStats.away.gd,
+                    home: gameDetail.gameDetail.todayKeyStats.home.gd,
+                    away: gameDetail.gameDetail.todayKeyStats.away.gd,
                 },
             ]);
         } else if (league === 'mlb') {
             setGraphData([
                 {
                     label: '안타',
-                    home: gameDetail.detailToJson.homeKeyStat.hit,
-                    away: gameDetail.detailToJson.awayKeyStat.hit,
+                    home: gameDetail.gameDetail.homeKeyStat.hit,
+                    away: gameDetail.gameDetail.awayKeyStat.hit,
                 },
                 {
                     label: '홈런',
-                    home: gameDetail.detailToJson.homeKeyStat.hr,
-                    away: gameDetail.detailToJson.awayKeyStat.hr,
+                    home: gameDetail.gameDetail.homeKeyStat.hr,
+                    away: gameDetail.gameDetail.awayKeyStat.hr,
                 },
                 {
                     label: '도루',
-                    home: gameDetail.detailToJson.homeKeyStat.sb,
-                    away: gameDetail.detailToJson.awayKeyStat.sb,
+                    home: gameDetail.gameDetail.homeKeyStat.sb,
+                    away: gameDetail.gameDetail.awayKeyStat.sb,
                 },
                 {
                     label: '삼진',
-                    home: gameDetail.detailToJson.homeKeyStat.so,
-                    away: gameDetail.detailToJson.awayKeyStat.so,
+                    home: gameDetail.gameDetail.homeKeyStat.so,
+                    away: gameDetail.gameDetail.awayKeyStat.so,
                 },
                 {
                     label: '실책',
-                    home: gameDetail.detailToJson.homeKeyStat.err,
-                    away: gameDetail.detailToJson.awayKeyStat.err,
+                    home: gameDetail.gameDetail.homeKeyStat.err,
+                    away: gameDetail.gameDetail.awayKeyStat.err,
                 },
                 {
                     label: '병살',
-                    home: gameDetail.detailToJson.homeKeyStat.gd,
-                    away: gameDetail.detailToJson.awayKeyStat.gd,
+                    home: gameDetail.gameDetail.homeKeyStat.gd,
+                    away: gameDetail.gameDetail.awayKeyStat.gd,
                 },
             ]);
         }
