@@ -15,6 +15,7 @@ import {
 import { IoChatbubbleOutline, IoClose } from 'react-icons/io5';
 import { PiSirenFill } from 'react-icons/pi';
 import { FaThumbsUp, FaRegThumbsUp, FaPen } from 'react-icons/fa';
+import { IoIosSend } from 'react-icons/io';
 import axiosInstance from '../../configs/axios-config';
 import axios from 'axios';
 import AuthContext from '../../contexts/UserContext';
@@ -699,6 +700,8 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
                                 display: 'flex',
                                 alignItems: 'center',
                                 borderRadius: 2,
+                                mb: 1,
+                                pr: 1,
                             }}
                         >
                             <TextField
@@ -710,15 +713,13 @@ const BoardDetail = ({ open, onClose, setDetatilModalOpen, boardId, loadBoardDat
                                 size='small'
                                 onChange={(e) => setReply(e.target.value)}
                                 sx={{
-                                    mb: 1,
+                                    mr: 0.5,
                                     '& .MuiOutlinedInput-root': {
-                                        borderRadius: 2,
+                                        borderRadius: 1,
                                     },
                                 }}
                             />
-                            <IconButton sx={{ color: 'red', ml: 1 }} onClick={saveReply}>
-                                ✈️
-                            </IconButton>
+                            <IoIosSend color='#0d41e1' size={28} onClick={saveReply}></IoIosSend>
                         </Box>
 
                         {/* 댓글 리스트 */}

@@ -28,6 +28,18 @@ const Home = () => {
     const [nanumDetailModalOpen, setNanumDetailModalOpen] = useState(false);
     const [selectedNanumId, setSelectedNanumId] = useState(null);
 
+    const leagueColors = {
+        kbo: '#e63232',
+        mlb: '#f3722c',
+        kleague: '#f8961e',
+        epl: '#ffd043',
+        kbl: '#7fc96b',
+        nba: '#43aa8b',
+        kovo: '#277da1',
+        wkovo: '#3b498e',
+        lck: '#66418a',
+    };
+
     useEffect(() => {
         sessionStorage.removeItem('gameState');
 
@@ -124,6 +136,7 @@ const Home = () => {
                 </Typography>
             </Box>
 
+            {/* 오늘의 경기 */}
             <Box>
                 <Typography variant='h6' sx={{ fontWeight: '500', display: 'flex', mt: 3, pl: 2, mb: 0.5 }}>
                     📢 오늘의 경기
@@ -141,6 +154,7 @@ const Home = () => {
                 ) : todayGames && todayGames.length > 0 ? (
                     todayGames.map((value) => (
                         <Box
+                            key={value.gameId}
                             onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
                             textAlign='center'
                             sx={{
@@ -148,14 +162,21 @@ const Home = () => {
                                 minWidth: '23%',
                                 borderRadius: 2,
                                 pt: 1,
-                                bgcolor: 'white',
+                                bgcolor: '#FFFFFF',
                                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
                                 '&:hover': {
-                                    backgroundColor: '#f0f0f0',
+                                    opacity: 0.5,
                                 },
                             }}
                         >
-                            <Typography sx={{ borderBottom: 'solid 2px #F2F2F2', pb: 1, color: '#676C74' }}>
+                            <Typography
+                                sx={{
+                                    borderBottom: 'solid 2px',
+                                    borderBottomColor: '#EFEFEF',
+                                    pb: 1,
+                                    color: leagueColors[value.league],
+                                }}
+                            >
                                 {value.league.toUpperCase()}
                             </Typography>
 
@@ -172,7 +193,7 @@ const Home = () => {
 
                                 <Box display='flex' flexDirection='column' sx={{ minWidth: '20%', alignSelf: 'center' }}>
                                     <Typography sx={{ fontSize: 20 }}>vs</Typography>
-                                    <Typography sx={{ fontSize: 12, color: '#0d41e1' }}>
+                                    <Typography sx={{ fontSize: 12, color: '#676C74' }}>
                                         {format(new Date(value.gameDate), 'HH:mm')}
                                     </Typography>
                                 </Box>
@@ -419,6 +440,7 @@ const Home = () => {
                             !myTeamLength ? (
                                 myTeamData.map((value) => (
                                     <Box
+                                        key={value.gameId}
                                         onClick={() => navigate(`/gameDetail/${value.league}/${value.gameId}`)}
                                         textAlign='center'
                                         sx={{
